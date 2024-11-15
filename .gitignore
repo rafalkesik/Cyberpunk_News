@@ -1,0 +1,69 @@
+# Ignore bundler config
+/.bundle
+
+# Ignore all logfiles and temp files.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore database files
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-*
+
+# Ignore all files in the node_modules directory
+/node_modules
+
+# Ignore Yarn files
+/.yarn
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+# Ignore compiled output
+/public/assets
+/public/packs
+/public/packs-test
+/public/system
+/public/uploads
+
+# Ignore byebug command history
+.byebug_history
+
+# Ignore Bootsnap cache
+/tmp/cache/
+/tmp/pids/
+/tmp/sockets/
+!/tmp/.keep
+
+# Ignore Rails master key
+/config/master.key
+/config/credentials.yml.enc
+
+# Ignore IDE and editor config files
+.idea/
+.vscode/
+*.swp
+*~
+.project
+.idea/
+.vscode/
+
+# Ignore coverage reports
+/coverage/
+/coverage/*
+
+# Ignore dotenv files with environment variables
+.env
+.env.*
+
+# Ignore spring files
+/spring/*.pid
+
+# Ignore temporary artifacts
+*.rbc
+*.pid
