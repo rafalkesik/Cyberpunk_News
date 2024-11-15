@@ -13,6 +13,9 @@
 .border-main-color {
     border-color: #ff6600;
 }
+.border-3 {
+    margin-top: 0;
+}
 .content-container {
     a {
         text-decoration: none;
@@ -53,6 +56,13 @@ nav {
 nav.navbar {
     margin-bottom: 0;
     border-radius: 0;
+}
+
+// CONTENT STYLES
+.content-container {
+    ol {
+        margin-bottom: 0
+    }
 }
 
 // FOOTER STYLES
