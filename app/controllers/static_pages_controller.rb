@@ -1,15 +1,20 @@
 class StaticPagesController < ApplicationController
-  
+  include ApplicationHelper
+
   def home
+    @user = current_user
   end
 
   def guidelines
+    @user = current_user
   end
 
   def faq
+    @user = current_user
   end
 
   def contact
+    @user = current_user
   end
 
   def empty_site

@@ -26,8 +26,14 @@
             <a href="/empty_site" class="nav-link">submit</a>
           </li>
         </ul>
-        <a href="/empty_site" class="nav-link login-link">Login</a>
+        <% if logged_in? %>
+          <%= link_to "Profile", user_path(current_user),
+                                 class: "nav-link login-link" %>
+        <% else %>
+          <%= link_to "Login", login_path,
+                               class: "nav-link login-link"%>
+        <% end %>
       </div>
     </div>
   </nav>
-  
+</header>

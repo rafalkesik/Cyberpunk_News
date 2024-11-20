@@ -67,3 +67,4 @@ yarn-debug.log*
 # Ignore temporary artifacts
 *.rbc
 *.pid
+/config/credentials/test.key

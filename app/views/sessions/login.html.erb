@@ -1,0 +1,25 @@
+<div class="mb-5">
+    <h3>Login</h3>
+    <%= form_with model: @user, method: :post, url: sessions_path do |f| %>
+        <%= f.label :username %>
+        <%= f.text_field :username %>
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+        <%= f.submit "Log in"%>
+    <% end %>
+</div>
+
+
+<div>
+    <h3>Sign up</h3>
+    <%= form_with model: @user do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <%= f.label :username %>
+        <%= f.text_field :username %>
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation %>
+        <%= f.submit "Sign up" %>
+    <% end %>
+</div>
