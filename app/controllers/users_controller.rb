@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     include ApplicationHelper
-    before_action :authorize,    only: [:show, :destroy]
+    before_action :authorize,    only: [:index, :show, :destroy,]
     before_action :authenticate, only: [:update]
     before_action :verify_admin, only: [:destroy]
 
