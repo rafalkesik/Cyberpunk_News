@@ -1,0 +1,18 @@
+<ol class="text-secondary clean-list">
+    <%= render @post %>
+</ol>
+
+<p class="mb-2 text-primary fs-5 ms-3">
+    <%= @post.content %>
+</p>
+<p class="text-primary mb-3">
+    <em>
+        ~<%= link_to @post.user.username, @post.user, class: "text-primary"%>
+    </em>
+</p>
+
+<%= form_with do |f| %>
+    <%= f.text_area :text, cols: 50, rows: 5 %>
+    <p class="mb-2">While writing a comment, make sure to obby by the <a href="guidlines">Guidelines</a>.</p>
+    <%= f.submit "Comments Not Working Yet. Don't click." %>
+<% end %>

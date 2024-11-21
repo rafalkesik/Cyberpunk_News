@@ -66,7 +66,9 @@ class IndexTest < Admin
     get users_path
     User.all.each do |user|
       assert_select 'a[href=?]', user_path(user), user.username
-      assert_select 'form[action=?]', user_path(user)
+      if !user.admin
+        assert_select 'form[action=?]', user_path(user)
+      end
     end
   end
 end

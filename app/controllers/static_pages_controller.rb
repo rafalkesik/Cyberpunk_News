@@ -21,4 +21,9 @@ class StaticPagesController < ApplicationController
     flash[:warning] = "The requested page is still in progress."
     redirect_to root_url
   end
+
+  def empty_functionality
+    flash[:warning] = "Upvote functionality is still in progress."
+    redirect_to posts_url, status: :see_other
+  end
 end
