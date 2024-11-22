@@ -17,6 +17,6 @@
 <div>
     <h3><%= @user.username %>'s news posts:</h3>
     <ol class="text-secondary">
-        <%= render @user.posts %>
+        <%= render @user.posts.order(created_at: :desc) %>
     </ol>
 </div>
