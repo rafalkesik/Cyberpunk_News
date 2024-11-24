@@ -1,3 +1,7 @@
+:root {
+    --bs-navbar-nav-link-padding-x: 1em;
+}
+
 // COLOR AND FONT STYLING
 .test {
     border: 1px solid black;
@@ -43,9 +47,12 @@ nav {
         font-size:      1.25em;
         font-weight:    500;
     }
+    .navbar-nav > li > a {
+        --bs-navbar-nav-link-padding-x: 1em;
+        // margin-left:  1em;
+        // padding-left: 1em !important;
+    }
     .navbar-nav > li ~ li > a {
-        margin-left:  1em;
-        padding-left: 1em !important;
         border-left:  1px solid rgba($color: #000000, $alpha: 1);
     }
     .navbar-collapse {
