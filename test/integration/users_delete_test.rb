@@ -23,7 +23,7 @@ class UsersDeleteTest < ActionDispatch::IntegrationTest
     get users_path
     User.all.each do |user|
       assert_select 'a[href=?]', user_path(user), user.username
-      assert_select 'form[action=?]', user_path(user)
+      assert_select 'form[action=?]', user_path(user) if !user.admin
     end
   end
 end

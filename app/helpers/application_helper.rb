@@ -14,8 +14,4 @@ module ApplicationHelper
         @user = current_user
         session[:user_id] = nil
     end
-
-    def nil?
-        self === nil
-    end
 end

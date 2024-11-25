@@ -59,14 +59,3 @@ class AdminTest < Admin
     assert_select 'div.alert-success'
   end
 end
-
-class IndexTest < Admin
-
-  test "index should show all users and delete buttons" do
-    get users_path
-    User.all.each do |user|
-      assert_select 'a[href=?]', user_path(user), user.username
-      assert_select 'form[action=?]', user_path(user)
-    end
-  end
-end
