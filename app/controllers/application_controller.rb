@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+    helper_method :logged_in?, :current_user, :logout
 
     def logged_in?
         !!session[:user_id]
@@ -13,9 +14,5 @@ class ApplicationController < ActionController::Base
     def logout
         @user = current_user
         session[:user_id] = nil
-    end
-
-    def nil?
-        self === nil
     end
 end
