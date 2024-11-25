@@ -5,8 +5,8 @@ Build a copy of HackerNews - https://news.ycombinator.com
 ## Sub Goals:
 
 1. [X] Login / Signup
-2. [ ] News posts
-3. [ ] News Feed Homepage
+2. [X] News posts
+3. [X] News Feed Homepage
 4. [ ] Comments
 5. [ ] Upvote / Downvote
 
