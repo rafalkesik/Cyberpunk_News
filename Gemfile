@@ -21,7 +21,7 @@ gem "bootsnap",                   "1.12.0", require: false
 
 group :development, :test do
   gem "sqlite3", "1.4.2"
-  gem "debug",   "1.5.0", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug",   "1.9.2", platforms: %i[ mri mingw x64_mingw ]
 end
 
 group :development do
@@ -37,6 +37,7 @@ group :test do
   gem "minitest-reporters",       "1.5.0"
   gem "guard",                    "2.18.0"
   gem "guard-minitest",           "2.4.6"
+  gem 'listen',                   "~> 3.7"
 end
 
 group :production do

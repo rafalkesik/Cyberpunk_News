@@ -31,8 +31,8 @@ nav {
         padding: 0 5vw;
     }
     .navbar-brand {
+        --bs-navbar-brand-font-size: 1.5em;
         height: auto;
-        font-size: 1.5em !important;
         font-weight: bold;
     }
     .navbar-nav > li > a,
@@ -43,9 +43,10 @@ nav {
         font-size:      1.25em;
         font-weight:    500;
     }
+    .navbar-nav > li > a {
+        --bs-navbar-nav-link-padding-x: 1em;
+    }
     .navbar-nav > li ~ li > a {
-        margin-left:  1em;
-        padding-left: 1em !important;
         border-left:  1px solid rgba($color: #000000, $alpha: 1);
     }
     .navbar-collapse {
@@ -62,12 +63,17 @@ nav.navbar {
     ol {
         margin-bottom: 0
     }
+    label {
+        display: block;
+    }
 }
 
 // FOOTER STYLES
 
 
 // ALERT STYLES
-.alert {
-    margin-bottom: 0 !important;
+body {
+    .alert {
+        --bs-alert-margin-bottom: 0;
+    }
 }

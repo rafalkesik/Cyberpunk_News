@@ -1,0 +1,14 @@
+<div class="user-container container mb-2">
+    <div class="row">
+        <% if current_user.admin && user != current_user %>
+            <div class="col-md-auto">
+                <%= form_with(model: user, method: :delete, data: { turbo_confirm: "Are you sure?" }) do |f| %>
+                    <%= f.submit "delete" %>
+                <% end %>
+            </div>
+        <% end %>
+        <div class="col align-self-center">
+            <%= link_to user.username, user_path(user) %>
+        </div>
+    </div>
+</div>

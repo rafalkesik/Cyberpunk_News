@@ -17,9 +17,16 @@
 
 guard :minitest do
   # with Minitest::Unit
-  watch(%r{^test/(.*)\/?test_(.*)\.rb$})
+  watch(%r{^test/(.*)/?test_(.*)\.rb$})
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}test_#{m[2]}.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
+
+  # Explicitly match files in test/controllers and test/models
+  watch(%r{^test/controllers/.*_test\.rb$})
+  watch(%r{^test/models/.*_test\.rb$})
+  watch(%r{^test/integration/.*_test\.rb$})
+
+  # Explicitly match files in test/controllers and test/models
 
   # with Minitest::Spec
   # watch(%r{^spec/(.*)_spec\.rb$})
