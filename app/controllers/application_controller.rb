@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
     helper_method :logged_in?, :current_user, :logout,
                   :current_user_is_admin, :current_user_is_post_author
 
-
+  
     def logged_in?
         !!session[:user_id]
     end
