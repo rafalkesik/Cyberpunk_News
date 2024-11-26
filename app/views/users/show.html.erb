@@ -1,15 +1,14 @@
 <div class="pb-2">
     <h1><%= @user.username %></h1>
-    <% if @user === current_user %>
+    <% if @showing_current_user %>
         <%= form_with url: sessions_path, method: :delete do |f|%>
             <%= f.submit "Logout" %>
         <% end %>
     <% end %>
 </div>
 
-    <% if @user === current_user %>
+    <% if @showing_current_user %>
         <div class="pt-3 pb-4">
-            <%= render partial: '/shared/form', locals: { user: @new_user } %>
             <%= render 'reset_form' %>
         </div> 
     <% end %>

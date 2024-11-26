@@ -7,8 +7,8 @@
         <a href="<%= post_path(post) %>" class="fs-4 text-dark">
             <%= post.title %>
         </a>
-        <% if current_user && (current_user.admin ||
-                               current_user === post.user) %>
+
+        <% if current_user_is_admin || current_user_is_post_author(post) %>
             <%= form_with(model: post, method: :delete,
                             class: "d-inline-block",
                             data: { confirm: "Are you sure?" }) do |f| %>

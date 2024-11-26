@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-    include ApplicationHelper
     before_action :authorize,    only: [:index, :show, :destroy]
     before_action :authenticate, only: [:update]
     before_action :verify_admin, only: [:destroy]
@@ -14,6 +13,8 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find_by(id: params[:id])
+        @showing_current_user = @user == current_user
+
         if @user.nil?
             redirect_to root_url
         end
@@ -57,20 +58,24 @@ class UsersController < ApplicationController
     end
 
     def authorize
-        if session[:user_id].nil?
+        if !logged_in?
             flash[:warning] = "Please log in to view that page."
             redirect_to login_url, status: :see_other
         end
     end
 
     def authenticate
-        if params[:id] != current_user.id.to_s
+        requested_user_is_not_logged_in = params[:id] != current_user.id.to_s
+
+        if requested_user_is_not_logged_in
             redirect_to root_url, status: :see_other
         end
     end
 
     def verify_admin
-        if !current_user.admin
+        user_is_not_admin = !current_user.admin
+        
+        if user_is_not_admin
             redirect_to root_url, status: :see_other
         end
     end

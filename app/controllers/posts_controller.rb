@@ -35,6 +35,7 @@ class PostsController < ApplicationController
 
     private
 
+
         def authorize
             if !logged_in?
                 flash[:warning] = "Log in to submit posts."
@@ -42,17 +43,12 @@ class PostsController < ApplicationController
             end
         end
 
-        def verify_admin
-            if !logged_in? || !current_user.admin
-                redirect_to root_url, status: :see_other
-            end
-        end
-
         def verify_destroyer
             @post = Post.find(params[:id])
-            # checks if the user is logged in, and is either an admin or post's author
-            if !logged_in? || (!current_user.admin &&
-                               current_user != @post.user)
+            current_user_is_not_admin       = !current_user_is_admin
+            current_user_is_not_post_author = !current_user_is_post_author(@post)
+
+            if current_user_is_not_admin && current_user_is_not_post_author
                 redirect_to root_url, status: :see_other
             end
         end
