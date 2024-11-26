@@ -1,0 +1,35 @@
+<li class="fs-4 lh-sm pb-2">
+    <a href="/in_progress">
+        <i class="fa-solid fa-circle-up text-secondary"></i>
+    </a>
+
+    <span class="lh-1 mt-2">
+        <a href="<%= post_path(post) %>" class="fs-4 text-dark">
+            <%= post.title %>
+        </a>
+
+        <% if current_user_is_admin || current_user_is_post_author(post) %>
+            <%= form_with(model: post, method: :delete,
+                            class: "d-inline-block",
+                            data: { confirm: "Are you sure?" }) do |f| %>
+                <%= f.submit "delete" %>
+            <% end %>
+        <% end %>
+    </span>
+
+    <% if !post.link.blank? %>
+        <span class="fs-6">
+            (Read at: <%= link_to post.short_link, post.link,
+                                class: "text-secondary" %>)
+        </span>
+    <% end %>
+
+    <div class="fs-5 mt-1">
+        <%= pluralize(post.points, "point") %>
+        by <%= link_to post.user.username, post.user,
+                       class: "text-secondary" %> 
+        <%= time_ago_in_words(post.created_at) %> ago
+        &emsp;|&emsp;
+        <%= link_to "43 comments", post, class: "text-secondary" %>
+    </div>
+</li>

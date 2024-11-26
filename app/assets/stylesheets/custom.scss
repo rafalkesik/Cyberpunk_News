@@ -66,6 +66,9 @@ nav.navbar {
     label {
         display: block;
     }
+.clean-list {
+    list-style-type: none;
+    padding-left: 0;
 }
 
 // FOOTER STYLES
@@ -76,4 +79,5 @@ body {
     .alert {
         --bs-alert-margin-bottom: 0;
     }
+
 }
