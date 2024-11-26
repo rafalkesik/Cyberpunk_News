@@ -13,7 +13,8 @@ Rails.application.routes.draw do
 
   get  'new',        to: 'posts#index'
 
-  resources :users 
+  resources :users
   resources :sessions
   resources :posts
+  resources :liking_relations
 end

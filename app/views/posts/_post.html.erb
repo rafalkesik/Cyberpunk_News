@@ -1,7 +1,22 @@
 <li class="fs-4 lh-sm pb-2">
-    <a href="/in_progress">
-        <i class="fa-solid fa-circle-up text-secondary"></i>
-    </a>
+    <% @relation =  post.liking_relations.find_by(liking_user: current_user) %>
+    <% if @relation %>
+        <% @url    = liking_relation_path(@relation) if @relation %>
+        <% @method = :delete %>        
+        <% @class  = 'text-highlight' %>
+    <% else %>
+        <% @url    = liking_relations_path %>
+        <% @method = :post %>
+        <% @class  = 'text-secondary' %>
+    <% end %>
+    <%= form_with(url: @url, scope: 'liking_relation', 
+                  method: @method, class: 'd-inline-block') do |f|%>
+        <%= f.hidden_field :liked_post_id, value: post.id %>
+        <%= f.hidden_field :liking_user_id, value: current_user.id %>
+        <%= button_tag(type: 'submit', class: 'btn', name: nil) do %>
+            <i class="fa-solid fa-circle-up <%= @class %>"></i>
+        <% end%>
+    <% end %>
 
     <span class="lh-1 mt-2">
         <a href="<%= post_path(post) %>" class="fs-4 text-dark">
