@@ -10,9 +10,18 @@ class Post < ApplicationRecord
                         unless: ->(post) { post.content.present? }
     validates :content, presence: true,
                         unless: ->(post) { post.link.present? }
+
     
     def points
       liking_users.count
+    end
+
+    def is_liked_by?(user)
+        !!my_liking_relation(user)
+    end
+
+    def my_liking_relation(user)
+        liking_relations.find_by(liking_user: user) if user
     end
 
     def short_link
