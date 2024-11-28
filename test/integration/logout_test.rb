@@ -13,6 +13,6 @@ class LogoutTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert-success'
+    assert_select 'div.alert-success', "Logged out successfully."
   end
 end

@@ -19,6 +19,7 @@ class UsersDeleteTest < ActionDispatch::IntegrationTest
     assert_redirected_to users_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert-success'
+    assert_select 'div.alert-success',
+                  "Successfully deleted user: #{@other_user.username}."
   end
 end

@@ -14,7 +14,7 @@ class LikingRelationsNotLoggedInTest < LikingRelationsNotLoggedIn
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert-warning'
+    assert_select 'div.alert-warning', 'You must be logged in to upvote.'
   end
 
   test 'should redirect destroy if not logged in' do
@@ -22,7 +22,7 @@ class LikingRelationsNotLoggedInTest < LikingRelationsNotLoggedIn
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert-warning'
+    assert_select 'div.alert-warning', 'You must be logged in to upvote.'
   end
 end
 
