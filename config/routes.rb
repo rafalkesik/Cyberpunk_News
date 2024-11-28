@@ -7,11 +7,11 @@ Rails.application.routes.draw do
   get  'empty_site',  to: 'static_pages#empty_site'
   get  'in_progress', to: 'static_pages#empty_functionality'
 
-  get  'login',      to: 'sessions#login'
-  post 'login',      to: 'sessions#create'
-  delete 'sessions', to: 'sessions#destroy'
+  get   'login',      to: 'sessions#login'
+  post  'login',      to: 'sessions#create'
+  delete 'sessions',  to: 'sessions#destroy'
 
-  get  'new',        to: 'posts#index'
+  get 'new',          to: 'posts#index'
 
   resources :users
   resources :sessions

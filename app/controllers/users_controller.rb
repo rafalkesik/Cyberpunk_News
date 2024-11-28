@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-    before_action :authorize,    only: [:index, :show, :destroy]
-    before_action :authenticate, only: [:update]
+    before_action :authenticate,    only: [:index, :show, :destroy]
+    before_action :authorize, only: [:update]
     before_action :verify_admin, only: [:destroy]
 
     def new
@@ -57,14 +57,15 @@ class UsersController < ApplicationController
               .permit(:username, :password, :password_confirmation)
     end
 
-    def authorize
-        if !logged_in?
+    def authenticate
+        unless logged_in?
+            store_requested_location
             flash[:warning] = "Please log in to view that page."
             redirect_to login_url, status: :see_other
         end
     end
 
-    def authenticate
+    def authorize
         requested_user_is_not_logged_in = params[:id] != current_user.id.to_s
 
         if requested_user_is_not_logged_in

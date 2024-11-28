@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-    before_action :authorize,        only: [:new, :create]
+    before_action :authenticate,        only: [:new, :create]
     before_action :verify_destroyer, only: [:destroy]
 
     def index
@@ -36,8 +36,9 @@ class PostsController < ApplicationController
     private
 
 
-        def authorize
+        def authenticate
             if !logged_in?
+                store_requested_location
                 flash[:warning] = "Log in to submit posts."
                 redirect_to login_url, status: :see_other
             end
