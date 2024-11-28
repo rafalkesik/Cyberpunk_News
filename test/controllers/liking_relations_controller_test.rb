@@ -18,7 +18,7 @@ class LikingRelationsNotLoggedInTest < LikingRelationsNotLoggedIn
   end
 
   test 'should redirect destroy if not logged in' do
-    delete liking_relation_path(@relation)
+    delete liking_relations_path
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!

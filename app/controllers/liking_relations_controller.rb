@@ -13,7 +13,6 @@ class LikingRelationsController < ApplicationController
   def destroy
     @user_id = liking_relations_params[:liking_user_id]
     @post_id = liking_relations_params[:liked_post_id]
-    @relation = params[:id]
     @relation ||= LikingRelation.where(liking_user_id: @user_id,
                                        liked_post_id:  @post_id).first
 
