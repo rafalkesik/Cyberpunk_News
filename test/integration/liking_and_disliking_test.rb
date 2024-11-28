@@ -21,10 +21,12 @@ class LikingAndDislikingTest < ActionDispatch::IntegrationTest
     assert_response :see_other
     follow_redirect!
     assert_select "form[action=?]>button>i.text-highlight",
-                  liking_relation_path(@relation)
+                  liking_relations_path
 
     assert_difference 'LikingRelation.count', -1 do
-      delete liking_relation_path(@relation)
+      delete liking_relations_path,
+             params: { liking_relation: { liking_user_id: @user.id,
+                                          liked_post_id:  @post.id } }
     end
     assert_redirected_to root_url
     assert_response :see_other

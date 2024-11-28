@@ -11,7 +11,11 @@ class LikingRelationsController < ApplicationController
   end
 
   def destroy
-    @relation = LikingRelation.find(params[:id])
+    @user_id = liking_relations_params[:liking_user_id]
+    @post_id = liking_relations_params[:liked_post_id]
+    @relation = params[:id]
+    @relation ||= LikingRelation.where(liking_user_id: @user_id,
+                                       liked_post_id:  @post_id).first
 
     @relation&.destroy
     redirect_back_or root_url
@@ -39,7 +43,7 @@ class LikingRelationsController < ApplicationController
     end
 
     def current_user_has_not_liked_this_post
-      relation = LikingRelation.find(params[:id])
-      relation.liking_user != current_user
+      user_id = liking_relations_params[:liking_user_id]
+      user_id != current_user.id.to_s
     end
 end

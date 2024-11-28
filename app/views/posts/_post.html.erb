@@ -1,9 +1,12 @@
 <li class="fs-4 lh-sm pb-2">
+
     <% if post.is_liked_by?(current_user) %>
-        <%= render 'posts/downvote_form', post: post %>
+        <% data = { method: :delete, class: 'text-highlight' } %>
     <% else %>
-        <%= render 'posts/upvote_form',   post: post %>
+        <% data = { method: :post, class: 'text-secondary'}%>
     <% end %>
+    <%= render 'posts/upvote_form', post: post, data: data %>
+    
 
     <span class="lh-1 mt-2">
         <a href="<%= post_path(post) %>" class="fs-4 text-dark">

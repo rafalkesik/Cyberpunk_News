@@ -31,11 +31,14 @@ class LikingRelationsLoggedInTest < LikingRelationsNotLoggedIn
   def setup
     super
     @user = users(:dwight)
+    @post = posts(:two)
     login_as(@user)
   end
 
   test 'should redirect destroy if not the right user' do
-    delete liking_relation_path(@relation)
+    delete liking_relations_path,
+           params: { liking_relation: { liking_user_id: @user.id,
+                                        liked_post_id:  @post.id } }
     assert_redirected_to root_url
     assert_response :see_other
   end
