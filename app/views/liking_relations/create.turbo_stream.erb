@@ -1,8 +1,4 @@
-<%= turbo_stream.update "post-#{@post.id}-points" do %>
-    <%= pluralize(@post.points, "point") %>
-<% end %>
-
 <% data = { method: :delete, class: 'text-highlight' } %>
-<%= turbo_stream.update "post-#{@post.id}-upvote" do %>
-    <%= render 'posts/upvote_form', post: @post, data: data %>
-<% end %>
+
+<%= render '/liking_relations/update_post_points' %>
+<%= render '/liking_relations/update_upvote_form', data: data %>

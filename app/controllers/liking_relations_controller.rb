@@ -36,9 +36,11 @@ class LikingRelationsController < ApplicationController
     end
 
     def authenticate
+      requesting_with_turbo_stream = request.headers['Turbo-Frame']
+
       store_previous_location
       unless logged_in?
-        if request.headers['Turbo-Frame']
+        if requesting_with_turbo_stream
           flash.now[:warning] = 'You must be logged in to upvote.'
           post = Post.find(params[:liking_relation][:liked_post_id])
           render turbo_stream: [
