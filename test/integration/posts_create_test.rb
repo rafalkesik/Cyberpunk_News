@@ -17,7 +17,7 @@ class PostsCreateTest < ActionDispatch::IntegrationTest
     assert_redirected_to posts_path
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert-success'
+    assert_select 'div.alert-success', "News Post created!"
     # makes sure that the new post is listed at /posts
     assert_select 'a', "Valid title"
   end

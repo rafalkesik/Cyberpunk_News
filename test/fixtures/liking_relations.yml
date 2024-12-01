@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one_likes_two:
+  liking_user_id: 1
+  liked_post_id: 2
+
+two_likes_one:
+  liking_user_id: 2
+  liked_post_id: 1

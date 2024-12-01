@@ -13,7 +13,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     @new_user = User.find_by(username: "valid_name")
     assert_redirected_to @new_user
     follow_redirect!
-    assert_select 'div.alert-success'
+    assert_select 'div.alert-success', "New user created & logged in."
   end
 
   test "signup with invalid data" do

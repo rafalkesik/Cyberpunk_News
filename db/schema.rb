@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_21_082332) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_26_140423) do
+  create_table "liking_relations", force: :cascade do |t|
+    t.integer "liking_user_id"
+    t.integer "liked_post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["liked_post_id"], name: "index_liking_relations_on_liked_post_id"
+    t.index ["liking_user_id", "liked_post_id"], name: "index_liking_relations_on_liking_user_id_and_liked_post_id", unique: true
+    t.index ["liking_user_id"], name: "index_liking_relations_on_liking_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.string "content"

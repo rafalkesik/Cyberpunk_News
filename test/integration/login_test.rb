@@ -23,7 +23,7 @@ class LoginTest < ActionDispatch::IntegrationTest
     assert_equal session[:user_id], @user.id
     assert_redirected_to @user
     follow_redirect!
-    assert_select 'div.alert-success'
+    assert_select 'div.alert-success', "Logged in successfully."
   end
 
   test "should redirect login with invalid data" do
@@ -35,6 +35,7 @@ class LoginTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert-danger'
+    assert_select 'div.alert-danger',
+                  'Username or password are incorrect. Try again.'
   end
 end

@@ -18,7 +18,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert @user.authenticate("NewPass")
     assert_redirected_to user_url(@user)
     follow_redirect!
-    assert_select 'div.alert-success'
+    assert_select 'div.alert-success', "Password updated."
   end
 
   test "should not update self-user with invalid data" do
@@ -29,6 +29,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                                       password_confirmation: "Invalid" } }
     @user.reload
     assert_not @user.authenticate("NewPass")
+    assert_select 'div.alert-danger', "Passwords don't match."
   end
 
   test "should redirect update of a different user" do

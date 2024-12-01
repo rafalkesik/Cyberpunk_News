@@ -16,7 +16,7 @@ class UsersControllerTest < UsersControllerNotLoggedIn
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert'
+    assert_select 'div.alert', "Please log in to view that page."
   end
 
   test "should redirect show when not logged in" do
@@ -24,7 +24,7 @@ class UsersControllerTest < UsersControllerNotLoggedIn
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert'
+    assert_select 'div.alert', "Please log in to view that page."
   end
 
   test "should redirect destroy when not logged in" do
@@ -32,7 +32,7 @@ class UsersControllerTest < UsersControllerNotLoggedIn
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
-    assert_select 'div.alert'
+    assert_select 'div.alert', "Please log in to view that page."
   end
 end
 
