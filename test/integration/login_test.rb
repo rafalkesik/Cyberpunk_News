@@ -26,7 +26,7 @@ class LoginTest < ActionDispatch::IntegrationTest
     assert_select 'div.alert-success', "Logged in successfully."
   end
 
-  test "should redirect login with invalid data" do
+  test "should not login with invalid data" do
     get login_path
     post sessions_path, params: { user: { username: @user.username,
                                           password:              "invalid",
@@ -37,5 +37,18 @@ class LoginTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select 'div.alert-danger',
                   'Username or password are incorrect. Try again.'
+  end
+
+  test "should not login with invalid data WITH TURBO" do
+    get login_path
+    post sessions_path, as: :turbo_stream,
+                        params: { user: { username: @user.username,
+                                          password:              "invalid",
+                                          password_confirmation: "invalid" } }
+    assert_nil session[:user_id]
+    assert_select 'turbo-stream[action="update"][target=?]',
+                  'flash-messages' do
+      assert_select 'template', 'Username or password are incorrect. Try again.'
+    end
   end
 end

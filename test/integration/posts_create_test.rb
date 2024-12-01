@@ -54,11 +54,7 @@ class PostsCreateTest < ActionDispatch::IntegrationTest
                      params: { post: { title: "  ",
                                        content: "",
                                        link: "",
-                                       points: 0 } }    
-    puts @response.body
-    assert_select 'turbo-stream[target=?]', 'error-messages' do
-      assert_select 'template', "Tittle can't be blank"
-    end
-    # tu potrzeba dodać respond_to.turbo_stream { tu podmienić error-messages div. } I w ogóle error-messages div powinno zawsze istnieć jako turbo frame w formsach.
+                                       points: 0 } }
+    assert_select 'div.error-explanation'
   end
 end

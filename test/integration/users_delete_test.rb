@@ -22,4 +22,19 @@ class UsersDeleteTest < ActionDispatch::IntegrationTest
     assert_select 'div.alert-success',
                   "Successfully deleted user: #{@other_user.username}."
   end
+
+  test "should delete a user and its posts if admin WITH TURBO" do
+    assert_difference 'User.count', -1 do
+      assert_difference 'Post.count', -(@posts_count) do
+        delete user_path(@other_user),
+               as: :turbo_stream
+      end
+    end
+    assert_select 'turbo-stream[action=replace][target=?]', 'flash-messages' do
+      assert_select 'template',
+                    "Successfully deleted user: #{@other_user.username}."
+    end
+    assert_select 'turbo-stream[action=remove][target=?]',
+                  "user-#{@other_user.id}"
+  end
 end

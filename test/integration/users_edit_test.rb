@@ -54,9 +54,8 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                                       password_confirmation: "Invalid" } }
     @user.reload
     assert_not @user.authenticate("NewPass")
-    puts @response.body
     assert_select "turbo-stream[target=?]", 'flash-messages' do
-      assert_select 'template', "Passwords don't match"
+      assert_select 'template', "Passwords don't match."
     end
   end  
 

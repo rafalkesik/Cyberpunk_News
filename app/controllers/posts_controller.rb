@@ -35,8 +35,10 @@ class PostsController < ApplicationController
         @post.destroy
         
         respond_to do |format|
-            format.html { redirect_to posts_path, status: :see_other, 
-                                      success: "Post deleted."}
+            format.html do
+                flash[:success] = "Post deleted."
+                redirect_to posts_path, status: :see_other
+            end
             format.turbo_stream { flash.now[:success] = "Post deleted." }
         end
     end

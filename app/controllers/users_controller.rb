@@ -52,9 +52,9 @@ class UsersController < ApplicationController
         else
             respond_to do |format|
                 format.html do
+                    flash.now[:danger] = "Passwords don't match."
                     render 'users/show',
-                            status: :unprocessable_entity,
-                            flash: { danger: "Passwords don't match." }
+                           status: :unprocessable_entity
                 end
                 format.turbo_stream do
                     flash.now[:danger] = "Passwords don't match."
