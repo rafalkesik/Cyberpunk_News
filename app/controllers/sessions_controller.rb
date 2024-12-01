@@ -12,8 +12,16 @@ class SessionsController < ApplicationController
       flash[:success] = "Logged in successfully."
       redirect_back_or @user
     else
-      flash[:danger] = "Username or password are incorrect. Try again."
-      redirect_to login_url, status: :see_other
+      respond_to do |format|
+        alert = "Username or password are incorrect. Try again."
+        format.html {redirect_to login_url,
+                     status: :see_other,
+                     danger: alert }
+        format.turbo_stream do
+          flash.now[:danger] = alert
+          render turbo_stream: turbo_stream.update('flash-messages', partial: 'layouts/flash')
+        end
+      end
     end
   end
 

@@ -1,12 +1,13 @@
-<div id="<%= dom_id(@user, :form) %>">
-    <h2>Reset password:</h2>
+<div id="new_user">
+    <h3>Sign up</h3>
     <%= form_with model: @user do |f| %>
-        <%= render 'shared/error_messages', object: f.object%>
-        <%= f.hidden_field :username %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <%= f.label :username %>
+        <%= f.text_field :username %>
         <%= f.label :password %>
         <%= f.password_field :password %>
         <%= f.label :password_confirmation %>
         <%= f.password_field :password_confirmation %>
-        <%= f.submit "Update password", method: :update %>
+        <%= f.submit "Sign up" %>
     <% end %>
 </div>

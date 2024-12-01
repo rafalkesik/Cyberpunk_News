@@ -1,5 +1,6 @@
 <%= form_with(url: liking_relations_path, scope: 'liking_relation', 
-                method: data[:method], class: 'd-inline-block') do |f|%>
+              method: data[:method], class: 'd-inline-block',
+              data: { turbo_frame: "post-#{post.id}-points" })  do |f|%>
     <%= f.hidden_field :liked_post_id,  value: post.id %>
     <%= f.hidden_field :liking_user_id, value: current_user&.id %>
     <%= button_tag(type: 'submit', class: 'btn', name: nil) do %>

@@ -5,19 +5,28 @@ class LikingRelationsController < ApplicationController
 
   def create
     @relation = LikingRelation.new(liking_relations_params)
+    @post = @relation.liked_post
 
     @relation.save if @relation.valid?
-    redirect_back_or root_url
+    respond_to do |format|
+      format.html { redirect_back_or root_url }
+      format.turbo_stream { }
+    end
   end
 
   def destroy
     @user_id = liking_relations_params[:liking_user_id]
     @post_id = liking_relations_params[:liked_post_id]
+    @post = Post.find(@post_id)
     @relation ||= LikingRelation.where(liking_user_id: @user_id,
                                        liked_post_id:  @post_id).first
 
     @relation&.destroy
-    redirect_back_or root_url
+
+    respond_to do |format|
+      format.html { redirect_back_or root_url }
+      format.turbo_stream { }
+    end
   end
 
   private
@@ -29,8 +38,21 @@ class LikingRelationsController < ApplicationController
     def authenticate
       store_previous_location
       unless logged_in?
-        flash[:warning] = 'You must be logged in to upvote.'
-        redirect_to login_url, status: :see_other
+        if request.headers['Turbo-Frame']
+          flash.now[:warning] = 'You must be logged in to upvote.'
+          post = Post.find(params[:liking_relation][:liked_post_id])
+          render turbo_stream: [
+            turbo_stream.update('flash-messages', partial: 'layouts/flash'),
+            turbo_stream.update("post-#{post.id}-upvote",
+                                partial: 'posts/upvote_form', 
+                                locals: { post: post,
+                                          data: { method: :post,
+                                                  class: 'text-secondary' } } )
+          ]
+        else
+          flash[:warning] = 'You must be logged in to upvote.'
+          redirect_to login_url, status: :see_other
+        end
       end
     end
 
