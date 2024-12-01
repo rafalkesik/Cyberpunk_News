@@ -10,8 +10,9 @@ Build a copy of HackerNews - https://news.ycombinator.com
 1. [X] Login / Signup
 2. [X] News posts
 3. [X] News Feed Homepage
-4. [ ] Comments
-5. [ ] Upvote / Downvote
+4. [X] Hotwire (Turbo Streams)
+5. [ ] Comments
+6. [ ] Upvote / Downvote
 
 
 
