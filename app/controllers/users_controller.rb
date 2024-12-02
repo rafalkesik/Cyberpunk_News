@@ -28,26 +28,50 @@ class UsersController < ApplicationController
             session[:user_id] = @user.id
             redirect_to @user
         else
-            render "/sessions/login"
+            respond_to do |format|
+                format.html { render "/sessions/login" }
+                format.turbo_stream do
+                    render turbo_stream: turbo_stream.update('new_user',partial: 'users/sign_up_form')
+                end
+            end
         end
     end
 
     def update
         @user = current_user
         if @user.update(user_params)
-            flash[:success] = "Password updated."
-            redirect_to user_url(@user), status: :see_other
+            respond_to do |format|
+                format.html do
+                    redirect_to user_url(@user), status: :see_other,
+                                flash: { success: "Password updated." }
+                end
+                format.turbo_stream do
+                    flash.now[:success] = "Password updated."
+                end
+            end
         else
-            flash.now[:danger] = "Passwords don't match."
-            render "users/show"
+            respond_to do |format|
+                format.html do
+                    flash.now[:danger] = "Passwords don't match."
+                    render 'users/show',
+                           status: :unprocessable_entity
+                end
+                format.turbo_stream do
+                    flash.now[:danger] = "Passwords don't match."
+                end
+            end
         end
     end
 
     def destroy
         @user = User.find_by(id: params[:id])
         @user.destroy
-        flash[:success] = "Successfully deleted user: #{@user.username}."
-        redirect_to users_path, status: :see_other
+        msg = "Successfully deleted user: #{@user.username}."
+        respond_to do |format|
+          format.html { redirect_to users_path, status: :see_other,
+                        flash: { success: msg } }
+          format.turbo_stream { flash.now[:success] = msg }
+        end
     end
 
     private

@@ -1,5 +1,7 @@
 <h1>All posts:</h1>
 
 <ol class="text-secondary">
-   <%= render @posts %> 
+   <%= turbo_frame_tag "posts" do %>
+      <%= render @posts %> 
+   <% end %>
 </ol>

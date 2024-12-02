@@ -1,40 +1,45 @@
-<li class="fs-4 lh-sm pb-2">
+<%= turbo_frame_tag post do %>
 
-    <% if post.is_liked_by?(current_user) %>
-        <% data = { method: :delete, class: 'text-highlight' } %>
-    <% else %>
-        <% data = { method: :post, class: 'text-secondary'}%>
-    <% end %>
-    <%= render 'posts/upvote_form', post: post, data: data %>
-    
+    <li class="fs-4 lh-sm pb-2">
 
-    <span class="lh-1 mt-2">
-        <a href="<%= post_path(post) %>" class="fs-4 text-dark">
-            <%= post.title %>
-        </a>
-
-        <% if current_user_is_admin || current_user_is_post_author(post) %>
-            <%= form_with(model: post, method: :delete,
-                            class: "d-inline-block",
-                            data: { confirm: "Are you sure?" }) do |f| %>
-                <%= f.submit "delete" %>
-            <% end %>
+        <% if post.is_liked_by?(current_user) %>
+            <% data = { method: :delete, class: 'text-highlight' } %>
+        <% else %>
+            <% data = { method: :post, class: 'text-secondary'}%>
         <% end %>
-    </span>
+        <%= turbo_frame_tag "post-#{post.id}-upvote" do %>
+            <%= render 'posts/upvote_form', post: post, data: data %>
+        <% end %>
 
-    <% if !post.link.blank? %>
-        <span class="fs-6">
-            (Read at: <%= link_to post.short_link, post.link,
-                                class: "text-secondary" %>)
+        <span class="lh-1 mt-2">
+            <%= link_to post.title, post_path(post),
+                        class: "fs-4 text-dark",
+                        data: { turbo_frame: "_top" } %>
+
+            <% if current_user_is_admin || current_user_is_post_author(post) %>
+                <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: "Are you sure?", turbo: true }) do |f| %>
+                    <%= f.submit "delete" %>
+                <% end %>
+            <% end %>
         </span>
-    <% end %>
 
-    <div class="fs-5 mt-1">
-        <%= pluralize(post.points, "point") %>
-        by <%= link_to post.user.username, post.user,
-                       class: "text-secondary" %> 
-        <%= time_ago_in_words(post.created_at) %> ago
-        &emsp;|&emsp;
-        <%= link_to "43 comments", post, class: "text-secondary" %>
-    </div>
-</li>
+        <% if !post.link.blank? %>
+            <span class="fs-6">
+                (Read at: <%= link_to post.short_link, post.link,
+                                    class: "text-secondary" %>)
+            </span>
+        <% end %>
+
+        <div class="fs-5 mt-1">
+            <%= turbo_frame_tag "post-#{post.id}-points" do %>
+                <%= pluralize(post.points, "point") %>
+            <% end %>
+            by <%= link_to post.user.username, post.user,
+                        class: "text-secondary",
+                        data: { turbo_frame: '_top' } %> 
+            <%= time_ago_in_words(post.created_at) %> ago
+            &emsp;|&emsp;
+            <%= link_to "43 comments", post, class: "text-secondary" %>
+        </div>
+    </li>
+<% end %>

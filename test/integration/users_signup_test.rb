@@ -26,4 +26,19 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_select 'div.alert-danger',
                   "The form contains 2 errors:"
   end
+
+  test "signup with invalid data WITH TURBO" do
+    get login_path
+    assert_difference 'User.count', 0 do
+      post users_path, as: :turbo_stream,
+                       params: { user: { username:              "michael",
+                                         password:              "password",
+                                         password_confirmation: "password1" } }
+    end
+    assert_select 'turbo-stream[action="update"][target=?]', 'new_user' do
+      assert_select 'template' do
+        assert_select '.alert.alert-danger', 'The form contains 2 errors:'
+      end
+    end
+  end
 end

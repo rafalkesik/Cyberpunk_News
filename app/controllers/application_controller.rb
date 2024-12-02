@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   
     def logged_in?
-        !!session[:user_id]
+        User.all.map(&:id).include?(session[:user_id])
     end
 
     def current_user 

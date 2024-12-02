@@ -24,10 +24,6 @@ end
 
 class PostsIndexLoggedInTest < PostsIndexLoggedIn
 
-  def setup
-    super
-  end
-
   test "should show delete buttons for own posts" do
     get posts_path
     assert_select 'input[type="submit"][value="delete"]',
