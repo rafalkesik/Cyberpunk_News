@@ -1,7 +1,6 @@
 <%= form_with model: comment, data: {turbo: false}  do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
     <%= f.hidden_field :post_id, value: post.id %>
-    <%= f.hidden_field :user_id, value: current_user.id %>
     <%= f.text_area :content, cols: 50, rows: 5 %>
     <p class="mb-2">While writing a comment, make sure to obby by the <a href="guidlines">Guidelines</a>.</p>
     <%= f.submit "Comments Not Working Yet. Don't click." %>

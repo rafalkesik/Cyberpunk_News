@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.new(comment_params)
+    @comment.user = current_user
     @post    = @comment.post
     if @comment.valid?
       puts "Saving comment..."
@@ -22,7 +23,6 @@ class CommentsController < ApplicationController
 
     def comment_params
       params.require(:comment).permit(:post_id,
-                                      :user_id,
                                       :content)
     end
 end
