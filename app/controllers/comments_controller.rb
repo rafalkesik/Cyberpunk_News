@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_action :authenticate
 
   def create
     @comment = Comment.new(comment_params)
@@ -20,6 +21,14 @@ class CommentsController < ApplicationController
   end
 
   private
+
+    def authenticate
+      if !logged_in?
+        store_previous_location
+        flash[:warning] = "Log in to submit comments."
+        redirect_to login_url, status: :see_other
+      end
+    end
 
     def comment_params
       params.require(:comment).permit(:post_id,
