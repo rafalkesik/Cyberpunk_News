@@ -1,17 +1,20 @@
-<%= turbo_frame_tag comment do %>
-
-    <li class="lh-sm pb-2">
+    <li class="lh-sm pb-2" id="comment-<%= index %>">
         <div class="comment-header fs-6">
             <i class="fa-solid fa-circle-up text-secondary"></i>
             <span>
-                <%= comment.user.username %>
+                <%= link_to comment.user.username,
+                            user_path(comment.user),
+                            data: { turbo_frame: '_top' } %>
             </span>
             <span>
-                <%= time_ago_in_words(comment.created_at) %>
-                ago
+                <%= time_ago_in_words(comment.created_at) %> ago
             </span>
             <span>|</span>
-            <span>next</span>
+            <span>
+                <%= link_to 'next',
+                            ((index + 1) < @comments.count ? "#comment-#{index + 1}" : '#'),
+                            data: { } %>
+            </span>
         </div>
 
         <div class="comment-content fs-5 pt-1 text-dark">
@@ -21,4 +24,4 @@
             </div>
         </div>
     </li>
-<% end %>
+    
