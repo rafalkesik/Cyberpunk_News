@@ -11,8 +11,11 @@
     </em>
 </p>
 
-<%= form_with do |f| %>
-    <%= f.text_area :text, cols: 50, rows: 5 %>
-    <p class="mb-2">While writing a comment, make sure to obby by the <a href="guidlines">Guidelines</a>.</p>
-    <%= f.submit "Comments Not Working Yet. Don't click." %>
-<% end %>
+<%= render 'comments/submit_comment_form',
+           comment: @comment,
+           post:    @post %>
+
+<h3 class="pt-4">Comments:</h3>
+<ul class="text-secondary clean-list">
+    <%= render Post.find(@post.id).comments %>
+</ul>
