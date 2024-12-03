@@ -81,13 +81,26 @@ nav.navbar {
     padding-left: 0;
 }
 
+
 .comment-header {
-    span ~ span {
-        padding-left: 0.25em;
+    display: flex;
+    align-items: center;
+    span {
+        padding-left: 0.25rem;
     }
 }
+.comment-content {
+   display: flex;
+}
+.comment-tab {
+    flex: 0 0 16px;
+}
 .comment-text {
-    margin-left: 16px;
+    flex-grow: 1;
+    padding-left: 0.25rem;
+    p ~ p {
+        padding-top: 0.75em;
+    }
 }
 
 // FOOTER STYLES

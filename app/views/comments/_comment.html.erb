@@ -1,28 +1,24 @@
 <%= turbo_frame_tag comment do %>
 
-    <li class="container lh-sm pb-2">
-        <div class="row row-cols-auto fs-6 comment-header">
-            <i class="col align-middle ps-0 pe-0 fa-solid fa-circle-up text-secondary"></i>
-            <div class="col">
-                <span>
-                    <%= comment.user.username %>
-                </span>
-                <span>
-                    <%= time_ago_in_words(comment.created_at) %>
-                    ago
-                </span>
-                <span>|</span>
-                <span>next</span>
-            </div>
+    <li class="lh-sm pb-2">
+        <div class="comment-header fs-6">
+            <i class="fa-solid fa-circle-up text-secondary"></i>
+            <span>
+                <%= comment.user.username %>
+            </span>
+            <span>
+                <%= time_ago_in_words(comment.created_at) %>
+                ago
+            </span>
+            <span>|</span>
+            <span>next</span>
         </div>
 
-        <div class="row row-cols-auto fs-5 pt-1 text-dark">
+        <div class="comment-content fs-5 pt-1 text-dark">
+            <div class="comment-tab"></div>
             <div class="comment-text">
-            <%= comment.content %>
+                <%= simple_format(comment.content) %>
             </div>
         </div>
-
-
-
     </li>
 <% end %>
