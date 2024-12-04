@@ -2,10 +2,6 @@
 .text-highlight {
     color: #ff6600;
 }
-.test {
-    border: 1px solid black;
-    background-color: yellow;
-}
 .bg-body-main-color {
     background-color: #ff6600;
 }
@@ -21,7 +17,7 @@
 .content-container {
     a {
         text-decoration: none;
-        color: #000000;
+        color: inherit;
     }
     p {
         margin-bottom: 0;
@@ -34,7 +30,7 @@ nav {
         padding: 0 5vw;
     }
     .navbar-brand {
-        --bs-navbar-brand-font-size: 1.5em;
+        --bs-navbar-brand-font-size: 1.5rem;
         height: auto;
         font-weight: bold;
     }
@@ -42,12 +38,12 @@ nav {
     .login-link {
         padding-top:    0;
         padding-bottom: 0;
-        line-height:    1.25em;
-        font-size:      1.25em;
+        line-height:    1.25rem;
+        font-size:      1.25rem;
         font-weight:    500;
     }
     .navbar-nav > li > a {
-        --bs-navbar-nav-link-padding-x: 1em;
+        --bs-navbar-nav-link-padding-x: 1rem;
     }
     .navbar-nav > li ~ li > a {
         border-left:  1px solid rgba($color: #000000, $alpha: 1);
@@ -81,13 +77,26 @@ nav.navbar {
     padding-left: 0;
 }
 
+
 .comment-header {
-    span ~ span {
-        padding-left: 0.25em;
+    display: flex;
+    align-items: center;
+    span {
+        padding-left: 0.25rem;
     }
 }
+.comment-content {
+   display: flex;
+}
+.comment-tab {
+    flex: 0 0 1rem;
+}
 .comment-text {
-    margin-left: 16px;
+    flex-grow: 1;
+    padding-left: 0.25rem;
+    p ~ p {
+        padding-top: 0.75rem;
+    }
 }
 
 // FOOTER STYLES
