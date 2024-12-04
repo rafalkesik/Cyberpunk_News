@@ -1,6 +1,8 @@
     <li class="lh-sm pb-2" id="comment-<%= index %>">
         <div class="comment-header fs-6">
-            <i class="fa-solid fa-circle-up text-secondary"></i>
+            <div class="comment-tab">
+                <i class="fa-solid fa-circle-up text-secondary"></i>
+            </div>
             <span>
                 <%= link_to comment.user.username,
                             user_path(comment.user),
