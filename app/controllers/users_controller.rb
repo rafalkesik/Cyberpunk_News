@@ -68,7 +68,7 @@ class UsersController < ApplicationController
         @user.destroy
         msg = "Successfully deleted user: #{@user.username}."
         respond_to do |format|
-          format.html { redirect_to users_path, status: :see_other,
+          format.html { redirect_to users_url, status: :see_other,
                         flash: { success: msg } }
           format.turbo_stream { flash.now[:success] = msg }
         end

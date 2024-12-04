@@ -39,7 +39,7 @@ class PostsController < ApplicationController
         respond_to do |format|
             format.html do
                 flash[:success] = "Post deleted."
-                redirect_to posts_path, status: :see_other
+                redirect_to posts_url, status: :see_other
             end
             format.turbo_stream { flash.now[:success] = "Post deleted." }
         end
@@ -59,7 +59,7 @@ class PostsController < ApplicationController
         def verify_destroyer
             @post = Post.find(params[:id])
             current_user_is_not_admin       = !current_user_is_admin
-            current_user_is_not_post_author = !current_user_is_post_author(@post)
+            current_user_is_not_post_author = !current_user_is_author(@post)
 
             if current_user_is_not_admin && current_user_is_not_post_author
                 redirect_to root_url, status: :see_other

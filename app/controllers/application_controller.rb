@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     helper_method :logged_in?, :current_user, :logout,
-                  :current_user_is_admin, :current_user_is_post_author
+                  :current_user_is_admin, :current_user_is_author
 
   
     def logged_in?
@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
         logged_in? && current_user.admin
     end
 
-    def current_user_is_post_author(post)
-      logged_in? && current_user == post.user
+    def current_user_is_author(post_or_comment)
+      logged_in? && current_user == post_or_comment.user
     end
 
     def store_requested_location
