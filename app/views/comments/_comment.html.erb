@@ -10,6 +10,8 @@
                 <%= time_ago_in_words(comment.created_at) %> ago
             </span>
             <span>|</span>
+            <span><%= comment.points %> points</span>
+            <span>|</span>
             <span>
                 <%= link_to 'next',
                             ((index + 1) < @comments.count ? "#comment-#{index + 1}" : '#'),
