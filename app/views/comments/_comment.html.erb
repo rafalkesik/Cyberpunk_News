@@ -1,7 +1,10 @@
     <li class="lh-sm pb-2" id="comment-<%= index %>">
         <div class="comment-header fs-6">
-            <div class="comment-tab">
-                <i class="fa-solid fa-circle-up text-secondary"></i>
+            <div class="comment-tab" id="comment-<%= index %>-upvote">
+                <%= render 'comments/comment_upvote_form',
+                          data: comment.post.icon_data(current_user),
+                          index: index,
+                          comment: comment %>
             </div>
             <span>
                 <%= link_to comment.user.username,
@@ -12,7 +15,9 @@
                 <%= time_ago_in_words(comment.created_at) %> ago
             </span>
             <span>|</span>
-            <span><%= comment.points %> points</span>
+            <%= turbo_frame_tag "comment-#{index}-points" do %>
+                <span><%= comment.points %> points</span>
+            <% end %>
             <span>|</span>
             <span>
                 <%= link_to 'next',

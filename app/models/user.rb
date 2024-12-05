@@ -5,6 +5,9 @@ class User < ApplicationRecord
     has_many :liking_relations, foreign_key: :liking_user_id
     has_many :liked_posts,      through: :liking_relations,
                                 source: :liked_post
+    has_many :comment_liking_relations, foreign_key: :liking_user_id
+    has_many :liked_comments, through: :comment_liking_relations,
+                              source: :liked_comment
 
     validates :username, presence: true, uniqueness: true
     validates :password, presence: true, confirmation: true
