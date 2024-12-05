@@ -16,7 +16,7 @@
                         class: "fs-4 text-dark",
                         data: { turbo_frame: "_top" } %>
 
-            <% if current_user_is_admin || current_user_is_post_author(post) %>
+            <% if current_user&.admin? || current_user&.is_author_of_post(post) %>
                 <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: "Are you sure?", turbo: true }) do |f| %>
                     <%= f.submit "delete" %>
                 <% end %>
@@ -39,7 +39,9 @@
                         data: { turbo_frame: '_top' } %> 
             <%= time_ago_in_words(post.created_at) %> ago
             &emsp;|&emsp;
-            <%= link_to "43 comments", post, class: "text-secondary" %>
+            <%= link_to "#{pluralize(post.comments.count, 'comment')}",
+                        post_path(post),
+                        data: { turbo_frame: '_top' } %>
         </div>
     </li>
 <% end %>

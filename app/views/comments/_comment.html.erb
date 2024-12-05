@@ -19,12 +19,19 @@
                             ((index + 1) < @comments.count ? "#comment-#{index + 1}" : '#'),
                             data: { } %>
             </span>
+            <span>
+                <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
+                    <%= form_with(model: comment, method: :delete, data: {turbo: false}) do |f| %>
+                        <%= f.submit "delete" %>
+                    <% end %>
+                <% end %>
+            </span>
         </div>
 
         <div class="comment-content fs-5 pt-1 text-dark">
             <div class="comment-tab"></div>
             <div class="comment-text">
-                <%= simple_format(comment.content) %>
+                <%= format_text(comment.content) %>
             </div>
         </div>
     </li>

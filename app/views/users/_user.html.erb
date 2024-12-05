@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "user-#{user.id}" do %>
     <div class="user-container container pb-2">
         <div class="row">
-            <% if current_user_is_admin && !user.admin %>
+            <% if current_user&.admin? && !user.admin? %>
                 <div class="col-md-auto">
                     <%= form_with(model: user, method: :delete, data: { turbo_confirm: "Are you sure?" }) do |f| %>
                         <%= f.submit "delete" %>

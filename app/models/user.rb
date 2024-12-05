@@ -12,4 +12,16 @@ class User < ApplicationRecord
     def User.digest(string)
         BCrypt::Password.create(string)
     end
+
+    def admin?
+        self.admin
+    end
+
+    def is_author_of_post(post)
+      post.user == self
+    end
+
+    def is_author_of_comment(comment)
+      comment.user == self
+    end
 end

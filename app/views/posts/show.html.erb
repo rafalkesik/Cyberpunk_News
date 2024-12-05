@@ -3,7 +3,7 @@
 </ol>
 
 <p class="mb-2 text-primary fs-5 ms-3">
-    <%= @post.content %>
+    <%= format_text(@post.content) %>
 </p>
 <p class="text-primary mb-3">
     <em>
@@ -12,7 +12,6 @@
 </p>
 
 <%= render 'comments/submit_comment_form',
-           comment: @new_comment,
            post:    @post %>
 
 <h3 class="pt-4">Comments:</h3>
