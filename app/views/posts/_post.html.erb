@@ -16,7 +16,7 @@
                         class: "fs-4 text-dark",
                         data: { turbo_frame: "_top" } %>
 
-            <% if current_user_is_admin || current_user_is_author(post) %>
+            <% if current_user&.admin? || current_user&.is_author_of_post(post) %>
                 <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: "Are you sure?", turbo: true }) do |f| %>
                     <%= f.submit "delete" %>
                 <% end %>

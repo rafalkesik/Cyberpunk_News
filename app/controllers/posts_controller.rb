@@ -58,8 +58,8 @@ class PostsController < ApplicationController
 
         def verify_destroyer
             @post = Post.find(params[:id])
-            current_user_is_not_admin       = !current_user_is_admin
-            current_user_is_not_post_author = !current_user_is_author(@post)
+            current_user_is_not_admin       = !current_user&.admin?
+            current_user_is_not_post_author = !current_user&.is_author_of_post(@post)
 
             if current_user_is_not_admin && current_user_is_not_post_author
                 redirect_to root_url, status: :see_other
