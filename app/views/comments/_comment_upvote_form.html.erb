@@ -3,7 +3,6 @@
               method: data[:method], class: 'd-inline-block',
               data: { turbo_frame: "comment-#{index}-points" }) do |f| %>
     <%= f.hidden_field :liked_comment_id, value: comment.id %>
-    <%= f.hidden_field :liking_user_id, value: current_user&.id %>
     <%= button_tag(type: 'submit', class: 'btn', name: nil) do %>
         <i class="fa-solid fa-circle-up <%= data[:class] %>"></i>
     <% end %>
