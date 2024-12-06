@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comment_liking_relations
   root 'posts#index'
 
   get  'guidelines',  to: 'static_pages#guidelines'
@@ -20,4 +21,5 @@ Rails.application.routes.draw do
   resources :posts
   resources :liking_relations
   resources :comments
+  resources :comment_liking_relations
 end

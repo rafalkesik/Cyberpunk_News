@@ -1,5 +1,4 @@
 Latest commit available at: https://cyberpunk-news.onrender.com.
-First loading of app might take up to 30 seconds. Render freezes the app when not used for some time.
 
 ## Main Goal:
 
@@ -11,10 +10,12 @@ Build a copy of HackerNews - https://news.ycombinator.com
 2. [X] News posts
 3. [X] News Feed Homepage
 4. [X] Hotwire (Turbo Streams)
-5. [ ] Comments
-6. [ ] Upvote / Downvote
-
-
+5. [ ] Liking
+   a. [X] Post liking
+   b. [ ] Comment liking
+6. [ ] Comments
+   a. [X] Basic comments
+   b. [ ] Subcomments
 
 <!-- # README
 

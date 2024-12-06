@@ -1,0 +1,9 @@
+<%= form_with(url: comment_liking_relations_path,
+              scope: 'comment_liking_relation',
+              method: data[:method], class: 'd-inline-block',
+              data: { turbo_frame: "comment-#{index}-points" }) do |f| %>
+    <%= f.hidden_field :liked_comment_id, value: comment.id %>
+    <%= button_tag(type: 'submit', class: 'btn', name: nil) do %>
+        <i class="fa-solid fa-circle-up <%= data[:class] %>"></i>
+    <% end %>
+<% end %>
