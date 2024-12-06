@@ -4,12 +4,14 @@ class PostsController < ApplicationController
 
     def index
         @posts = Post.order(created_at: :desc)
+        @current_user = current_user
     end
 
     def show
         @post        = Post.find(params[:id])
         @comments    = @post.comments.where.not(id: nil)
         @new_comment = @post.comments.build()
+        @current_user = current_user
     end
 
     def new

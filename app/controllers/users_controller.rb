@@ -13,7 +13,8 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find_by(id: params[:id])
-        @showing_current_user = @user == current_user
+        @current_user = current_user
+        @showing_current_user = @user == @current_user
 
         if @user.nil?
             redirect_to root_url

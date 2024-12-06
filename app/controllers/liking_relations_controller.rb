@@ -4,8 +4,9 @@ class LikingRelationsController < ApplicationController
   before_action :authorize_unliking_user, only: [:destroy]
 
   def create
-    @relation = LikingRelation.new(liking_relations_params)
-    @post = @relation.liked_post
+    @relation     = LikingRelation.new(liking_relations_params)
+    @post         = @relation.liked_post
+    @current_user = current_user
 
     @relation.save if @relation.valid?
     respond_to do |format|
@@ -15,11 +16,10 @@ class LikingRelationsController < ApplicationController
   end
 
   def destroy
-    @user_id = liking_relations_params[:liking_user_id]
-    @post_id = liking_relations_params[:liked_post_id]
-    @post = Post.find(@post_id)
-    @relation ||= LikingRelation.where(liking_user_id: @user_id,
-                                       liked_post_id:  @post_id).first
+    @post = Post.find(liking_relations_params[:liked_post_id])    
+    @current_user = current_user
+    @relation ||= LikingRelation.where(liking_user_id: @current_user.id,
+                                       liked_post_id:  @post.id).first
 
     @relation&.destroy
 

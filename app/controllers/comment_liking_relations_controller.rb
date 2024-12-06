@@ -16,7 +16,7 @@ class CommentLikingRelationsController < ApplicationController
   end
 
   def destroy
-    @relation = CommentLikingRelation.find_by(comment_relation_params)
+    @relation = CommentLikingRelation.where(comment_relation_params).first
     @comment  = @relation.liked_comment
     @current_user = current_user
     @relation&.destroy

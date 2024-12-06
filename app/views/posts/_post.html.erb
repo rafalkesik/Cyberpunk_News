@@ -1,15 +1,10 @@
 <%= turbo_frame_tag post do %>
 
     <li class="fs-4 lh-sm pb-2">
-
-        <% if post.is_liked_by?(current_user) %>
-            <% data = { method: :delete, class: 'text-highlight' } %>
-        <% else %>
-            <% data = { method: :post, class: 'text-secondary'}%>
-        <% end %>
-        <%= turbo_frame_tag "post-#{post.id}-upvote" do %>
-            <%= render 'posts/upvote_form', post: post, data: data %>
-        <% end %>
+        <span id="post-<%= post.id %>-upvote">
+            <%= render 'posts/upvote_form', post: post,
+                       data: post.icon_data(@current_user)%>
+        </span>
 
         <span class="lh-1 mt-2">
             <%= link_to post.title, post_path(post),
