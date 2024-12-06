@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
   get 'new',          to: 'posts#index'
 
-  delete 'liking_relations', to: 'liking_relations#destroy'
+  delete 'liking_relations',         to: 'liking_relations#destroy'
+  delete 'comment_liking_relations', to: 'comment_liking_relations#destroy'
 
   resources :users
   resources :sessions
