@@ -13,8 +13,7 @@ class LikingAndDislikingTest < ActionDispatch::IntegrationTest
     get root_url
     assert_difference 'LikingRelation.count', 1 do
       post liking_relations_path,
-           params: { liking_relation: { liking_user_id: @user.id,
-                                        liked_post_id:  @post.id } }
+           params: { liking_relation: { liked_post_id:  @post.id } }
     end
     assert_redirected_to root_url
     assert_response :see_other
@@ -27,8 +26,7 @@ class LikingAndDislikingTest < ActionDispatch::IntegrationTest
     # unlikes a post
     assert_difference 'LikingRelation.count', -1 do
       delete liking_relations_path,
-             params: { liking_relation: { liking_user_id: @user.id,
-                                          liked_post_id:  @post.id } }
+             params: { liking_relation: { liked_post_id:  @post.id } }
     end
     assert_redirected_to root_url
     assert_response :see_other

@@ -4,6 +4,7 @@ class CommentLikingRelationsController < ApplicationController
 
   def create
     @relation     = CommentLikingRelation.new(comment_relation_params)
+    @relation.liking_user_id = current_user&.id
     @post         = @relation.liked_comment&.post
     @comment      = @relation.liked_comment
     @current_user = current_user
@@ -16,7 +17,7 @@ class CommentLikingRelationsController < ApplicationController
   end
 
   def destroy
-    @relation = CommentLikingRelation.find_by(comment_relation_params)
+    @relation = CommentLikingRelation.find_by(liked_comment_id: comment_relation_params[:liked_comment_id], liking_user_id: current_user&.id)
     @comment  = @relation.liked_comment
     @current_user = current_user
     @relation&.destroy
@@ -33,15 +34,13 @@ class CommentLikingRelationsController < ApplicationController
     end
 
     def authorize
-      @user = User.find(comment_relation_params[:liking_user_id])
-      unless @user == current_user
+      if current_user.nil?
         flash[:warning] = 'You must log in to like.'
         redirect_to root_url, status: :see_other
       end
     end
 
     def comment_relation_params
-      params.require(:comment_liking_relation).permit(:liked_comment_id,
-                                                      :liking_user_id)
+      params.require(:comment_liking_relation).permit(:liked_comment_id)
     end
 end
