@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-    before_action :authenticate,     only: [:new, :create]
+    before_action :authenticate,     only: [:new, :create, :destroy]
     before_action :verify_destroyer, only: [:destroy]
 
     def index
@@ -26,10 +26,9 @@ class PostsController < ApplicationController
             flash[:success] = "News Post created!"
             redirect_to posts_url, status: :see_other
         else
-            respond_to do |format|
-                format.html { render 'new' }
-                format.turbo_stream 
-            end
+            render turbo_stream:[
+                turbo_stream.replace("new_post", template: 'posts/new')
+            ]
         end
     end
 
@@ -37,14 +36,7 @@ class PostsController < ApplicationController
         @post = Post.find(params[:id])
 
         @post.destroy
-        
-        respond_to do |format|
-            format.html do
-                flash[:success] = "Post deleted."
-                redirect_to posts_url, status: :see_other
-            end
-            format.turbo_stream { flash.now[:success] = "Post deleted." }
-        end
+        flash.now[:success] = "Post deleted."
     end
 
     private

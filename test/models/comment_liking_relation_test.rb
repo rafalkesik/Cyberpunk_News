@@ -12,11 +12,11 @@ class CommentLikingRelationTest < ActiveSupport::TestCase
 
   test "liked_comment should be present" do
     @relation.liked_comment = nil
-    refute @relation.valid?
+    assert_not @relation.valid?
   end
 
   test "liked_user should be present" do
     @relation.liking_user = nil
-    refute @relation.valid?
+    assert_not @relation.valid?
   end
 end

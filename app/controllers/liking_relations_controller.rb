@@ -9,10 +9,6 @@ class LikingRelationsController < ApplicationController
     @current_user = current_user
 
     @relation.save if @relation.valid?
-    respond_to do |format|
-      format.html { redirect_back_or root_url }
-      format.turbo_stream { }
-    end
   end
 
   def destroy
@@ -36,25 +32,12 @@ class LikingRelationsController < ApplicationController
     end
 
     def authenticate
-      requesting_with_turbo_stream = request.headers['Turbo-Frame']
-
       store_previous_location
       unless logged_in?
-        if requesting_with_turbo_stream
-          flash.now[:warning] = 'You must be logged in to upvote.'
-          post = Post.find(params[:liking_relation][:liked_post_id])
-          render turbo_stream: [
-            turbo_stream.update('flash-messages', partial: 'layouts/flash'),
-            turbo_stream.update("post-#{post.id}-upvote",
-                                partial: 'posts/upvote_form', 
-                                locals: { post: post,
-                                          data: { method: :post,
-                                                  class: 'text-secondary' } } )
-          ]
-        else
-          flash[:warning] = 'You must be logged in to upvote.'
-          redirect_to login_url, status: :see_other
-        end
+        flash.now[:warning] = 'You must be logged in to upvote.'
+        render turbo_stream: [
+          turbo_stream.update('flash-messages', partial: 'layouts/flash'),
+        ]
       end
     end
 

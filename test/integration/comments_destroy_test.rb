@@ -3,6 +3,7 @@ require "test_helper"
 class CommentsDestroyAsAuthor < ActionDispatch::IntegrationTest
   def setup
     @comment    = comments(:one)
+    @post       = @comment.post
     @author     = users(:dwight)
     @admin      = users(:admin)
     login_as(@author)
@@ -10,12 +11,11 @@ class CommentsDestroyAsAuthor < ActionDispatch::IntegrationTest
 
   test "should destroy comment as author" do
     assert_difference 'Comment.count', -1 do
-      delete comment_path(@comment)
+      delete comment_path(@comment), as: :turbo_stream
     end
-    assert_redirected_to post_url(@comment.post)
-    assert_response :see_other
-    follow_redirect!
     assert_select 'div.alert-success', 'Comment deleted'
+    assert_select 'turbo-stream[action="remove"][target=?]',
+                  "comment-#{@comment.id}"
   end
 end
 
@@ -27,11 +27,7 @@ class CommentsDestroyAsAdminTest < CommentsDestroyAsAuthor
 
   test "should destroy comment as admin" do
     assert_difference 'Comment.count', -1 do
-      delete comment_path(@comment)
+      delete comment_path(@comment), as: :turbo_stream
     end
-    assert_redirected_to post_url(@comment.post)
-    assert_response :see_other
-    follow_redirect!
-    assert_select 'div.alert-success', 'Comment deleted'  
   end
 end

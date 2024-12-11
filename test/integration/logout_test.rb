@@ -8,7 +8,7 @@ class LogoutTest < ActionDispatch::IntegrationTest
   end
   
   test "should logout" do
-    delete sessions_path
+    delete sessions_path, as: :turbo_stream
     assert_nil session[:user_id]
     assert_redirected_to root_url
     assert_response :see_other

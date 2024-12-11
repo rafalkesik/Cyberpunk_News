@@ -14,6 +14,6 @@ class CommentTest < ActiveSupport::TestCase
 
   test "content should be non-empty" do
     @comment.content = ""
-    refute @comment.valid?
+    assert_not @comment.valid?
   end
 end

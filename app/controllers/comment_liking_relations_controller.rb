@@ -9,17 +9,24 @@ class CommentLikingRelationsController < ApplicationController
     @current_user = current_user
     if @relation.valid?
       @relation.save
-      flash.now[:success] = "Comment liked."
     else
-      flash.now[:danger] = "The post has been deleted."
+      flash.now[:danger] = "The comment has been deleted."
+      render turbo_stream: [
+        turbo_stream.update("flash-messages", partial: 'layouts/flash')
+      ]
     end
   end
 
   def destroy
     @relation = CommentLikingRelation.where(comment_relation_params).first
-    @comment  = @relation.liked_comment
-    @current_user = current_user
-    @relation&.destroy
+    if @relation
+      @comment  = @relation.liked_comment
+      @current_user = current_user
+      @relation.destroy
+    else
+      flash[:danger] = "The comment has been deleted."
+      redirect_to request.referrer, status: :see_other
+    end
   end
 
   private
@@ -27,16 +34,21 @@ class CommentLikingRelationsController < ApplicationController
     def authenticate
       unless logged_in?
         store_previous_location
-        flash[:warning] = 'You must be logged in to upvote.'
-        redirect_to login_url, status: :see_other
+        flash.now[:warning] = 'You must be logged in to upvote.'
+        render turbo_stream: [
+          turbo_stream.update('flash-messages',
+                              partial: 'layouts/flash')
+        ]
       end
     end
 
     def authorize
       @user = User.find(comment_relation_params[:liking_user_id])
       unless @user == current_user
-        flash[:warning] = 'You must log in to like.'
-        redirect_to root_url, status: :see_other
+        flash.now[:warning] = 'You must log in to like.'
+        render turbo_stream: [
+          turbo_stream.update('flash-messages', partial: 'layouts/flash')
+        ]
       end
     end
 

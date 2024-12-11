@@ -9,7 +9,7 @@ end
 
 class StaticPagesTest < StaticPages
   test "should render full layout" do
-    get root_url
+    get root_url, as: :turbo_stream
     assert_select 'a[href=?]', '/', count: 2
     assert_select 'a[href=?]', '/login'
     assert_select 'header'
@@ -18,24 +18,24 @@ class StaticPagesTest < StaticPages
   end
 
   test "should get home" do
-    get root_url
+    get root_url, as: :turbo_stream
     assert_response :success
   end
 
   test "should get guidlines" do
-    get guidelines_url
+    get guidelines_url, as: :turbo_stream
     assert_response :success
     assert_select 'h1', "Guidelines"
   end
 
   test "should get faq" do
-    get faq_url
+    get faq_url, as: :turbo_stream
     assert_response :success
     assert_select 'h1', "FAQ"
   end
 
   test "should get contact" do
-    get contact_url
+    get contact_url, as: :turbo_stream
     assert_response :success
     assert_select 'h1', "Contact"
   end
@@ -49,7 +49,7 @@ class StaticPagesLoggedInTest < StaticPages
   end
 
   test "should render full layout as logged in user" do
-    get root_url
+    get root_url, as: :turbo_stream
     assert_select 'a[href=?]', user_path(@user)
   end
 end

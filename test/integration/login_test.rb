@@ -17,9 +17,11 @@ class LoginTest < ActionDispatch::IntegrationTest
 
   test "should login with valid data" do
     get login_path
-    post sessions_path, params: { user: { username: @user.username,
-                                          password:              "pass",
-                                          password_confirmation: "pass" } }
+    post sessions_path,
+         as: :turbo_stream,
+         params: { user: { username: @user.username,
+                           password:              "pass",
+                           password_confirmation: "pass" } }
     assert_equal session[:user_id], @user.id
     assert_redirected_to @user
     follow_redirect!
@@ -27,19 +29,6 @@ class LoginTest < ActionDispatch::IntegrationTest
   end
 
   test "should not login with invalid data" do
-    get login_path
-    post sessions_path, params: { user: { username: @user.username,
-                                          password:              "invalid",
-                                          password_confirmation: "invalid" } }
-    assert_nil session[:user_id]
-    assert_redirected_to login_url
-    assert_response :see_other
-    follow_redirect!
-    assert_select 'div.alert-danger',
-                  'Username or password are incorrect. Try again.'
-  end
-
-  test "should not login with invalid data WITH TURBO" do
     get login_path
     post sessions_path, as: :turbo_stream,
                         params: { user: { username: @user.username,
