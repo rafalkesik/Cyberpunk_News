@@ -6,40 +6,50 @@ class LikingAndDislikingCommentsTest < ActionDispatch::IntegrationTest
     @post    = posts(:one)
     @comment = comments(:one)
     login_as(@user)
+
+    @relation = comment_liking_relations(:one_likes_two)
+    @relation_user = @relation.liking_user
+    @relation_comment = @relation.liked_comment
+    @relation_post = @relation_comment.post
   end
   
-  test "should like a post if logged in" do
-    skip 'Test not ready for turbo'
+  test "should like a comment if logged in" do
+
     assert_difference 'CommentLikingRelation.count', 1 do
       post comment_liking_relations_path,
           as: :turbo_stream,
           params: { comment_liking_relation: { liked_comment_id: @comment.id } }
     end
-    # assert_redirected_to post_url(@post)
-    # assert_response :see_other
-    # follow_redirect!
-    # assert_select 'div.alert-success', 'Comment liked.'
+
+    assert_select 'turbo-stream[target=?]', "comment-#{@comment.id}-upvote" do
+      assert_select 'template',
+                    partial: 'comments/comment_upvote_form',
+                             comment: @comment,
+                             current_user: @current_user
+    end
+
+    assert_select 'turbo-stream[target=?]', "comment-#{@comment.id}-points" do
+      assert_select 'template', "#{@comment.points} points"
+    end
   end
 
-  test "should redirect liking non-existent post" do
-    skip 'Test not ready for turbo'
+  test "should flash when liking a deleted comment" do
     assert_difference 'CommentLikingRelation.count', 0 do
       post comment_liking_relations_path,
           as: :turbo_stream,
-          params: { comment_liking_relation: { liked_comment_id: 9999 } }
+          params: { comment_liking_relation: { liked_comment_id: @relation } }
     end
-    # assert_redirected_to root_url
-    # assert_response :see_other
-    # follow_redirect!
-    # assert_select 'div.alert-danger',
-    #               'The post has been deleted.'
+
+    assert_select 'div.alert-danger',
+                  'The comment has been deleted.'
   end
 
-  test "should unlike a post if logged in" do
-    skip 'destroy action not ready'
-  end
-
-  test "should redirect unliking non-existent post" do
-    skip 'destroy action not ready'
+  test "should unlike a comment if logged in" do
+    assert_difference 'CommentLikingRelation.count', -1 do
+      delete comment_liking_relations_path,
+             as: :turbo_stream,
+             params: { comment_liking_relation:
+                        { liked_comment_id: @relation_comment.id } }
+    end
   end
 end

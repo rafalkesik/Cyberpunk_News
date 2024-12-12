@@ -10,7 +10,7 @@ end
 class PostsControllerNotLoggedInTest < PostsControllerNotLoggedIn
 
   test "should redirect new if not logged in" do
-    get new_post_path
+    get new_post_path, as: :turbo_stream
     assert_redirected_to login_url
     assert_response :see_other 
     follow_redirect!
@@ -18,7 +18,7 @@ class PostsControllerNotLoggedInTest < PostsControllerNotLoggedIn
   end
 
   test "should redirect create if not logged in" do
-    post posts_path
+    post posts_path, as: :turbo_stream
     assert_redirected_to login_url
     assert_response :see_other 
     follow_redirect!
@@ -26,13 +26,15 @@ class PostsControllerNotLoggedInTest < PostsControllerNotLoggedIn
   end
 
   test "should redirect destroy if not logged in" do
-    delete post_path(@post)
-    assert_redirected_to root_url
-    assert_response :see_other   
+    delete post_path(@post), as: :turbo_stream
+    assert_redirected_to login_url
+    assert_response :see_other
+    follow_redirect!
+    assert_select 'div.alert-warning', "Log in to submit posts."
   end
 
   test "should render show" do
-    get post_path(@post)
+    get post_path(@post), as: :turbo_stream
     assert_template 'posts/show'
     assert_select 'a', @post.title
     assert_select 'p', @post.content
@@ -48,14 +50,14 @@ class PostsControllerLoggedInTest < PostsControllerNotLoggedIn
     login_as(@user)
   end
 
-  test "should redirect destroy if logged in as non-admin & not post's author" do
-    delete post_path(@post)
+  test "should redirect destroy if logged in as non-admin & non-author" do
+    delete post_path(@post), as: :turbo_stream
     assert_redirected_to root_url
     assert_response :see_other
   end
 
   test "should render new if logged in" do
-    get new_post_path
+    get new_post_path, as: :turbo_stream
     assert_template 'posts/new'
     assert_select 'form[action=?]', "/posts"
   end

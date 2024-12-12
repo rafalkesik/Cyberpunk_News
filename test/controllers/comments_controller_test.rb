@@ -12,7 +12,7 @@ end
 
 class NotLoggedInTest < NotLoggedIn
   test "should redirect create if not logged in" do
-    post comments_path
+    post comments_path, as: :turbo_stream
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
@@ -20,7 +20,7 @@ class NotLoggedInTest < NotLoggedIn
   end
 
   test "should redirect destroy if not logged in" do
-    delete comment_path(@comment)
+    delete comment_path(@comment), as: :turbo_stream
     assert_redirected_to login_url
     assert_response :see_other
     follow_redirect!
@@ -35,7 +35,7 @@ class LoggedInAsOtherUser < NotLoggedIn
   end
 
   test "should redirect destroy if not admin nor author" do
-    delete comment_path(@comment)
+    delete comment_path(@comment), as: :turbo_stream
     assert_redirected_to root_url
     assert_response :see_other
   end

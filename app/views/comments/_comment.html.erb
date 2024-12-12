@@ -1,44 +1,43 @@
-    <li class="lh-sm pb-2" id="comment-<%= comment.id %>">
-        <div class="comment-header fs-6">
-            <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
-                <% if comment.is_liked_by?(current_user) %>
-                    <%= render 'comments/comment_downvote_form',
-                                comment: comment %>
-                <% else %>
-                    <%= render 'comments/comment_upvote_form',
-                                comment: comment %>
-                <% end %>
-            </div>
-            <span>
-                <%= link_to comment.user.username,
-                            user_path(comment.user),
-                            data: { turbo_frame: '_top' } %>
-            </span>
-            <span>
-                <%= time_ago_in_words(comment.created_at) %> ago
-            </span>
-            <span>|</span>
-            <span id="comment-<%= comment.id %>-points">
-                <%= comment.points %> points
-            </span>
-            <span>|</span>
-            <span>
-                <%= link_to 'next', '#' %>
-            </span>
-            <span>
-                <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
-                    <%= form_with(model: comment, method: :delete, data: {turbo: false}) do |f| %>
-                        <%= f.submit "delete" %>
-                    <% end %>
-                <% end %>
-            </span>
+<li class="lh-sm pb-2" id="comment-<%= comment.id %>">
+    <div class="comment-header fs-6">
+        <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
+            <% if comment.is_liked_by?(current_user) %>
+                <%= render 'comments/comment_downvote_form',
+                            comment: comment %>
+            <% else %>
+                <%= render 'comments/comment_upvote_form',
+                            comment: comment %>
+            <% end %>
         </div>
+        <span>
+            <%= link_to comment.user.username,
+                        user_path(comment.user),
+                        data: { turbo_frame: '_top' } %>
+        </span>
+        <span>
+            <%= time_ago_in_words(comment.created_at) %> ago
+        </span>
+        <span>|</span>
+        <span id="comment-<%= comment.id %>-points">
+            <%= comment.points %> points
+        </span>
+        <span>|</span>
+        <span>
+            <%= link_to 'next', '#' %>
+        </span>
+        <span>
+            <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
+                <%= form_with(model: comment, method: :delete) do |f| %>
+                    <%= f.submit "delete" %>
+                <% end %>
+            <% end %>
+        </span>
+    </div>
 
-        <div class="comment-content fs-5 pt-1 text-dark">
-            <div class="comment-tab"></div>
-            <div class="comment-text">
-                <%= format_text(comment.content) %>
-            </div>
+    <div class="comment-content fs-5 pt-1 text-dark">
+        <div class="comment-tab"></div>
+        <div class="comment-text">
+            <%= format_text(comment.content) %>
         </div>
-    </li>
-    
+    </div>
+</li>

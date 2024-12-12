@@ -28,50 +28,28 @@ class UsersController < ApplicationController
             session[:user_id] = @user.id
             redirect_to @user
         else
-            respond_to do |format|
-                format.html { render "/sessions/login" }
-                format.turbo_stream do
-                    render turbo_stream: turbo_stream.update('new_user',partial: 'users/sign_up_form')
-                end
-            end
+            render turbo_stream: [
+                turbo_stream.update('new_user', partial: 'users/sign_up_form')
+            ]
         end
     end
 
     def update
         @user = current_user
+
         if @user.update(user_params)
-            respond_to do |format|
-                format.html do
-                    redirect_to user_url(@user), status: :see_other,
-                                flash: { success: "Password updated." }
-                end
-                format.turbo_stream do
-                    flash.now[:success] = "Password updated."
-                end
-            end
+            flash.now[:success] = "Password updated."
         else
-            respond_to do |format|
-                format.html do
-                    flash.now[:danger] = "Passwords don't match."
-                    render 'users/show',
-                           status: :unprocessable_entity
-                end
-                format.turbo_stream do
-                    flash.now[:danger] = "Passwords don't match."
-                end
-            end
+            flash.now[:danger] = "Passwords don't match."
         end
     end
 
     def destroy
         @user = User.find_by(id: params[:id])
+        
         @user.destroy
         msg = "Successfully deleted user: #{@user.username}."
-        respond_to do |format|
-          format.html { redirect_to users_url, status: :see_other,
-                        flash: { success: msg } }
-          format.turbo_stream { flash.now[:success] = msg }
-        end
+        flash.now[:success] = msg
     end
 
     private

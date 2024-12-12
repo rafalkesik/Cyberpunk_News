@@ -3,28 +3,27 @@ class CommentsController < ApplicationController
   before_action :authorize_destroyer, only: [:destroy]
 
   def create
-    @comment  = Comment.new(comment_params)
-    @post     = @comment.post
-    @comments = @post.comments.where.not(id: nil)
+    @comment      = Comment.new(comment_params)
     @comment.user = current_user
+    @post         = @comment.post
+    @comments     = @post.comments.where.not(id: nil)
     
     if @comment.valid?
       @comment.save
-      flash[:success] = "Comment submitted."
-      redirect_to post_url(@post), status: :see_other
+      flash.now[:success] = "Comment submitted."  
     else
       flash.now[:danger] = "Comment not valid."
-      render 'posts/show'
+      render turbo_stream: [
+        turbo_stream.update('flash-messages', partial: 'layouts/flash'),
+        turbo_stream.update('submit-comment-form', partial: 'comments/submit_comment_form', locals: {post: @post})
+      ]
     end
   end
 
   def destroy
     @comment = Comment.find(params[:id])
-    if @comment
-      @comment.destroy
-      flash[:success] = "Comment deleted"
-      redirect_to post_url(@comment.post), status: :see_other
-    end
+    @comment&.destroy
+    flash.now[:success] = "Comment deleted"
   end
 
   private

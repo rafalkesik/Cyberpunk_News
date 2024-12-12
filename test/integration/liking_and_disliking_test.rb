@@ -8,35 +8,6 @@ class LikingAndDislikingTest < ActionDispatch::IntegrationTest
     login_as(@user)
   end
 
-  test "should like and unlike a post if logged in" do
-    # likes a post
-    get root_url
-    assert_difference 'LikingRelation.count', 1 do
-      post liking_relations_path,
-           params: { liking_relation: { liked_post_id:  @post.id } }
-    end
-    assert_redirected_to root_url
-    assert_response :see_other
-    follow_redirect!
-    assert_select "form[action=?]", liking_relations_path do |form|
-      assert_select form, 'button>i.text-highlight'
-      assert_select form, 'input[value=?]', @user.id
-      assert_select form, 'input[value=?]', @post.id
-    end
-    # unlikes a post
-    assert_difference 'LikingRelation.count', -1 do
-      delete liking_relations_path,
-             params: { liking_relation: { liked_post_id:  @post.id } }
-    end
-    assert_redirected_to root_url
-    assert_response :see_other
-    follow_redirect!
-    assert_select 'form[action=?]', liking_relations_path do |form|
-      assert_select form, 'input[value=?]', @user.id
-      assert_select form, 'input[value=?]', @post.id
-    end
-  end
-
   test "should render likes/unlikes & points correctly WITH TURBO" do
     # likes a post
     get root_url

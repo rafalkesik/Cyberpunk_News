@@ -11,11 +11,13 @@
     </em>
 </p>
 
-<%= render 'comments/submit_comment_form',
-           post:    @post %>
+<div id="submit-comment-form">
+    <%= render 'comments/submit_comment_form',
+            post:    @post %>
+</div>
 
 <h3 class="pt-4">Comments:</h3>
-<ul class="text-secondary clean-list">
+<ul class="text-secondary clean-list" id="comments-list">
     <% @comments.each_with_index do |comment, index| %>
         <%= render partial: 'comments/comment',
                    locals: { comment: comment, index: index } %>
