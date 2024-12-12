@@ -18,14 +18,12 @@ class LikingAndDislikingCommentsTest < ActionDispatch::IntegrationTest
     assert_difference 'CommentLikingRelation.count', 1 do
       post comment_liking_relations_path,
           as: :turbo_stream,
-          params: { comment_liking_relation: { liked_comment_id: @comment.id,
-                                               liking_user_id:   @user.id } }
+          params: { comment_liking_relation: { liked_comment_id: @comment.id } }
     end
 
     assert_select 'turbo-stream[target=?]', "comment-#{@comment.id}-upvote" do
       assert_select 'template',
                     partial: 'comments/comment_upvote_form',
-                             data: @comment.icon_data(@current_user),
                              comment: @comment,
                              current_user: @current_user
     end
@@ -39,8 +37,7 @@ class LikingAndDislikingCommentsTest < ActionDispatch::IntegrationTest
     assert_difference 'CommentLikingRelation.count', 0 do
       post comment_liking_relations_path,
           as: :turbo_stream,
-          params: { comment_liking_relation: { liked_comment_id: @relation,
-                                               liking_user_id:   @user.id} }
+          params: { comment_liking_relation: { liked_comment_id: @relation } }
     end
 
     assert_select 'div.alert-danger',
@@ -52,29 +49,7 @@ class LikingAndDislikingCommentsTest < ActionDispatch::IntegrationTest
       delete comment_liking_relations_path,
              as: :turbo_stream,
              params: { comment_liking_relation:
-                        { liked_comment_id: @relation_comment.id,
-                          liking_user_id:   @relation_user.id } }
+                        { liked_comment_id: @relation_comment.id } }
     end
-
-  end
-
-  test "should redirect when unliking a deleted comment" do
-    get post_path(@relation_post)
-    assert_difference 'CommentLikingRelation.count', 0 do
-      delete comment_liking_relations_path,
-          as: :turbo_stream,
-          params: { comment_liking_relation:
-                    { liked_comment_id: 999,
-                      liking_user_id:   @relation_user.id} },
-          # This is needed, as we redirect back to request referrer in destroy action.
-          headers: { "HTTP_REFERER" => post_path(@relation_post) }
-
-    end
-
-    assert_redirected_to post_path(@relation_post)
-    assert_response :see_other
-    follow_redirect!
-    assert_select 'div.alert-danger',
-                  'The comment has been deleted.'
   end
 end

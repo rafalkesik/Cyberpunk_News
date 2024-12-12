@@ -3,14 +3,14 @@ class CommentsController < ApplicationController
   before_action :authorize_destroyer, only: [:destroy]
 
   def create
-    @comment  = Comment.new(comment_params)
-    @post     = @comment.post
-    @comments = @post.comments.where.not(id: nil)
+    @comment      = Comment.new(comment_params)
     @comment.user = current_user
+    @post         = @comment.post
+    @comments     = @post.comments.where.not(id: nil)
     
     if @comment.valid?
       @comment.save
-      flash.now[:success] = "Comment submitted."
+      flash.now[:success] = "Comment submitted."  
     else
       flash.now[:danger] = "Comment not valid."
       render turbo_stream: [

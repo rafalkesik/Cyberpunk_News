@@ -2,7 +2,8 @@ class Post < ApplicationRecord
 
     belongs_to :user
     has_many :comments,         dependent: :destroy
-    has_many :liking_relations, foreign_key: :liked_post_id
+    has_many :liking_relations, foreign_key: :liked_post_id,
+                                dependent: :destroy
     has_many :liking_users,     through: :liking_relations,
                                 source: :liking_user
                                 
