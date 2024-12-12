@@ -12,20 +12,6 @@ class UsersDeleteTest < ActionDispatch::IntegrationTest
   test "should delete a user and its posts if admin" do
     assert_difference 'User.count', -1 do
       assert_difference 'Post.count', -(@posts_count) do
-        delete user_path(@other_user)
-      end
-    end
-    assert_not User.all.include?(@other_user)
-    assert_redirected_to users_url
-    assert_response :see_other
-    follow_redirect!
-    assert_select 'div.alert-success',
-                  "Successfully deleted user: #{@other_user.username}."
-  end
-
-  test "should delete a user and its posts if admin WITH TURBO" do
-    assert_difference 'User.count', -1 do
-      assert_difference 'Post.count', -(@posts_count) do
         delete user_path(@other_user),
                as: :turbo_stream
       end

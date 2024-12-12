@@ -8,10 +8,6 @@ class LikingRelationsController < ApplicationController
     @post = @relation.liked_post
 
     @relation.save if @relation.valid?
-    respond_to do |format|
-      format.html { redirect_back_or root_url }
-      format.turbo_stream { }
-    end
   end
 
   def destroy
@@ -21,11 +17,6 @@ class LikingRelationsController < ApplicationController
     @relation ||= LikingRelation.where(liking_user_id: @user_id,
                                        liked_post_id:  @post_id).first
     @relation&.destroy
-
-    respond_to do |format|
-      format.html { redirect_back_or root_url }
-      format.turbo_stream { }
-    end
   end
 
   private
@@ -37,8 +28,10 @@ class LikingRelationsController < ApplicationController
     def authenticate
       store_previous_location
       unless logged_in?
-        flash[:warning] = 'You must be logged in to upvote.'
-        redirect_to login_url, status: :see_other
+        flash.now[:warning] = 'You must be logged in to upvote.'
+        render turbo_stream: [
+          turbo_stream.update('flash-messages', partial: 'layouts/flash')
+        ]
       end
     end
 end

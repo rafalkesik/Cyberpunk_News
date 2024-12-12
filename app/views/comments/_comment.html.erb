@@ -27,7 +27,7 @@
             </span>
             <span>
                 <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
-                    <%= form_with(model: comment, method: :delete, data: {turbo: false}) do |f| %>
+                    <%= form_with(model: comment, method: :delete) do |f| %>
                         <%= f.submit "delete" %>
                     <% end %>
                 <% end %>
