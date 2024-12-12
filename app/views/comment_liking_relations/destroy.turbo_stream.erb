@@ -1,0 +1,7 @@
+<%= turbo_stream.update "comment-#{@comment.id}-upvote" do %>
+  <%= render 'comments/comment_upvote_form', comment: @comment %>
+<% end %>
+
+<%= turbo_stream.update "comment-#{@comment.id}-points" do %>
+  <%= @comment.points %> points
+<% end %>

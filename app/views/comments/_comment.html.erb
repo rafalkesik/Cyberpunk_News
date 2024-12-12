@@ -1,10 +1,13 @@
-    <li class="lh-sm pb-2" id="comment-<%= index %>">
+    <li class="lh-sm pb-2" id="comment-<%= comment.id %>">
         <div class="comment-header fs-6">
-            <div class="comment-tab" id="comment-<%= index %>-upvote">
-                <%= render 'comments/comment_upvote_form',
-                          data: comment.post.icon_data(current_user),
-                          index: index,
-                          comment: comment %>
+            <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
+                <% if comment.is_liked_by?(current_user) %>
+                    <%= render 'comments/comment_downvote_form',
+                                comment: comment %>
+                <% else %>
+                    <%= render 'comments/comment_upvote_form',
+                                comment: comment %>
+                <% end %>
             </div>
             <span>
                 <%= link_to comment.user.username,
@@ -15,14 +18,12 @@
                 <%= time_ago_in_words(comment.created_at) %> ago
             </span>
             <span>|</span>
-            <%= turbo_frame_tag "comment-#{index}-points" do %>
-                <span><%= comment.points %> points</span>
-            <% end %>
+            <span id="comment-<%= comment.id %>-points">
+                <%= comment.points %> points
+            </span>
             <span>|</span>
             <span>
-                <%= link_to 'next',
-                            ((index + 1) < @comments.count ? "#comment-#{index + 1}" : '#'),
-                            data: { } %>
+                <%= link_to 'next', '#' %>
             </span>
             <span>
                 <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
