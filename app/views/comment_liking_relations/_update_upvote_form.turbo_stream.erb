@@ -1,6 +1,0 @@
-<%= turbo_stream.update "comment-#{@comment.id}-upvote" do %>
-  <%= render 'comments/comment_upvote_form',
-             data: @comment.icon_data(@current_user),
-             comment: @comment,
-             current_user: @current_user %>
-<% end %>

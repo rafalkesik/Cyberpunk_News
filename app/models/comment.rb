@@ -17,12 +17,4 @@ class Comment < ApplicationRecord
   def my_liking_relation(user)
       comment_liking_relations.find_by(liking_user: user) if user
   end
-
-  def icon_data(current_user)
-    if self.is_liked_by?(current_user)
-        { method: :delete, class: 'text-highlight' }
-    else
-        { method: :post, class: 'text-secondary' }
-    end
-  end
 end

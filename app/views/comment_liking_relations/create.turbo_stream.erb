@@ -1,2 +1,7 @@
-<%= render 'comment_liking_relations/update_upvote_form' %>
-<%= render 'comment_liking_relations/update_comment_points' %>
+<%= turbo_stream.update "comment-#{@comment.id}-upvote" do %>
+  <%= render 'comments/comment_downvote_form', comment: @comment %>
+<% end %>
+
+<%= turbo_stream.update "comment-#{@comment.id}-points" do %>
+  <%= @comment.points %> points
+<% end %>

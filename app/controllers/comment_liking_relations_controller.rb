@@ -1,12 +1,11 @@
 class CommentLikingRelationsController < ApplicationController
   before_action :authenticate
-  before_action :authorize
 
   def create
     @relation     = CommentLikingRelation.new(comment_relation_params)
     @relation.liking_user_id = current_user&.id
-    @post         = @relation.liked_comment&.post
     @comment      = @relation.liked_comment
+    @post         = @comment&.post
     @current_user = current_user
     if @relation.valid?
       @relation.save
@@ -30,13 +29,6 @@ class CommentLikingRelationsController < ApplicationController
         store_previous_location
         flash[:warning] = 'You must be logged in to upvote.'
         redirect_to login_url, status: :see_other
-      end
-    end
-
-    def authorize
-      if current_user.nil?
-        flash[:warning] = 'You must log in to like.'
-        redirect_to root_url, status: :see_other
       end
     end
 

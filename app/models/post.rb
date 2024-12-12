@@ -30,12 +30,4 @@ class Post < ApplicationRecord
         @link = @link.sub(/www./, "")
         @link.sub(/\/.*/, "")
     end
-
-    def icon_data(current_user)
-        if self.is_liked_by?(current_user)
-            { method: :delete, class: 'text-highlight' }
-        else
-            { method: :post, class: 'text-secondary' }
-        end
-    end
 end
