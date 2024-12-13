@@ -85,7 +85,7 @@ nav.navbar {
         padding-left: 0.25rem;
     }
 }
-.comment-content {
+.comment-body {
    display: flex;
 }
 .comment-tab {
@@ -94,6 +94,7 @@ nav.navbar {
 .comment-text {
     flex-grow: 1;
     padding-left: 0.25rem;
+    margin-bottom: 0.75rem;
     p ~ p {
         padding-top: 0.75rem;
     }

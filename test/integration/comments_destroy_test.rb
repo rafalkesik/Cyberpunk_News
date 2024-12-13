@@ -2,9 +2,9 @@ require "test_helper"
 
 class CommentsDestroyAsAuthor < ActionDispatch::IntegrationTest
   def setup
-    @comment    = comments(:one)
+    @comment    = comments(:two)
     @post       = @comment.post
-    @author     = users(:dwight)
+    @author     = @comment.user
     @admin      = users(:admin)
     login_as(@author)
   end

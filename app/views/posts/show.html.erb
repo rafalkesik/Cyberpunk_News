@@ -18,8 +18,8 @@
 
 <h3 class="pt-4">Comments:</h3>
 <ul class="text-secondary clean-list" id="comments-list">
-    <% @comments.each_with_index do |comment, index| %>
+    <% @comments.each_with_index do |comment| %>
         <%= render partial: 'comments/comment',
-                   locals: { comment: comment, index: index } %>
+                   locals: { comment: comment } %>
     <% end %>
 </ul>

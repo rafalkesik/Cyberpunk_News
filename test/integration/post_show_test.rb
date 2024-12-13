@@ -24,12 +24,10 @@ class PostShowTest < ActionDispatch::IntegrationTest
                   '/comments', 'post'
     # checks if comments are rendered
     assert_select 'ul' do
-      @comments.each_with_index do |comment, index|
+      @comments.each do |comment|
         assert_select 'li[id=?]', "comment-#{comment.id}" do
-          assert_select 'div.comment-content' do
-            assert_select 'div.comment-text',
-                          comment.content
-          end
+        assert_select 'div.comment-text',
+                      comment.content
         end
       end
     end
