@@ -22,7 +22,7 @@ class CommentsCreateTest < ActionDispatch::IntegrationTest
       end
     end
 
-    assert_select 'turbo-stream[target=?]', "comments-list" do
+    assert_select 'turbo-stream[target=?]', "comments-list-" do
       assert_select 'template', partial: 'comments/comment',
                                 locals: { comment: @comment,
                                           current_user: @user }

@@ -25,6 +25,13 @@
         <span>
             <%= link_to 'next', '#' %>
         </span>
+        <span>|</span>
+        <span>
+            <%= link_to 'reply',
+                new_comment_path(comment: { comment_id: comment.id, }),
+                data: { turbo_frame: "reply-form-to-#{comment.id}" } %>
+
+        </span>
         <span>
             <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
                 <%= form_with(model: comment, method: :delete) do |f| %>
@@ -41,7 +48,11 @@
                 <%= format_text(comment.content) %>
             </div>
 
-            <ul class="text-secondary clean-list" id="subcomments-list">
+            <%= turbo_frame_tag "reply-form-to-#{comment.id}" do %>
+            <% end %>
+
+            <ul class="text-secondary clean-list"
+                id="comments-list-<%= comment.id %>">
             <% comment.subcomments.each do |subcomment| %>
                 <%= render partial: 'comments/comment', locals: { comment: subcomment } %>
             <% end %>
