@@ -7,10 +7,10 @@ class PostsController < ApplicationController
     end
 
     def show
-        @post        = Post.find(params[:id])
-        @comments    = @post.comments.where.not(id: nil).where(parent_id: nil)
-        @new_comment = @post.comments.build()
-        @parent      = nil
+        @post          = Post.find(params[:id])
+        @root_comments = @post.comments.where.not(id: nil).where(parent_id: nil)
+        @new_comment   = @post.comments.build()
+        @parent        = nil
     end
 
     def new
