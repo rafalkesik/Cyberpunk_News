@@ -36,6 +36,9 @@ class PostsController < ApplicationController
 
         @post.destroy
         flash.now[:success] = "Post deleted."
+        if request.referrer == post_url(@post)
+          redirect_to root_url, status: :see_other
+        end
     end
 
     private

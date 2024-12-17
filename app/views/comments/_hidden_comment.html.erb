@@ -10,9 +10,7 @@
             <% end %>
         </div>
         <span>
-            <%= link_to comment.user.username,
-                        user_path(comment.user),
-                        data: { turbo_frame: '_top' } %>
+            Someone
         </span>
         <span>
             <%= time_ago_in_words(comment.created_at) %> ago
@@ -32,20 +30,13 @@
                 data: { turbo_frame: "reply-form-to-#{comment.id}" } %>
 
         </span>
-        <span>
-            <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
-                <%= form_with(model: comment, method: :delete) do |f| %>
-                    <%= f.submit "delete" %>
-                <% end %>
-            <% end %>
-        </span>
     </div>
 
     <div class="comment-body fs-5 pt-1 text-dark">
         <div class="comment-tab"></div>
         <div class="flex-grow-1">
-            <div class="comment-text">
-                <%= format_text(comment.content) %>
+            <div class="comment-text text-secondary">
+                <%= format_text("Comment deleted") %>
             </div>
 
             <%= turbo_frame_tag "reply-form-to-#{comment.id}" do %>
@@ -62,8 +53,8 @@
                                locals: { comment: subcomment } %>
                 <% end %>
             <% end %>
+
             </ul>
         </div>
     </div>
-
 </li>

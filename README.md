@@ -10,12 +10,13 @@ Build a copy of HackerNews - https://news.ycombinator.com
 2. [X] News posts
 3. [X] News Feed Homepage
 4. [X] Hotwire (Turbo Streams)
-5. [ ] Liking
+5. [X] Liking
    a. [X] Post liking
-   b. [ ] Comment liking
-6. [ ] Comments
+   b. [X] Comment liking
+6. [X] Comments
    a. [X] Basic comments
-   b. [ ] Subcomments
+   b. [X] Subcomments
+7. New Goals needed
 
 <!-- # README
 

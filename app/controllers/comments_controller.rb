@@ -30,7 +30,13 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
-    @comment&.destroy
+    if has_children?(@comment)
+      @comment.update_attribute(:hidden, true)
+      @partial = 'comments/hidden_comment'
+    else
+      @comment&.destroy_with_hidden_parents
+      @partial = 'shared/empty_partial'
+    end
     flash.now[:success] = "Comment deleted"
   end
 
@@ -55,6 +61,11 @@ class CommentsController < ApplicationController
       params.require(:comment).permit(:post_id,
                                       :content,
                                       :comment_id,
-                                      :parent_id)
+                                      :parent_id,
+                                      :hidden)
+    end
+
+    def has_children?(comment)
+      Comment.find_by(parent_id: comment.id)
     end
 end

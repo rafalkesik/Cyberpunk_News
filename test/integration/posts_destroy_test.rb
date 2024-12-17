@@ -36,4 +36,13 @@ class PostsDestroyAuthorTest < PostsDestroyAdmin
       delete post_path(@post), as: :turbo_stream
     end
   end
+
+  test "should redirect if destroyed post from show_post view" do
+    get post_path(@post)
+    delete post_path(@post),
+           as: :turbo_stream,
+           headers: { "HTTP_REFERER" => post_url(@post) }
+    assert_redirected_to root_url
+    assert_response :see_other
+  end
 end
