@@ -32,9 +32,9 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     if has_children?(@comment)
       @comment.update_attribute(:hidden, true)
-      @partial = 'comments/hidden_comment'
+      @partial = 'comments/comment'
     else
-      @comment&.destroy_with_hidden_parents
+      @comment&.destroy_and_its_parents_if_they_are_redundant
       @partial = 'shared/empty_partial'
     end
     flash.now[:success] = "Comment deleted"

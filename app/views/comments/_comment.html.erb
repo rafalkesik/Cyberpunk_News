@@ -10,9 +10,13 @@
             <% end %>
         </div>
         <span>
-            <%= link_to comment.user.username,
-                        user_path(comment.user),
-                        data: { turbo_frame: '_top' } %>
+            <% if comment.hidden %>
+                Someone
+            <% else %>
+                <%= link_to comment.user.username,
+                            user_path(comment.user),
+                            data: { turbo_frame: '_top' } %>
+            <% end %>
         </span>
         <span>
             <%= time_ago_in_words(comment.created_at) %> ago
@@ -33,7 +37,7 @@
 
         </span>
         <span>
-            <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
+            <% if (current_user&.admin? || current_user&.is_author_of_comment(comment)) && !comment.hidden %>
                 <%= form_with(model: comment, method: :delete) do |f| %>
                     <%= f.submit "delete" %>
                 <% end %>
@@ -44,9 +48,15 @@
     <div class="comment-body fs-5 pt-1 text-dark">
         <div class="comment-tab"></div>
         <div class="flex-grow-1">
-            <div class="comment-text">
-                <%= format_text(comment.content) %>
-            </div>
+            <% if comment.hidden %>
+                <div class="comment-text text-secondary">
+                    Comment has been deleted.
+                </div>
+            <% else %>
+                <div class="comment-text">
+                    <%= format_text(comment.content) %>
+                </div>
+            <% end %>
 
             <%= turbo_frame_tag "reply-form-to-#{comment.id}" do %>
             <% end %>
@@ -54,16 +64,10 @@
             <ul class="text-secondary clean-list"
                 id="comments-list-<%= comment.id %>">
             <% comment.subcomments.each do |subcomment| %>
-                <% if subcomment.hidden %>
-                    <%= render partial: 'comments/hidden_comment',
-                               locals: { comment: subcomment } %>
-                <% else %>
-                    <%= render partial: 'comments/comment',
-                               locals: { comment: subcomment } %>
-                <% end %>
+                <%= render partial: 'comments/comment',
+                           locals: { comment: subcomment } %>
             <% end %>
             </ul>
         </div>
     </div>
-
 </li>

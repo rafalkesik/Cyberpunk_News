@@ -18,12 +18,7 @@
 <h3 class="pt-4">Comments:</h3>
 <ul class="text-secondary clean-list" id="comments-list-">
     <% @root_comments.each_with_index do |comment| %>
-        <% if comment.hidden %>
-            <%= render partial: 'comments/hidden_comment',
-                       locals: { comment: comment } %>
-        <% else %>
-            <%= render partial: 'comments/comment',
-                       locals: { comment: comment } %>
-        <% end %>
+        <%= render partial: 'comments/comment',
+                    locals: { comment: comment } %>
     <% end %>
 </ul>

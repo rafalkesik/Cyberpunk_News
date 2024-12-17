@@ -23,11 +23,11 @@ class Comment < ApplicationRecord
       comment_liking_relations.find_by(liking_user: user) if user
   end
 
-  def destroy_with_hidden_parents
+  def destroy_and_its_parents_if_they_are_redundant
     destroy
 
     if had_no_siblings && parent&.hidden
-      parent.destroy_with_hidden_parents
+      parent.destroy_and_its_parents_if_they_are_redundant
     end
   end
 
