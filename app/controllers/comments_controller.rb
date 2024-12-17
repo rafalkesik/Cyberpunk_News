@@ -2,11 +2,19 @@ class CommentsController < ApplicationController
   before_action :authenticate
   before_action :authorize_destroyer, only: [:destroy]
 
+  def new
+    parent_id = comment_params[:comment_id]
+    @parent = Comment.find(parent_id)
+    @post   = @parent.post
+  end
+
   def create
     @comment      = Comment.new(comment_params)
     @comment.user = current_user
+    @parent       = @comment.parent
     @post         = @comment.post
     @comments     = @post.comments.where.not(id: nil)
+    @comment_has_no_parents = @parent.nil?
     
     if @comment.valid?
       @comment.save
@@ -22,7 +30,13 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
-    @comment&.destroy
+    if has_children?(@comment)
+      @comment.update_attribute(:hidden, true)
+      @partial = 'comments/comment'
+    else
+      @comment&.destroy_and_its_parents_if_they_are_redundant
+      @partial = 'shared/empty_partial'
+    end
     flash.now[:success] = "Comment deleted"
   end
 
@@ -45,6 +59,13 @@ class CommentsController < ApplicationController
 
     def comment_params
       params.require(:comment).permit(:post_id,
-                                      :content)
+                                      :content,
+                                      :comment_id,
+                                      :parent_id,
+                                      :hidden)
+    end
+
+    def has_children?(comment)
+      Comment.find_by(parent_id: comment.id)
     end
 end

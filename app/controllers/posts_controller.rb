@@ -7,9 +7,10 @@ class PostsController < ApplicationController
     end
 
     def show
-        @post        = Post.find(params[:id])
-        @comments    = @post.comments.where.not(id: nil)
-        @new_comment = @post.comments.build()
+        @post          = Post.find(params[:id])
+        @root_comments = @post.comments.where.not(id: nil).where(parent_id: nil)
+        @new_comment   = @post.comments.build()
+        @parent        = nil
     end
 
     def new
@@ -35,6 +36,9 @@ class PostsController < ApplicationController
 
         @post.destroy
         flash.now[:success] = "Post deleted."
+        if request.referrer == post_url(@post)
+          redirect_to root_url, status: :see_other
+        end
     end
 
     private

@@ -13,9 +13,10 @@ Build a copy of HackerNews - https://news.ycombinator.com
 5. [X] Liking
    a. [X] Post liking
    b. [X] Comment liking
-6. [ ] Comments
+6. [X] Comments
    a. [X] Basic comments
-   b. [ ] Subcomments
+   b. [X] Subcomments
+7. New Goals needed
 
 <!-- # README
 

@@ -1,2 +1,3 @@
 <%= turbo_stream.update 'flash-messages', partial: 'layouts/flash' %>
-<%= turbo_stream.remove "comment-#{@comment.id}" %>
+<%= turbo_stream.replace "comment-#{@comment.id}",
+                         partial: @partial, locals: { comment: @comment }%>

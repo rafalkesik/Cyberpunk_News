@@ -1,4 +1,4 @@
-<li class="lh-sm pb-2" id="comment-<%= comment.id %>">
+<li class="lh-sm" id="comment-<%= comment.id %>">
     <div class="comment-header fs-6">
         <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
             <% if comment.is_liked_by?(current_user) %>
@@ -10,9 +10,13 @@
             <% end %>
         </div>
         <span>
-            <%= link_to comment.user.username,
-                        user_path(comment.user),
-                        data: { turbo_frame: '_top' } %>
+            <% if comment.hidden %>
+                Someone
+            <% else %>
+                <%= link_to comment.user.username,
+                            user_path(comment.user),
+                            data: { turbo_frame: '_top' } %>
+            <% end %>
         </span>
         <span>
             <%= time_ago_in_words(comment.created_at) %> ago
@@ -25,8 +29,15 @@
         <span>
             <%= link_to 'next', '#' %>
         </span>
+        <span>|</span>
         <span>
-            <% if current_user&.admin? || current_user&.is_author_of_comment(comment) %>
+            <%= link_to 'reply',
+                new_comment_path(comment: { comment_id: comment.id, }),
+                data: { turbo_frame: "reply-form-to-#{comment.id}" } %>
+
+        </span>
+        <span>
+            <% if (current_user&.admin? || current_user&.is_author_of_comment(comment)) && !comment.hidden %>
                 <%= form_with(model: comment, method: :delete) do |f| %>
                     <%= f.submit "delete" %>
                 <% end %>
@@ -34,10 +45,29 @@
         </span>
     </div>
 
-    <div class="comment-content fs-5 pt-1 text-dark">
+    <div class="comment-body fs-5 pt-1 text-dark">
         <div class="comment-tab"></div>
-        <div class="comment-text">
-            <%= format_text(comment.content) %>
+        <div class="flex-grow-1">
+            <% if comment.hidden %>
+                <div class="comment-text text-secondary">
+                    Comment has been deleted.
+                </div>
+            <% else %>
+                <div class="comment-text">
+                    <%= format_text(comment.content) %>
+                </div>
+            <% end %>
+
+            <%= turbo_frame_tag "reply-form-to-#{comment.id}" do %>
+            <% end %>
+
+            <ul class="text-secondary clean-list"
+                id="comments-list-<%= comment.id %>">
+            <% comment.subcomments.each do |subcomment| %>
+                <%= render partial: 'comments/comment',
+                           locals: { comment: subcomment } %>
+            <% end %>
+            </ul>
         </div>
     </div>
 </li>
