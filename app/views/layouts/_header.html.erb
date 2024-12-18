@@ -23,12 +23,16 @@
             <a href="/posts/new" class="nav-link">submit</a>
           </li>
         </ul>
+
+        <ul class="languages">
+          <%= language_selector %>
+        </ul>
         <% if logged_in? %>
           <%= link_to "Profile", user_path(current_user),
-                                 class: "nav-link login-link" %>
+                                class: "nav-link login-link" %>
         <% else %>
           <%= link_to "Login", login_path,
-                               class: "nav-link login-link"%>
+                              class: "nav-link login-link"%>
         <% end %>
       </div>
     </div>
