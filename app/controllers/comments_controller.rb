@@ -18,9 +18,9 @@ class CommentsController < ApplicationController
     
     if @comment.valid?
       @comment.save
-      flash.now[:success] = "Comment submitted."  
+      flash.now[:success] = t 'flash.comment_created'
     else
-      flash.now[:danger] = "Comment not valid."
+      flash.now[:danger] = t 'flash.comment_not_valid'
       render turbo_stream: [
         turbo_stream.update('flash-messages', partial: 'layouts/flash'),
         turbo_stream.update('submit-comment-form', partial: 'comments/submit_comment_form', locals: {post: @post})
@@ -37,7 +37,7 @@ class CommentsController < ApplicationController
       @comment&.destroy_and_its_parents_if_they_are_redundant
       @partial = 'shared/empty_partial'
     end
-    flash.now[:success] = "Comment deleted"
+    flash.now[:success] = t 'flash.comment_deleted'
   end
 
   private
@@ -45,7 +45,7 @@ class CommentsController < ApplicationController
     def authenticate
       unless logged_in?
         store_previous_location
-        flash[:warning] = "Log in to submit comments."
+        flash[:warning] = t 'flash.authenticate_add_com'
         redirect_to login_url, status: :see_other
       end
     end

@@ -1,11 +1,11 @@
 <div class="mb-5">
-    <h3>Login</h3>
+    <h3><%= t :login %></h3>
     <%= form_with model: @user, method: :post, url: sessions_path do |f| %>
-        <%= f.label :username %>
+        <%= f.label :username, (t :username) %>
         <%= f.text_field :username, autofocus: true %>
-        <%= f.label :password %>
+        <%= f.label :password, (t :password) %>
         <%= f.password_field :password %>
-        <%= f.submit "Log in"%>
+        <%= f.submit (t :log_in)%>
     <% end %>
 </div>
 

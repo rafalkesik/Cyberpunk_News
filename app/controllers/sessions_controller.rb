@@ -9,10 +9,10 @@ class SessionsController < ApplicationController
     @user = User.find_by(username: params[:user][:username])
     if @user && @user.authenticate(params[:user][:password])
       session[:user_id] = @user.id
-      flash[:success] = "Logged in successfully."
+      flash[:success] = t 'flash.logged_in'
       redirect_back_or @user
     else
-      flash.now[:danger] = "Username or password are incorrect. Try again."
+      flash.now[:danger] = t 'flash.login_invalid'
       render turbo_stream: [
         turbo_stream.update('flash-messages', partial: 'layouts/flash')
       ]
@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
 
   def destroy
     logout
-    flash[:success] = "Logged out successfully."
+    flash[:success] = t 'flash.logged_out'
     redirect_to root_url, status: :see_other
   end
 end

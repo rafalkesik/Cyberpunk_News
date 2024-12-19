@@ -1,6 +1,17 @@
 class ApplicationController < ActionController::Base
     helper_method :logged_in?, :current_user, :logout
+    around_action :switch_locale
 
+    # Changes language for every action based on :locale param
+    def switch_locale(&action)
+      locale = params[:locale] || I18n.default_locale
+      I18n.with_locale(locale, &action)
+    end
+
+    # Pass on a :locale param to every path, url in links.
+    def default_url_options
+        { locale: I18n.locale }
+    end
   
     def logged_in?
         User.exists?(id: session[:user_id])

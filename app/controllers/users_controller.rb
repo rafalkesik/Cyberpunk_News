@@ -24,7 +24,7 @@ class UsersController < ApplicationController
         @user = User.new(user_params)
         if @user.valid?
             @user.save
-            flash[:success] = "New user created & logged in."
+            flash[:success] = t 'flash.user_created'
             session[:user_id] = @user.id
             redirect_to @user
         else
@@ -38,9 +38,9 @@ class UsersController < ApplicationController
         @user = current_user
 
         if @user.update(user_params)
-            flash.now[:success] = "Password updated."
+            flash.now[:success] = t 'flash.pass_updated'
         else
-            flash.now[:danger] = "Passwords don't match."
+            flash.now[:danger] = t 'flash.pass_different'
         end
     end
 
@@ -48,8 +48,7 @@ class UsersController < ApplicationController
         @user = User.find_by(id: params[:id])
         
         @user.destroy
-        msg = "Successfully deleted user: #{@user.username}."
-        flash.now[:success] = msg
+        flash.now[:success] = (t 'flash.user_deleted', username: @user.username)
     end
 
     private
@@ -62,7 +61,7 @@ class UsersController < ApplicationController
     def authenticate
         unless logged_in?
             store_requested_location
-            flash[:warning] = "Please log in to view that page."
+            flash[:warning] = t 'flash.authenticate'
             redirect_to login_url, status: :see_other
         end
     end

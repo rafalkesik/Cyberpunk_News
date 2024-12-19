@@ -3,5 +3,5 @@
 <% end %>
 
 <%= turbo_stream.update "comment-#{@comment.id}-points" do %>
-  <%= @comment.points %> points
+  <%= t :points, count: @comment.points %>
 <% end %>

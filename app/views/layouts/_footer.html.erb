@@ -5,18 +5,18 @@
             <div class="navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav text-secondary">
                     <li class="nav-item">
-                        <a href="/guidelines" class="nav-link">
-                            Guidelines
+                        <a href=<%= guidelines_path %> class="nav-link">
+                            <%= t 'guidelines.default' %>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/faq" class="nav-link">
+                        <a href=<%= faq_path %> class="nav-link">
                             FAQ
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/contact" class="nav-link">
-                            Contact
+                        <a href=<%= contact_path %> class="nav-link">
+                            <%= t :contact %>
                         </a>
                     </li>
                 </ul>
