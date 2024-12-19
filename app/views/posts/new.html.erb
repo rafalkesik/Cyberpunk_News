@@ -4,11 +4,13 @@
         <%= render 'shared/error_messages', object: f.object %>
 
         <%= f.label      :title,   (t :title) %>
-        <%= f.text_area  :title,   cols: 50, rows: 1, autofocus: true %>
+        <%= f.text_area  :title, rows: 1,
+                         autofocus: true,
+                         class: "responsive-text-area" %>
         <%= f.label      :link,    "Link" %>
-        <%= f.text_area  :link,    cols: 50, rows: 1 %>
+        <%= f.text_area  :link, rows: 1, class: "responsive-text-area" %>
         <%= f.label      :content, (t :text) %>
-        <%= f.text_area  :content, cols: 50, rows: 5 %>
+        <%= f.text_area  :content, rows: 5, class: "responsive-text-area" %>
         <%= f.submit     (t :submit), class: "d-block" %>
     <% end %>
 </div>

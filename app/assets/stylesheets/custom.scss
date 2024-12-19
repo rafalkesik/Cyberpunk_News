@@ -130,3 +130,9 @@ body {
     }
 
 }
+
+// Form styles
+.responsive-text-area {
+    width: 60%;
+    box-sizing: border-box; /* Includes padding and border in the width */
+}
