@@ -22,7 +22,7 @@ class PostsController < ApplicationController
         @post = @user.posts.build(post_params)
         if @post.valid?
             @post.save
-            flash[:success] = "News Post created!"
+            flash[:success] = t 'flash.post_created'
             redirect_to posts_url, status: :see_other
         else
             render turbo_stream:[
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
         @post = Post.find(params[:id])
 
         @post.destroy
-        flash.now[:success] = "Post deleted."
+        flash.now[:success] = t 'flash.post_deleted'
         if request.referrer == post_url(@post)
           redirect_to root_url, status: :see_other
         end
@@ -47,7 +47,7 @@ class PostsController < ApplicationController
         def authenticate
             if !logged_in?
                 store_requested_location
-                flash[:warning] = "Log in to submit posts."
+                flash[:warning] = t 'flash.authenticate_add_post'
                 redirect_to login_url, status: :see_other
             end
         end

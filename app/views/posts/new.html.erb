@@ -1,14 +1,14 @@
 <div id="<%= "new_post" %>">
     <%= form_with model: @post do |f| %>
-        <h1>Create a post!</h1>
+        <h1><%= t :create_post %></h1>
         <%= render 'shared/error_messages', object: f.object %>
 
-        <%= f.label      :title,   "Title" %>
+        <%= f.label      :title,   (t :title) %>
         <%= f.text_area  :title,   cols: 50, rows: 1, autofocus: true %>
         <%= f.label      :link,    "Link" %>
         <%= f.text_area  :link,    cols: 50, rows: 1 %>
-        <%= f.label      :content, "Text" %>
+        <%= f.label      :content, (t :text) %>
         <%= f.text_area  :content, cols: 50, rows: 5 %>
-        <%= f.submit     "Submit", class: "d-block" %>
+        <%= f.submit     (t :submit), class: "d-block" %>
     <% end %>
 </div>

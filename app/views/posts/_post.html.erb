@@ -16,30 +16,31 @@
 
             <% if current_user&.admin? || current_user&.is_author_of_post(post) %>
                 <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: "Are you sure?", turbo: true }) do |f| %>
-                    <%= f.submit "delete" %>
+                    <%= f.submit t :delete %>
                 <% end %>
             <% end %>
         </span>
 
         <% if !post.link.blank? %>
             <span class="fs-6">
-                (Read at: <%= link_to post.short_link, post.link,
-                                    class: "text-secondary" %>)
+                (<%= t :read_at %> <%= link_to post.short_link, post.link,
+                                       class: "text-secondary" %>)
             </span>
         <% end %>
 
         <div class="fs-5 mt-1">
             <%= turbo_frame_tag "post-#{post.id}-points" do %>
-                <%= pluralize(post.points, "point") %>
+                <%= t :points, count: post.points %>,
             <% end %>
-            by <%= link_to post.user.username, post.user,
-                        class: "text-secondary",
-                        data: { turbo_frame: '_top' } %> 
-            <%= time_ago_in_words(post.created_at) %> ago
-            &emsp;|&emsp;
-            <%= link_to "#{pluralize(post.comments.count, 'comment')}",
+            <%= link_to "#{t :comments} #{post.comments.count}",
                         post_path(post),
                         data: { turbo_frame: '_top' } %>
+            &emsp;|&emsp;
+            <%= time_ago_in_words(post.created_at) %> <%= t :ago %>,
+            <%= t :by %> <%= link_to post.user.username, post.user,
+                        class: "text-secondary text-emphasize",
+                        data: { turbo_frame: '_top' } %>
+            
         </div>
     </li>
 </div>

@@ -3,6 +3,8 @@
     <%= f.hidden_field :post_id, value: @post&.id %>
     <%= f.hidden_field :parent_id, value: @parent&.id %>
     <%= f.text_area :content, cols: 50, rows: 5, autofocus: true %>
-    <p class="mb-2">While writing a comment, make sure to obby by the <a href="guidlines">Guidelines</a>.</p>
-    <%= f.submit "Submit comment" %>
+    <p class="mb-2">
+        <%= t(:obby_guidelines_html, guidelines_path: guidelines_path) %>
+    </p>
+    <%= f.submit t :submit_comment %>
 <% end %>

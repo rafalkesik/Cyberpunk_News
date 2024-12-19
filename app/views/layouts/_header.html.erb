@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-sm bg-body-main-color">
     <div class="container-fluid">
-      <a href="/" class="navbar-brand">Cyberpunk News</a>
+      <a href=<%= root_path %> class="navbar-brand">Cyberpunk News</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
               data-bs-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -11,16 +11,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mt-auto">
           <li class="nav-item">
-            <a href="/" class="nav-link active" aria-current="page">Home</a>
+            <a href=<%= root_path %> class="nav-link active" aria-current="page"><%= t :home %></a>
           </li>
           <li class="nav-item">
-            <a href="/new" class="nav-link">new</a>
+            <a href=<%= new_path %> class="nav-link"><%= t :new %></a>
           </li>
           <li class="nav-item">
-            <a href="/users" class="nav-link">users</a>
+            <a href=<%= users_path %> class="nav-link"><%= t 'users.lower' %></a>
           </li>
           <li class="nav-item">
-            <a href="/posts/new" class="nav-link">submit</a>
+            <a href=<%= new_post_path %> class="nav-link"><%= t :create %></a>
           </li>
         </ul>
 
@@ -28,11 +28,11 @@
           <%= language_selector %>
         </ul>
         <% if logged_in? %>
-          <%= link_to "Profile", user_path(current_user),
-                                class: "nav-link login-link" %>
+          <%= link_to (t :profile), user_path(current_user),
+                                    class: "nav-link login-link" %>
         <% else %>
-          <%= link_to "Login", login_path,
-                              class: "nav-link login-link"%>
+          <%= link_to (t :login), login_path,
+                                  class: "nav-link login-link"%>
         <% end %>
       </div>
     </div>

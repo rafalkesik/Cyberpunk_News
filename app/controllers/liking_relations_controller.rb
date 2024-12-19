@@ -28,7 +28,7 @@ class LikingRelationsController < ApplicationController
     def authenticate
       store_previous_location
       unless logged_in?
-        flash.now[:warning] = 'You must be logged in to upvote.'
+        flash.now[:warning] = t 'flash.authenticate_like'
         render turbo_stream: [
           turbo_stream.update('flash-messages', partial: 'layouts/flash')
         ]
