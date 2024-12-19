@@ -2,7 +2,7 @@
     <h1><%= @user.username %></h1>
     <% if @showing_current_user %>
         <%= form_with url: sessions_path, method: :delete do |f|%>
-            <%= f.submit "Logout" %>
+            <%= f.submit t :logout %>
         <% end %>
     <% end %>
 </div>
@@ -14,7 +14,7 @@
     <% end %>
 
 <div>
-    <h3><%= @user.username %>'s news posts:</h3>
+    <h3><%= t :posts_by %></h3>
     <ol class="text-secondary">
         <%= render @user.posts.order(created_at: :desc) %>
     </ol>

@@ -2,6 +2,9 @@
 .text-highlight {
     color: #ff6600;
 }
+.text-emphasize {
+    font-weight: 500;
+}
 .bg-body-main-color {
     background-color: #ff6600;
 }
@@ -51,6 +54,22 @@ nav {
     .navbar-collapse {
         box-shadow: none;
     }
+
+    .languages {
+        list-style-type: none;
+        margin-right: 0.5rem;
+        padding-top:    0;
+        margin-bottom: 0;
+
+        li {
+            float: right;
+            margin-right: 0.5rem;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
 }
 nav.navbar {
     margin-bottom: 0;
@@ -76,6 +95,7 @@ nav.navbar {
     list-style-type: none;
     padding-left: 0;
 }
+
 
 
 .comment-header {
@@ -109,4 +129,10 @@ body {
         --bs-alert-margin-bottom: 0;
     }
 
+}
+
+// Form styles
+.responsive-text-area {
+    width: 60%;
+    box-sizing: border-box; /* Includes padding and border in the width */
 }

@@ -10,7 +10,7 @@ class CommentLikingRelationsController < ApplicationController
     if @relation.valid?
       @relation.save
     else
-      flash.now[:danger] = "The comment has been deleted."
+      flash.now[:danger] = t 'flash.comment_deleted'
       render turbo_stream: [
         turbo_stream.update("flash-messages", partial: 'layouts/flash')
       ]
@@ -29,7 +29,7 @@ class CommentLikingRelationsController < ApplicationController
     def authenticate
       unless logged_in?
         store_previous_location
-        flash.now[:warning] = 'You must be logged in to upvote.'
+        flash.now[:warning] = t 'flash.authenticate_like'
         render turbo_stream: [
           turbo_stream.update('flash-messages',
                               partial: 'layouts/flash')
