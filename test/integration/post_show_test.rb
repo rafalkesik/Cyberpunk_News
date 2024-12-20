@@ -13,7 +13,7 @@ class PostShowTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', post_path(@post),
                                @post.title
     assert_select 'a[href=?]', post_path(@post),
-                               "#{pluralize(@post.comments.count, 'comment')}"
+                               "Comments: #{@post.comments.count}"
     assert_select 'a[href=?]', user_path(@post.user),
                                @post.user.username
     assert_select 'a[href=?]', @post.link
@@ -21,7 +21,7 @@ class PostShowTest < ActionDispatch::IntegrationTest
     assert_select 'p', @post.content
     # checks if new post form is rendered
     assert_select 'form[action=?][method=?]',
-                  '/comments', 'post'
+                  '/en/comments', 'post'
     # checks if comments are rendered
     assert_select 'ul' do
       @comments.each do |comment|

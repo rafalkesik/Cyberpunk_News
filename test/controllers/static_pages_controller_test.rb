@@ -10,8 +10,8 @@ end
 class StaticPagesTest < StaticPages
   test "should render full layout" do
     get root_url, as: :turbo_stream
-    assert_select 'a[href=?]', '/', count: 2
-    assert_select 'a[href=?]', '/login'
+    assert_select 'a[href=?]', '/?locale=en', count: 2
+    assert_select 'a[href=?]', '/en/login'
     assert_select 'header'
     assert_select 'div.content-container'
     assert_select 'footer'

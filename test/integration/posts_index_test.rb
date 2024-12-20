@@ -7,7 +7,7 @@ class PostsIndexTest < ActionDispatch::IntegrationTest
     Post.all.each do |post|
       assert_select 'a[href=?]', post_path(post), post.title
       assert_select 'a[href=?]', post_path(post),
-                                 "#{pluralize(post.comments.count, 'comment')}"
+                                 "Comments: #{post.comments.count}"
       assert_select 'a[href=?]', user_path(post.user), post.user.username
       assert_select 'a[href=?]', post.link, post.short_link
     end

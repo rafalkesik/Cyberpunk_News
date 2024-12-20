@@ -59,6 +59,6 @@ class PostsControllerLoggedInTest < PostsControllerNotLoggedIn
   test "should render new if logged in" do
     get new_post_path, as: :turbo_stream
     assert_template 'posts/new'
-    assert_select 'form[action=?]', "/posts"
+    assert_select 'form[action=?]', "/en/posts"
   end
 end

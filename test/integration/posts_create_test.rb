@@ -35,7 +35,7 @@ class PostsCreateTest < ActionDispatch::IntegrationTest
     end
     assert_select 'div.error-explanation' do
       assert_select 'div.alert-danger',
-                    'The form contains 3 errors:'
+                    'The form contains errors:'
     end
   end
 end

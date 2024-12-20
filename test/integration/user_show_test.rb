@@ -25,8 +25,8 @@ class UserShowTest < UserShow
   test "should show self-user correctly if logged in" do
     get user_path(@user)
     assert_select 'h1', @user.username
-    assert_select 'form[action=?]', "/sessions", count: 1
-    assert_select 'form[action=?]', "/users/#{@user.id}", count: 1
+    assert_select 'form[action=?]', "/en/sessions", count: 1
+    assert_select 'form[action=?]', "/en/users/#{@user.id}", count: 1
     @user.posts.each do |post|
       assert_select 'a', post.title
     end

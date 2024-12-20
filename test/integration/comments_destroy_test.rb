@@ -15,7 +15,7 @@ class CommentsDestroyAsAuthorTest < CommentsDestroyAsAuthor
     assert_difference 'Comment.count', -1 do
       delete comment_path(@comment), as: :turbo_stream
     end
-    assert_select 'div.alert-success', 'Comment deleted'
+    assert_select 'div.alert-success', 'The comment has been deleted.'
     assert_select 'turbo-stream[action="replace"][target=?]',
                   "comment-#{@comment.id}"
   end

@@ -11,8 +11,8 @@ class LoginTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/login'
     assert_select 'h3', 'Login'
     assert_select 'h3', 'Sign up'
-    assert_select 'form[action=?][method=?]', "/sessions", "post"
-    assert_select 'form[action=?][method=?]', "/users",    "post"
+    assert_select 'form[action=?][method=?]', "/en/sessions", "post"
+    assert_select 'form[action=?][method=?]', "/en/users",    "post"
   end
 
   test "should login with valid data" do

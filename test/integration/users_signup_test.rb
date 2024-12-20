@@ -28,7 +28,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_select 'turbo-stream[action="update"][target=?]', 'new_user' do
       assert_select 'template' do
-        assert_select '.alert.alert-danger', 'The form contains 2 errors:'
+        assert_select '.alert.alert-danger', 'The form contains errors:'
       end
     end
   end
