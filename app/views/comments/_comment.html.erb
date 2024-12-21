@@ -30,12 +30,11 @@
             <%= link_to (t :reply),
                 new_comment_path(comment: { comment_id: comment.id, }),
                 data: { turbo_frame: "reply-form-to-#{comment.id}" } %>
-
         </span>
         <span>
             <% if (current_user&.admin? || current_user&.is_author_of_comment(comment)) && !comment.hidden %>
                 <%= form_with(model: comment, method: :delete) do |f| %>
-                    <%= f.submit "delete" %>
+                    <%= f.submit (t :delete) %>
                 <% end %>
             <% end %>
         </span>
