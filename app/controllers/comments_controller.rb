@@ -45,8 +45,11 @@ class CommentsController < ApplicationController
     def authenticate
       unless logged_in?
         store_previous_location
-        flash[:warning] = t 'flash.authenticate_add_com'
-        redirect_to login_url, status: :see_other
+        flash.now[:warning] = t 'flash.authenticate_add_com'
+        render turbo_stream: [
+          turbo_stream.update('flash-messages',
+                              partial: 'layouts/flash')
+        ]
       end
     end
 

@@ -80,3 +80,4 @@ pl:
   log_in: "Zaloguj"
   sign_up: "Stwórz konto"
   username: "Nazwa użytkownika"
+  sure?: "Na pewno chcesz usunąć?"

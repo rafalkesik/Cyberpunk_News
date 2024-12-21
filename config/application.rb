@@ -15,10 +15,10 @@ module CyberpunkNews
     I18n.load_path += Dir[Rails.root.join("config", "locales", "*.{rb,yml}")]
 
     # Permitted locales available for the application
-    I18n.available_locales = [:en, :pl]
+    I18n.available_locales = [:pl, :en]
 
     # Set default locale to something other than :en
-    I18n.default_locale = :en
+    I18n.default_locale = :pl
 
     # Allows to edit error_messages through locales
     config.active_model.i18n_customize_full_message

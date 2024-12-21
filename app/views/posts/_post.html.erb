@@ -1,46 +1,58 @@
 <div id="post_<%= post.id %>">
 
     <li class="fs-4 lh-sm pb-2">
-        <span id="post-<%= post.id %>-upvote">
-            <% if post.is_liked_by?(current_user) %>
-                <%= render 'posts/downvote_form', post: post %>
-            <% else %>
-                <%= render 'posts/upvote_form', post: post %>
-            <% end %>
-        </span>
+        <span class="d-inline-flex flex-wrap" >
 
-        <span class="lh-1 mt-2">
-            <%= link_to post.title, post_path(post),
-                        class: "fs-4 text-dark",
-                        data: { turbo_frame: "_top" } %>
+            <span class="me-2">
+                <span id="post-<%= post.id %>-upvote">
+                    <% if post.is_liked_by?(current_user) %>
+                        <%= render 'posts/downvote_form', post: post %>
+                    <% else %>
+                        <%= render 'posts/upvote_form', post: post %>
+                    <% end %>
+                </span>
 
-            <% if current_user&.admin? || current_user&.is_author_of_post(post) %>
-                <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: "Are you sure?", turbo: true }) do |f| %>
-                    <%= f.submit t :delete %>
-                <% end %>
-            <% end %>
-        </span>
+                <span class="lh-1 mt-2">
+                    <%= link_to post.title, post_path(post),
+                                class: "fs-4 text-dark",
+                                data: { turbo_frame: "_top" } %>
 
-        <% if !post.link.blank? %>
-            <span class="fs-6">
-                (<%= t :read_at %> <%= link_to post.short_link, post.link,
-                                       class: "text-secondary" %>)
+                    <% if current_user&.admin? || 
+                        (current_user&.is_author_of_post(post) &&
+                        current_url == user_url(current_user) ) %>
+                        <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: (t :sure?), turbo: true }) do |f| %>
+                            <%= f.submit t :delete %>
+                        <% end %>
+                    <% end %>
+                </span>
             </span>
-        <% end %>
 
-        <div class="fs-5 mt-1">
-            <%= turbo_frame_tag "post-#{post.id}-points" do %>
-                <%= t :points, count: post.points %>,
+            <% if !post.link.blank? %>
+                <span class="lh-1">
+                    <%= link_to "#{t :read_at} #{post.short_link}",
+                                post.link,
+                                class: 'text-secondary fs-6' %>
+                </span>
             <% end %>
-            <%= link_to "#{t :comments} #{post.comments.count}",
-                        post_path(post),
-                        data: { turbo_frame: '_top' } %>
-            &emsp;|&emsp;
-            <%= time_ago_in_words(post.created_at) %> <%= t :ago %>,
-            <%= t :by %> <%= link_to post.user.username, post.user,
-                        class: "text-secondary text-emphasize",
-                        data: { turbo_frame: '_top' } %>
-            
+        </span>
+
+        <span class="d-flex flex-wrap">
+
+        <div class="fs-5 mt-1 d-flex flex-wrap">
+            <span class="me-5">
+                <%= turbo_frame_tag "post-#{post.id}-points" do %>
+                    <%= t :points, count: post.points %>,
+                <% end %>
+                <%= link_to "#{t :comments} #{post.comments.count}",
+                            post_path(post),
+                            data: { turbo_frame: '_top' } %>
+            </span>
+            <span>
+                <%= time_ago_in_words(post.created_at) %> <%= t :ago %>,
+                <%= t :by %> <%= link_to post.user.username, post.user,
+                            class: "text-secondary text-emphasize",
+                            data: { turbo_frame: '_top' } %>
+            </span>
         </div>
     </li>
 </div>

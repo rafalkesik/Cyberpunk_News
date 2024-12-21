@@ -7,11 +7,11 @@ module LanguageHelper
   
   def flag(locale)
     content_tag(:img, '',
-        src: "https://flagcdn.com/16x12/#{LANGUAGES["#{locale}"][0]}.png",
-        srcset: "https://flagcdn.com/32x24/#{LANGUAGES["#{locale}"][0]}.png 2x,
-                https://flagcdn.com/48x36/#{LANGUAGES["#{locale}"][0]}.png 3x",
-        width: "16",
-        height: "12",
+        src: "https://flagcdn.com/28x21/#{LANGUAGES["#{locale}"][0]}.png",
+        srcset: "https://flagcdn.com/56x42/#{LANGUAGES["#{locale}"][0]}.png 2x,
+                https://flagcdn.com/84x63/#{LANGUAGES["#{locale}"][0]}.png 3x",
+        width: "28",
+        height: "21",
         alt: "#{LANGUAGES["#{locale}"][1]}")
   end
 
