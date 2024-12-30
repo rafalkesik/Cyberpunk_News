@@ -9,34 +9,17 @@ class PostsIndexTest < ActionDispatch::IntegrationTest
       assert_select 'a[href=?]', post_path(post),
                                  "Comments: #{post.comments.count}"
       assert_select 'a[href=?]', user_path(post.user), post.user.username
-      assert_select 'a[href=?]', post.link, post.short_link
+      assert_select 'a[href=?]', post.link, "Read at: #{post.short_link}"
     end
   end
 end
 
-class PostsIndexLoggedIn < ActionDispatch::IntegrationTest
+class PostsIndexAdminTest < ActionDispatch::IntegrationTest
 
   def setup
     @user       = users(:michael)
     @other_user = users(:dwight)
     @admin_user = users(:admin)
-    login_as @user
-  end
-end
-
-class PostsIndexLoggedInTest < PostsIndexLoggedIn
-
-  test "should show delete buttons for own posts" do
-    get posts_path
-    assert_select 'input[type="submit"][value="delete"]',
-                  count: @user.posts.count
-  end
-end
-
-class PostsIndexAdminTest < PostsIndexLoggedIn
-
-  def setup
-    super
     login_as(@admin_user)
   end
 

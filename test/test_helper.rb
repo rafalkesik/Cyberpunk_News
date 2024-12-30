@@ -13,6 +13,10 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
+  setup do
+    I18n.locale = :en
+  end
+
   def login_as(user)
     post login_path, params: { user: { username: user.username,
                                        password: "pass"} }

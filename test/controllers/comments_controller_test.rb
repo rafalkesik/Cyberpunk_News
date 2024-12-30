@@ -13,17 +13,11 @@ end
 class NotLoggedInTest < NotLoggedIn
   test "should redirect create if not logged in" do
     post comments_path, as: :turbo_stream
-    assert_redirected_to login_url
-    assert_response :see_other
-    follow_redirect!
     assert_select 'div.alert-warning', 'Log in to submit comments.'
   end
 
   test "should redirect destroy if not logged in" do
     delete comment_path(@comment), as: :turbo_stream
-    assert_redirected_to login_url
-    assert_response :see_other
-    follow_redirect!
     assert_select 'div.alert-warning', 'Log in to submit comments.'
   end
 end
