@@ -1,4 +1,11 @@
 pl:
+  # footer, header, flash, error
+  home: "Główna"
+  new: "nowe"
+  create: "stwórz"
+  profile: "Konto"
+  login: "Zaloguj"
+  contact: "Kontakt"
   guidelines:
     default: "Kodeks"
     found_news_html: "Znalazłeś ciekawy artykuł? <strong>Podziel się nim!</strong>"
@@ -17,6 +24,7 @@ pl:
     authenticate_like: "Zaloguj się, aby lajkować."
     authenticate_add_com: "Zaloguj się, aby komentować."
     authenticate_add_post: "Zaloguj się, aby dodawać posty."
+    authenticate_add_category: "Zaloguj się, aby dodawać kategorie."
     post_created: "Post stworzony!"
     post_deleted: "Post został usunięty."
     logged_in: "Zalogowano."
@@ -27,9 +35,10 @@ pl:
     page_in_progress: "Wybrana strona jeszcze nie działa."
     user_created: "Zarejestrowano i zalogowano."
     user_deleted: "Usunięto użytkownika: %{username}."
+    category_created: "Kategoria stworzona!"
   error:
     count: "Formularz zawiera błędy:"
-
+  # active record objects
   activerecord:
     attributes:
       user:
@@ -40,11 +49,23 @@ pl:
         title: "Pole 'Tytuł'"
         link: "Pole 'Link'"
         content: "lub pole 'Twój tekst'"
-    errors:
+        category: "Kategoria"
+      category:
+        title: "Tytuł"
+        description: "Opis"
       messages:
         confirmation: "się nie zgadza"
         taken: "została już zajęta"
-  contact: "Kontakt"
+    errors:
+      messages:
+        required: "jest wymagana"        
+  # Forms
+  create_post: "Stwórz własny post!"
+  title: "Tytuł"
+  text: "Twój tekst"
+  submit: "Wyślij"
+
+  # Posts
   admin: "Administrator"
   all_posts: "Cyber Newsy"
   delete: "usuń"
@@ -52,6 +73,7 @@ pl:
   points: "Punkty: %{count}"
   by: "przez:"
   ago: "temu"
+  #Comments
   comments: "Komentarze: "
   someone: "Ktoś"
   next: "następny"
@@ -59,6 +81,7 @@ pl:
   comment_deleted: "Komentarz został usunięty"
   obby_guidelines_html: "Pisząc komentarz, upewnij się, że przestrzegasz <a href=%{guidelines_path} class='text-emphasize'>Kodeksu Cyberpunka</a>."
   submit_comment: "Skomentuj"
+  # Profile
   users:
     upper: "Użytkownicy"
     lower: "użytkownicy"
@@ -67,17 +90,17 @@ pl:
   password: "Hasło"
   password_confirmation: "Potwierdź hasło"
   update_password: "Zmień hasło"
-  posts_by: "Posty użytkownika:"
-  create_post: "Stwórz własny post!"
-  title: "Tytuł"
-  text: "Twój tekst"
-  submit: "Wyślij"
-  home: "Główna"
-  new: "nowe"
-  create: "stwórz"
-  profile: "Konto"
-  login: "Zaloguj"
   log_in: "Zaloguj"
   sign_up: "Stwórz konto"
   username: "Nazwa użytkownika"
   sure?: "Na pewno chcesz usunąć?"
+  posts_by: "Posty użytkownika:"
+  # Categories
+  all_categories: "Kategorie:"
+  create_category: "Stwórz kategorię"
+  category_deleted: "Kategoria została usunięta."
+  description: "Opis"
+  categories:
+    upper: 'Kategorie'
+    lower: 'kategorie'
+  category: "Kategoria"

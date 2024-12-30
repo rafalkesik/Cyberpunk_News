@@ -40,4 +40,23 @@ class ApplicationController < ActionController::Base
         redirect_to(session[:return_to] || fallback_path, status: :see_other)
         session[:return_to] = nil
     end
+
+    def authenticate_with_redirect(message)
+        if !logged_in?
+            store_requested_location
+            flash[:warning] = t message
+            redirect_to login_url, status: :see_other
+        end
+    end
+
+    def authenticate_with_flash(message)
+        if !logged_in?
+            store_previous_location
+            flash.now[:warning] = t message
+            render turbo_stream: [
+              turbo_stream.update('flash-messages',
+                                  partial: 'layouts/flash')
+            ]
+        end
+    end
 end
