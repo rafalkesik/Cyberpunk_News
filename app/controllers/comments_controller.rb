@@ -43,14 +43,7 @@ class CommentsController < ApplicationController
   private
 
     def authenticate
-      unless logged_in?
-        store_previous_location
-        flash.now[:warning] = t 'flash.authenticate_add_com'
-        render turbo_stream: [
-          turbo_stream.update('flash-messages',
-                              partial: 'layouts/flash')
-        ]
-      end
+      authenticate_with_flash('flash.authenticate_add_com')
     end
 
     def authorize_destroyer

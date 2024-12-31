@@ -59,11 +59,7 @@ class UsersController < ApplicationController
     end
 
     def authenticate
-        unless logged_in?
-            store_requested_location
-            flash[:warning] = t 'flash.authenticate'
-            redirect_to login_url, status: :see_other
-        end
+        authenticate_with_redirect('flash.authenticate')
     end
 
     def authorize

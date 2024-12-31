@@ -28,10 +28,18 @@
             </span>
 
             <% if !post.link.blank? %>
-                <span class="lh-1">
+                <span class="lh-1 me-2">
                     <%= link_to "#{t :read_at} #{post.short_link}",
                                 post.link,
                                 class: 'text-secondary fs-6' %>
+                </span>
+            <% end %>
+
+            <% if post.category %>
+                <span class="lh-1 me-1">
+                    <%= link_to "| #{post.category.title} |",
+                                category_path(post.category.title.downcase),
+                                class: 'text-primary fs-6' %>
                 </span>
             <% end %>
         </span>

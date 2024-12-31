@@ -15,6 +15,7 @@ class PostsController < ApplicationController
 
     def new
         @post = Post.new
+        @post.category_id = params[:category_id] if params[:category_id].present?
     end
 
     def create
@@ -43,13 +44,8 @@ class PostsController < ApplicationController
 
     private
 
-
         def authenticate
-            if !logged_in?
-                store_requested_location
-                flash[:warning] = t 'flash.authenticate_add_post'
-                redirect_to login_url, status: :see_other
-            end
+            authenticate_with_redirect('flash.authenticate_add_post')
         end
 
         def verify_destroyer
@@ -63,6 +59,6 @@ class PostsController < ApplicationController
         end
 
         def post_params
-            params.require(:post).permit(:title, :content, :link)
+            params[:post]&.permit(:title, :content, :link, :category_id)
         end
 end

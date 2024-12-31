@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :categories
   root 'posts#index'
   
   scope "/:locale" do
@@ -23,5 +24,6 @@ Rails.application.routes.draw do
     resources :liking_relations
     resources :comments
     resources :comment_liking_relations
+    resources :categories, param: :title
   end
 end
