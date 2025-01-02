@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  resources :categories
-  root 'posts#index'
+  get '', to: redirect("/#{I18n.default_locale}"), as: :redirect_root
   
   scope "/:locale" do
+    root 'posts#index'
     get  'guidelines',  to: 'static_pages#guidelines'
     get  'faq',         to: 'static_pages#faq'
     get  'contact',     to: 'static_pages#contact'

@@ -8,7 +8,7 @@ class CategoriesController < ApplicationController
 
   def show
     # @category = Category.find_by(title: params[:title])
-    @category = Category.find_by("LOWER(title) = ?", params[:id])
+    @category = Category.find_by("LOWER(title) = ?", params[:title])
     @posts = @category.posts.order(created_at: :desc)
   end
 
