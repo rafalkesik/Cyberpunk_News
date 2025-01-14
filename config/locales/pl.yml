@@ -53,6 +53,7 @@ pl:
       category:
         title: "Tytuł"
         description: "Opis"
+        slug: "URL"
       messages:
         confirmation: "się nie zgadza"
         taken: "została już zajęta"
@@ -104,3 +105,7 @@ pl:
     upper: 'Kategorie'
     lower: 'kategorie'
   category: "Kategoria"
+  slug: "URL kategorii"
+  slug_format_error: "nie może mieć wielkich liter, spacji. Użyj tylko małych liter, liczb, myśliników i podkreślników"
+  category_title: "Tytuł"
+  

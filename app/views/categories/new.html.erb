@@ -3,10 +3,13 @@
         <h1><%= t :create_category %></h1>
         <%= render 'shared/error_messages', object: f.object %>
 
-        <%= f.label     :title, (t :title) %>
+        <%= f.label     :title, (t :category_title) %>
         <%= f.text_area :title, rows: 1,
                         autofocus: true,
                         class: "responsive-text-area" %>
+        <%= f.label     :slug, (t :slug) %>
+        <span class="text-secondary">https://cyberpunk-news.onrender.com/categories/</span>
+        <%= f.text_field :slug, class: "text-secondary" %>
         <%= f.label     :description, (t :description) %>
         <%= f.text_area :description, rows: 3, class: "responsive-text-area" %>
         <%= f.submit    (t :submit), class: "d-block" %>

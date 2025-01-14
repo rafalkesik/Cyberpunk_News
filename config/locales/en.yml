@@ -43,6 +43,8 @@ en:
     attributes:
       post:
         content: "or Content"
+      category:
+        slug: "URL"
   # Forms
   create_post: "Create a post!"
   title: "Title"
@@ -88,4 +90,6 @@ en:
   categories:
     upper: 'Categories'
     lower: 'categories'
-
+  slug: "URL of category"
+  slug_format_error: "must be lowercase, contain no spaces, and only include letters, numbers, or dashes"
+  category_title: "Title"
