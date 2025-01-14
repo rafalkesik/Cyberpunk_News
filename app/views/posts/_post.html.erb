@@ -38,7 +38,7 @@
             <% if post.category %>
                 <span class="lh-1 me-1">
                     <%= link_to "| #{post.category.title} |",
-                                category_path(post.category.title.downcase),
+                                category_path(post.category.slug),
                                 class: 'text-primary fs-6' %>
                 </span>
             <% end %>

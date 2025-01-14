@@ -24,6 +24,6 @@ Rails.application.routes.draw do
     resources :liking_relations
     resources :comments
     resources :comment_liking_relations
-    resources :categories, param: :title
+    resources :categories, param: :slug
   end
 end
