@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  root 'posts#index'
-  
-  scope "/:locale" do
+  get '', to: redirect("/#{I18n.default_locale}"), as: :redirect_root
+
+  scope '/:locale' do
+    root 'posts#index'
     get  'guidelines',  to: 'static_pages#guidelines'
     get  'faq',         to: 'static_pages#faq'
     get  'contact',     to: 'static_pages#contact'
@@ -23,5 +24,6 @@ Rails.application.routes.draw do
     resources :liking_relations
     resources :comments
     resources :comment_liking_relations
+    resources :categories, param: :slug
   end
 end

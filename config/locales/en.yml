@@ -1,4 +1,11 @@
 en:
+  # footer, header, flash, error
+  home: "Home"
+  new: "new"
+  create: "create"
+  profile: "Profile"
+  login: "Login"
+  contact: "Contact"
   guidelines:
     default: "Guidelines"
     found_new_html: "Found an interesting article? <strong>Share it here!</strong>"
@@ -17,6 +24,7 @@ en:
     authenticate_like: "You must be logged in to upvote."
     authenticate_add_com: "Log in to submit comments."
     authenticate_add_post: "Log in to submit posts."
+    authenticate_add_category: "Log in to submit or edit categories."
     post_created: "News Post created!"
     post_deleted: "Post deleted."
     logged_in: "Logged in successfully."
@@ -27,14 +35,23 @@ en:
     page_in_progress: "The requested page is still in progress."
     user_created: "New user created & logged in."
     user_deleted: "Successfully deleted user: %{username}."
+    category_created: "Category created!"
   error:
     count: "The form contains errors:"
-  
+  # active record objects
   activerecord:
     attributes:
       post:
         content: "or Content"
-  contact: "Contact"
+      category:
+        slug: "URL"
+  # Forms
+  create_post: "Create a post!"
+  title: "Title"
+  text: "Your text"
+  submit: "Submit"
+
+  # Posts
   admin: "Admin"
   all_posts: "All Cyber News"
   delete: "delete"
@@ -44,6 +61,7 @@ en:
     other: "%{count} points"
   by: "by:"
   ago: "ago"
+  # Comments
   comments: "Comments:"
   someone: "Someone"
   next: "next"
@@ -51,6 +69,7 @@ en:
   comment_deleted: "Comment has been deleted."
   obby_guidelines_html: "While writing a comment, make sure to obby by the <a href=%{guidelines_path}>Guidelines</a>."
   submit_comment: "Submit comment"
+  # Profile
   users:
     upper: "Users"
     lower: "users"
@@ -59,17 +78,18 @@ en:
   password: "Password"
   password_confirmation: "Password confirmation"
   update_password: "Update password"
-  posts_by: "User posts:"
-  create_post: "Create a post!"
-  title: "Title"
-  text: "Your text"
-  submit: "Submit"
-  home: "Home"
-  new: "new"
-  create: "create"
-  profile: "Profile"
-  login: "Login"
   log_in: "Log in"
   sign_up: "Sign up"
   username: "Username"
   sure?: "Are you sure?"
+  posts_by: "User posts:"
+  # Categories
+  all_categories: "All categories:"
+  create_category: "Create category"
+  category_deleted: "Category deleted."
+  categories:
+    upper: 'Categories'
+    lower: 'categories'
+  slug: "URL of category"
+  slug_format_error: "must be lowercase, contain no spaces, and only include letters, numbers, or dashes"
+  category_title: "Title"

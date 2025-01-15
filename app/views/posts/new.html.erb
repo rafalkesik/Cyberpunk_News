@@ -11,6 +11,10 @@
         <%= f.text_area  :link, rows: 1, class: "responsive-text-area" %>
         <%= f.label      :content, (t :text) %>
         <%= f.text_area  :content, rows: 5, class: "responsive-text-area" %>
+
+        <%= f.label      :category_id, (t :category) + " (opcjonalnie)" %>
+        <%= f.collection_select :category_id, Category.all, :id, :title, prompt: true %>
+        <br><br>
         <%= f.submit     (t :submit), class: "d-block" %>
     <% end %>
 </div>

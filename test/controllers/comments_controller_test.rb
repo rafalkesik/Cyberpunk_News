@@ -1,6 +1,6 @@
 require "test_helper"
 
-class NotLoggedIn < ActionDispatch::IntegrationTest
+class CommentsNotLoggedIn < ActionDispatch::IntegrationTest
 
   def setup
     @comment    = comments(:one)
@@ -10,7 +10,7 @@ class NotLoggedIn < ActionDispatch::IntegrationTest
   end
 end
 
-class NotLoggedInTest < NotLoggedIn
+class CommentsNotLoggedInTest < CommentsNotLoggedIn
   test "should redirect create if not logged in" do
     post comments_path, as: :turbo_stream
     assert_select 'div.alert-warning', 'Log in to submit comments.'
@@ -22,7 +22,7 @@ class NotLoggedInTest < NotLoggedIn
   end
 end
 
-class LoggedInAsOtherUser < NotLoggedIn
+class CommentsLoggedInAsOtherUserTest < CommentsNotLoggedIn
   def setup
     super
     login_as(@other_user)

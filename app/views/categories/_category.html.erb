@@ -1,0 +1,19 @@
+<div id="category_<%= category.id %>">
+  <li>
+    <div class="user-container container pb-2">
+      <div class="row">
+        <% if current_user&.admin? %>
+          <div class="col-md-auto">
+            <%= form_with(model: category, method: :delete, data: { turbo_confirm: (t :sure?) }) do |f| %>
+              <%= f.submit "delete" %>
+            <% end %>
+          </div>
+        <% end %>
+        <div class="col align-self-center">
+          <%= link_to category.title, category_path(category.title.downcase),
+                      data: { turbo_frame: "_top" } %>
+        </div>
+      </div>
+    </div>
+  </li>
+</div>
