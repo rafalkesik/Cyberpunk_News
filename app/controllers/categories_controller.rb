@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :authenticate
+  before_action :authenticate,     only: [:new, :create, :destroy]
   before_action :verify_destroyer, only: [:destroy]
 
   def new
@@ -21,14 +21,14 @@ class CategoriesController < ApplicationController
 
     if @category.save
       flash[:success] = t 'flash.category_created'
-      redirect_to categories_path
+      redirect_to categories_path, status: :see_other
     end
   end
 
   def destroy
-    @category = Category.find(params[:id])
-    
-    @category.posts.update_all(category_id: nil)
+    @category = Category.find_by(slug: params[:slug])
+
+    @category.posts.update_all(category_id: 1)
     @category.delete
     flash.now[:success] = (t :category_deleted)
   end

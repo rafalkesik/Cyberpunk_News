@@ -1,9 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
-  description: MyString
+  id: 1
+  title: 'Inne'
+  slug: 'inne'
+  description: "Default category for posts that don't"
 
 two:
-  title: MyString
-  description: MyString
+  id: 2
+  title: 'Politics'
+  slug: 'politics'
+  description: "Everything about politics in Poland an abroad."

@@ -14,7 +14,8 @@ class PostsCreateTest < ActionDispatch::IntegrationTest
            params: { post: { title: "Valid title",
                              content: "Valid content",
                              link: "https://cool_site.com/valid_link",
-                             points: 0 } }
+                             points: 0,
+                             category_id: 2 } }
     end
     assert_redirected_to posts_path
     assert_response :see_other

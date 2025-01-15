@@ -24,7 +24,7 @@ pl:
     authenticate_like: "Zaloguj się, aby lajkować."
     authenticate_add_com: "Zaloguj się, aby komentować."
     authenticate_add_post: "Zaloguj się, aby dodawać posty."
-    authenticate_add_category: "Zaloguj się, aby dodawać kategorie."
+    authenticate_add_category: "Zaloguj się, aby dodawać lub edytować kategorie."
     post_created: "Post stworzony!"
     post_deleted: "Post został usunięty."
     logged_in: "Zalogowano."

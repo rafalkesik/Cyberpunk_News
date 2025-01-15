@@ -24,7 +24,7 @@ en:
     authenticate_like: "You must be logged in to upvote."
     authenticate_add_com: "Log in to submit comments."
     authenticate_add_post: "Log in to submit posts."
-    authenticate_add_category: "Log in to submit categories."
+    authenticate_add_category: "Log in to submit or edit categories."
     post_created: "News Post created!"
     post_deleted: "Post deleted."
     logged_in: "Logged in successfully."
