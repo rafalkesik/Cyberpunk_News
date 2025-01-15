@@ -87,9 +87,11 @@ en:
   all_categories: "All categories:"
   create_category: "Create category"
   category_deleted: "Category deleted."
+  category: "Category"
   categories:
     upper: 'Categories'
     lower: 'categories'
   slug: "URL of category"
+  description: "Description"
   slug_format_error: "must be lowercase, contain no spaces, and only include letters, numbers, or dashes"
   category_title: "Title"
