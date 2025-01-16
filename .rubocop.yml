@@ -1,0 +1,12 @@
+AllCops:
+    SuggestExtensions: false
+    NewCops: disable
+
+# Disabled rules
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/GlobalStdStream:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+
