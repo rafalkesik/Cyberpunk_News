@@ -1,7 +1,7 @@
-ENV["RAILS_ENV"] ||= "test"
-require_relative "../config/environment"
-require "rails/test_help"
-require "minitest/reporters"
+ENV['RAILS_ENV'] ||= 'test'
+require_relative '../config/environment'
+require 'rails/test_help'
+require 'minitest/reporters'
 Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
 
   def login_as(user)
     post login_path, params: { user: { username: user.username,
-                                       password: "pass"} }
+                                       password: 'pass' } }
   end
 
   def logout

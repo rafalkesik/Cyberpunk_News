@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class CommentsDestroyAsAuthor < ActionDispatch::IntegrationTest
   def setup
@@ -11,7 +11,7 @@ class CommentsDestroyAsAuthor < ActionDispatch::IntegrationTest
 end
 
 class CommentsDestroyAsAuthorTest < CommentsDestroyAsAuthor
-  test "should destroy comment as author" do
+  test 'should destroy comment as author' do
     assert_difference 'Comment.count', -1 do
       delete comment_path(@comment), as: :turbo_stream
     end
@@ -27,7 +27,7 @@ class CommentsDestroyAsAdminTest < CommentsDestroyAsAuthor
     login_as(@author)
   end
 
-  test "should destroy comment as admin" do
+  test 'should destroy comment as admin' do
     assert_difference 'Comment.count', -1 do
       delete comment_path(@comment), as: :turbo_stream
     end
@@ -35,18 +35,17 @@ class CommentsDestroyAsAdminTest < CommentsDestroyAsAuthor
 end
 
 class SubcommentsDestroyTest < ActionDispatch::IntegrationTest
-
   def setup
     @comment    = comments(:one)
     @subcomment = comments(:child_of_one)
     @second_subcomment = comments(:second_child_of_one)
-    @subsubcomment  = comments(:grand_child_of_one)
-    @post       = @comment.post
-    @author     = @comment.user
+    @subsubcomment = comments(:grand_child_of_one)
+    @post   = @comment.post
+    @author = @comment.user
     login_as(@author)
   end
 
-  test "should hide parent comment on delete" do
+  test 'should hide parent comment on delete' do
     assert_difference 'Comment.count', 0 do
       delete comment_path(@comment), as: :turbo_stream
     end
@@ -54,7 +53,7 @@ class SubcommentsDestroyTest < ActionDispatch::IntegrationTest
     assert @comment.hidden
   end
 
-  test "should destroy hidden parents with no children on last child destroy" do
+  test 'should destroy hidden parents with no children on last child destroy' do
     delete comment_path(@comment), as: :turbo_stream
 
     assert_difference 'Comment.count', 0 do
@@ -62,7 +61,7 @@ class SubcommentsDestroyTest < ActionDispatch::IntegrationTest
     end
     @subcomment.reload
     assert @subcomment.hidden
-    
+
     assert_difference 'Comment.count', -1 do
       delete comment_path(@second_subcomment), as: :turbo_stream
     end

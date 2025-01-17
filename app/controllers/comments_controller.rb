@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
     @post   = @parent.post
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     @comment  = current_user.comments.build(comment_params)
     @parent   = @comment.parent
     @post     = @comment.post

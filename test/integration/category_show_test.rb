@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class CategoryShowTest < ActionDispatch::IntegrationTest
   def setup
@@ -16,7 +16,7 @@ class CategoryShowTest < ActionDispatch::IntegrationTest
 
     @category.posts.each do |post|
       assert_select 'a[href=?]', post_path(post),
-                                 post.title
+                    post.title
     end
   end
 end

@@ -19,7 +19,7 @@ class CommentLikingRelationsController < ApplicationController
       liked_comment_id: comment_relation_params[:liked_comment_id],
       liking_user_id: current_user&.id
     )
-    @comment  = @relation.liked_comment
+    @comment = @relation.liked_comment
     @current_user = current_user
     @relation&.destroy
   end

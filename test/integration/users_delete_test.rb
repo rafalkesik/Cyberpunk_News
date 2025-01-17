@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class UsersDeleteTest < ActionDispatch::IntegrationTest
   def setup
@@ -9,9 +9,9 @@ class UsersDeleteTest < ActionDispatch::IntegrationTest
     login_as(@admin_user)
   end
 
-  test "should delete a user and its posts if admin" do
+  test 'should delete a user and its posts if admin' do
     assert_difference 'User.count', -1 do
-      assert_difference 'Post.count', -(@posts_count) do
+      assert_difference 'Post.count', -@posts_count do
         delete user_path(@other_user),
                as: :turbo_stream
       end
