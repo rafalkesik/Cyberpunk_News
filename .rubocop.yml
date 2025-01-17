@@ -9,4 +9,7 @@ Style/GlobalStdStream:
   Enabled: false
 Style/Documentation:
   Enabled: false
-
+Style/SymbolArray:
+  Enabled: false
+Style/RedundantSelf:
+  Enabled: false

@@ -19,10 +19,10 @@ class CategoriesController < ApplicationController
   def create
     @category = Category.new(category_params)
 
-    if @category.save
-      flash[:success] = t 'flash.category_created'
-      redirect_to categories_path, status: :see_other
-    end
+    return unless @category.save
+
+    flash[:success] = t 'flash.category_created'
+    redirect_to categories_path, status: :see_other
   end
 
   def destroy
@@ -35,17 +35,17 @@ class CategoriesController < ApplicationController
 
   private
 
-    def authenticate
-      authenticate_with_redirect('flash.authenticate_add_category')
-    end
+  def authenticate
+    authenticate_with_redirect('flash.authenticate_add_category')
+  end
 
-    def verify_destroyer
-      if !current_user.admin
-        redirect_to root_url, status: :see_other
-      end
-    end
+  def verify_destroyer
+    return if current_user.admin
 
-    def category_params
-      params.require(:category).permit(:title, :slug, :description)
-    end
+    redirect_to root_url, status: :see_other
+  end
+
+  def category_params
+    params.require(:category).permit(:title, :slug, :description)
+  end
 end

@@ -1,7 +1,7 @@
 <li class="lh-sm" id="comment-<%= comment.id %>">
     <div class="comment-header fs-6">
         <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
-            <% if comment.is_liked_by?(current_user) %>
+            <% if comment.liked_by?(current_user) %>
                 <%= render 'comments/comment_downvote_form',
                             comment: comment %>
             <% else %>
@@ -32,7 +32,7 @@
                 data: { turbo_frame: "reply-form-to-#{comment.id}" } %>
         </span>
         <span>
-            <% if (current_user&.admin? || current_user&.is_author_of_comment(comment)) && !comment.hidden %>
+            <% if (current_user&.admin? || current_user&.author_of_comment?(comment)) && !comment.hidden %>
                 <%= form_with(model: comment, method: :delete) do |f| %>
                     <%= f.submit (t :delete) %>
                 <% end %>
