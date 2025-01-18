@@ -1,64 +1,58 @@
 class PostsController < ApplicationController
-    before_action :authenticate,     only: [:new, :create, :destroy]
-    before_action :verify_destroyer, only: [:destroy]
+  before_action :authenticate,     only: [:new, :create, :destroy]
+  before_action :verify_destroyer, only: [:destroy]
 
-    def index
-        @posts = Post.order(created_at: :desc)
-    end
+  def index
+    @posts = Post.order(created_at: :desc)
+  end
 
-    def show
-        @post          = Post.find(params[:id])
-        @root_comments = @post.comments.where.not(id: nil).where(parent_id: nil)
-        @new_comment   = @post.comments.build()
-        @parent        = nil
-    end
+  def show
+    @post          = Post.find(params[:id])
+    @root_comments = @post.comments.where.not(id: nil).where(parent_id: nil)
+    @new_comment   = @post.comments.build
+    @parent        = nil
+  end
 
-    def new
-        @post = Post.new
-        @post.category_id = params[:category_id] if params[:category_id].present?
-    end
+  def new
+    @post = Post.new
+    @post.category_id = params[:category_id] if params[:category_id].present?
+  end
 
-    def create
-        @user = current_user
-        @post = @user.posts.build(post_params)
-        if @post.valid?
-            @post.save
-            flash[:success] = t 'flash.post_created'
-            redirect_to posts_url, status: :see_other
-        else
-            render turbo_stream:[
-                turbo_stream.replace("new_post", template: 'posts/new')
-            ]
-        end
-    end
+  def create
+    @user = current_user
+    @post = @user.posts.build(post_params)
 
-    def destroy
-        @post = Post.find(params[:id])
+    return unless @post.save
 
-        @post.destroy
-        flash.now[:success] = t 'flash.post_deleted'
-        if request.referrer == post_url(@post)
-          redirect_to root_url, status: :see_other
-        end
-    end
+    flash[:success] = t 'flash.post_created'
+    redirect_to posts_url, status: :see_other
+  end
 
-    private
+  def destroy
+    @post = Post.find(params[:id])
 
-        def authenticate
-            authenticate_with_redirect('flash.authenticate_add_post')
-        end
+    @post.destroy
+    flash.now[:success] = t 'flash.post_deleted'
+    return unless request.referrer == post_url(@post)
 
-        def verify_destroyer
-            @post = Post.find(params[:id])
-            current_user_is_not_admin       = !current_user&.admin?
-            current_user_is_not_post_author = !current_user&.is_author_of_post(@post)
+    redirect_to root_url, status: :see_other
+  end
 
-            if current_user_is_not_admin && current_user_is_not_post_author
-                redirect_to root_url, status: :see_other
-            end
-        end
+  private
 
-        def post_params
-            params[:post]&.permit(:title, :content, :link, :category_id)
-        end
+  def authenticate
+    authenticate_with_redirect('flash.authenticate_add_post')
+  end
+
+  def verify_destroyer
+    @post = Post.find(params[:id])
+
+    return if current_user&.admin? || current_user&.author_of_post?(@post)
+
+    redirect_to root_url, status: :see_other
+  end
+
+  def post_params
+    params[:post]&.permit(:title, :content, :link, :category_id)
+  end
 end

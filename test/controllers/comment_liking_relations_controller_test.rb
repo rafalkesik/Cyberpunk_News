@@ -1,8 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class CommentLikingRelationsControllerTest < ActionDispatch::IntegrationTest
-
-  test "should flash warning on create if not logged in" do
+  test 'should flash warning on create if not logged in' do
     assert_difference 'CommentLikingRelation.count', 0 do
       post comment_liking_relations_path,
            as: :turbo_stream,

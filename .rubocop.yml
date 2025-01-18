@@ -1,0 +1,23 @@
+AllCops:
+    SuggestExtensions: false
+    NewCops: disable
+    Exclude:
+      - 'db/schema.rb'
+      - 'bin/*'
+      - 'config/puma.rb'
+
+# Disabled rules
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/GlobalStdStream:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false
+Style/RedundantSelf:
+  Enabled: false
+Style/NegatedIf:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false

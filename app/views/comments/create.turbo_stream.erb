@@ -1,13 +1,12 @@
 <%= turbo_stream.update 'flash-messages', partial: 'layouts/flash' %>
-<%= turbo_stream.append "comments-list-#{@parent&.id}",
-                        partial: 'comments/comment',
-                        locals: {comment: @comment,
-                                 current_user: @comment.user} %>
 
-<% if @comment_has_no_parents %>
+<% if @comment.valid? %>
+  <%= turbo_stream.append "comments-list-#{@parent&.id}",
+                          partial: 'comments/comment',
+                          locals: {comment: @comment,
+                                  current_user: @comment.user} %>
   <%= turbo_stream.update 'submit-comment-form',
                           partial: 'comments/submit_comment_form',
                           locals: {post: @post} %>
-<% else %>
   <%= turbo_stream.update "reply-form-to-#{@comment.parent_id}", '' %>
 <% end %>

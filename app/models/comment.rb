@@ -15,23 +15,22 @@ class Comment < ApplicationRecord
     self.comment_liking_relations.count
   end
 
-  def is_liked_by?(user)
+  def liked_by?(user)
     !!my_liking_relation(user)
   end
 
   def my_liking_relation(user)
-      comment_liking_relations.find_by(liking_user: user) if user
+    comment_liking_relations.find_by(liking_user: user) if user
   end
 
   def destroy_and_its_parents_if_they_are_redundant
     destroy
+    return unless had_no_siblings && parent&.hidden
 
-    if had_no_siblings && parent&.hidden
-      parent.destroy_and_its_parents_if_they_are_redundant
-    end
+    parent.destroy_and_its_parents_if_they_are_redundant
   end
 
   def had_no_siblings
-    parent&.subcomments&.count == 0
+    parent&.subcomments&.count&.zero?
   end
 end

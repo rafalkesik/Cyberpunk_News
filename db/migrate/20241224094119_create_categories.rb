@@ -8,8 +8,8 @@ class CreateCategories < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    Category.create(slug: "inne",
-                    title: "Inne",
-                    description: "Posty niepasujące do żadnej kategorii.")
+    Category.create(slug: 'inne',
+                    title: 'Inne',
+                    description: 'Posty niepasujące do żadnej kategorii.')
   end
 end

@@ -1,7 +1,6 @@
-require "test_helper"
+require 'test_helper'
 
 class CommentsNotLoggedIn < ActionDispatch::IntegrationTest
-
   def setup
     @comment    = comments(:one)
     @author     = users(:dwight)
@@ -11,12 +10,12 @@ class CommentsNotLoggedIn < ActionDispatch::IntegrationTest
 end
 
 class CommentsNotLoggedInTest < CommentsNotLoggedIn
-  test "should redirect create if not logged in" do
+  test 'should redirect create if not logged in' do
     post comments_path, as: :turbo_stream
     assert_select 'div.alert-warning', 'Log in to submit comments.'
   end
 
-  test "should redirect destroy if not logged in" do
+  test 'should redirect destroy if not logged in' do
     delete comment_path(@comment), as: :turbo_stream
     assert_select 'div.alert-warning', 'Log in to submit comments.'
   end
@@ -28,7 +27,7 @@ class CommentsLoggedInAsOtherUserTest < CommentsNotLoggedIn
     login_as(@other_user)
   end
 
-  test "should redirect destroy if not admin nor author" do
+  test 'should redirect destroy if not admin nor author' do
     delete comment_path(@comment), as: :turbo_stream
     assert_redirected_to root_url
     assert_response :see_other

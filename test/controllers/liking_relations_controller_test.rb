@@ -1,14 +1,12 @@
 require 'test_helper'
 
 class LikingRelationsNotLoggedIn < ActionDispatch::IntegrationTest
-
   def setup
     @relation = liking_relations(:one_likes_two)
   end
 end
 
 class LikingRelationsNotLoggedInTest < LikingRelationsNotLoggedIn
-
   test 'should flash warning on create if not logged in' do
     post liking_relations_path, as: :turbo_stream
     assert_select 'turbo-stream[target=?]', 'flash-messages' do

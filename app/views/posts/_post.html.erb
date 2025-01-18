@@ -5,7 +5,7 @@
 
             <span class="me-2">
                 <span id="post-<%= post.id %>-upvote">
-                    <% if post.is_liked_by?(current_user) %>
+                    <% if post.liked_by?(current_user) %>
                         <%= render 'posts/downvote_form', post: post %>
                     <% else %>
                         <%= render 'posts/upvote_form', post: post %>
@@ -18,7 +18,7 @@
                                 data: { turbo_frame: "_top" } %>
 
                     <% if current_user&.admin? || 
-                        (current_user&.is_author_of_post(post) &&
+                        (current_user&.author_of_post?(post) &&
                         current_url == user_url(current_user) ) %>
                         <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: (t :sure?), turbo: true }) do |f| %>
                             <%= f.submit t :delete %>

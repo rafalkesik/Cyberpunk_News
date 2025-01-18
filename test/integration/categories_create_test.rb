@@ -1,6 +1,6 @@
-require "test_helper"
+require 'test_helper'
 
-class CategoriesCreateTest < ActionDispatch::IntegrationTest  
+class CategoriesCreateTest < ActionDispatch::IntegrationTest
   def setup
     user = users(:michael)
     login_as(user)
