@@ -1,0 +1,50 @@
+one:
+  id: 1
+  post_id: 1
+  user_id: 2
+  content: "I love trump!"
+  points: 0
+  created_at: <%= 9.hours.ago %>
+  updated_at: <%= 8.hours.ago %>
+  parent_id: nil
+
+two:
+  id: 2
+  post_id: 1
+  user_id: 3
+  content: "I freaking hate trump!"
+  points: 300
+  created_at: <%= 7.hours.ago %>
+  updated_at: <%= 6.hours.ago %>
+  parent_id: nil
+
+
+child_of_one:
+  id: 3
+  post_id: 1
+  user_id: 2
+  content: "Actually, I hate trump!"
+  points: 200
+  created_at: <%= 5.hours.ago %>
+  updated_at: <%= 4.hours.ago %>
+  parent_id: 1
+
+second_child_of_one:
+  id: 4
+  post_id: 1
+  user_id: 2
+  content: "LOL"
+  points: 17
+  created_at: <%= 4.hours.ago %>
+  updated_at: <%= 3.hours.ago %>
+  parent_id: 1
+
+grand_child_of_one:
+  id: 5
+  post_id: 1
+  user_id: 2
+  content: "Actually I don't even know."
+  points: 999
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 1.hours.ago %>
+  parent_id: 3

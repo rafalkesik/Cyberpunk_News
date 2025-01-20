@@ -14,10 +14,11 @@ dwight:
   created_at: <%= 15.hours.ago %>
   updated_at: <%= 14.hours.ago %>
 
-admin:
+admin :
   id: 3
   username: "admin"
   password_digest: <%= User.digest("pass") %>
   admin: true
   created_at: <%= 10.hours.ago %>
   updated_at: <%=  9.hours.ago %>
+  

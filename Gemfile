@@ -9,7 +9,7 @@ gem 'bootstrap-will_paginate', '1.0.0'
 gem 'faker',                   '2.21.0'
 gem 'importmap-rails',         '1.1.0'
 gem 'jbuilder',                '2.11.5'
-gem 'polish',                  '>= 0.1.0'
+gem 'polish',                  '~> 0.1.0'
 gem 'puma',                    '5.6.4'
 gem 'rails',                   '7.0.4'
 gem 'rubocop',                 '~> 1.70'
@@ -20,11 +20,13 @@ gem 'turbo-rails',             '1.1.1'
 gem 'will_paginate',           '3.3.1'
 
 group :development, :test do
-  gem 'debug',   '1.9.2', platforms: %i[mri mingw x64_mingw]
-  gem 'sqlite3', '1.4.2'
+  gem 'debug',       '1.9.2', platforms: %i[mri mingw x64_mingw]
+  gem 'rspec-rails', '~> 7.0.0'
+  gem 'sqlite3',     '1.4.2'
 end
 
 group :development do
+  gem 'guard-rspec', require: false
   gem 'web-console', '4.2.0'
 end
 
