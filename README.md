@@ -1,5 +1,8 @@
 Latest commit available at: https://cyberpunk-news.onrender.com.
 
+## Description:
+This project is developed entirely by Rafał Kęsik. Its goal is to create a place to find and share valuable news stories and discussions that is free of clickbaits, spam and hate. It is also a way to develop and showcase my Rails and general WebApp development skills.
+
 ## Main Goal:
 
 Build a copy of HackerNews - https://news.ycombinator.com
