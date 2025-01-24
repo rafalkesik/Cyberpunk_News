@@ -1,4 +1,4 @@
-one:
+parent_of_three_and_four:
   id: 1
   post_id: 1
   user_id: 2
@@ -8,7 +8,7 @@ one:
   updated_at: <%= 8.hours.ago %>
   parent_id: nil
 
-two:
+parent_of_none:
   id: 2
   post_id: 1
   user_id: 3

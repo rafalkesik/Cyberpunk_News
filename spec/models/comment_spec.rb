@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
   fixtures :comments
-  let(:comment) { comments(:one) }
+  let(:comment) { comments(:parent_of_three_and_four) }
 
   it 'is valid with valid arguments' do
     expect(comment).to be_valid
