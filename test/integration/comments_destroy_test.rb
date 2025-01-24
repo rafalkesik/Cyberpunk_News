@@ -55,7 +55,6 @@ class SubcommentsDestroyTest < ActionDispatch::IntegrationTest
 
   test 'should destroy hidden parents with no children on last child destroy' do
     delete comment_path(@comment), as: :turbo_stream
-
     assert_difference 'Comment.count', 0 do
       delete comment_path(@subcomment), as: :turbo_stream
     end

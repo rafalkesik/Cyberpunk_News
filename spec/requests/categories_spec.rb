@@ -62,6 +62,21 @@ RSpec.describe 'Categories', type: :request do
         login_as(user)
       end
 
+      it 'does not create category with invalid data' do
+        expect do
+          post categories_path,
+               as: :turbo_stream,
+               params: { category: { title: ' ',
+                                     slug: 'Test Slug',
+                                     description: '' } }
+        end.to change(Category, :count).by(0)
+
+        assert_select 'div.error-explanation' do
+          assert_select 'div.alert-danger',
+                        'The form contains errors:'
+        end
+      end
+
       it 'creates a valid category and redirects to categories path' do
         expect do
           post categories_path,
@@ -79,21 +94,6 @@ RSpec.describe 'Categories', type: :request do
         assert_select 'div.alert-success', 'Category created!'
         assert_select 'a', 'New Category'
       end
-
-      it 'does not create category with invalid data' do
-        expect do
-          post categories_path,
-               as: :turbo_stream,
-               params: { category: { title: ' ',
-                                     slug: 'Test Slug',
-                                     description: '' } }
-        end.to change(Category, :count).by(0)
-
-        assert_select 'div.error-explanation' do
-          assert_select 'div.alert-danger',
-                        'The form contains errors:'
-        end
-      end
     end
   end
 
@@ -110,7 +110,7 @@ RSpec.describe 'Categories', type: :request do
         login_as(non_admin)
       end
 
-      it "doesn't create category and redirects to root" do
+      it "doesn't delete category and redirects to root" do
         expect do
           delete category_path(category), as: :turbo_stream
         end.to change(Category, :count).by(0)
@@ -124,7 +124,7 @@ RSpec.describe 'Categories', type: :request do
         login_as(admin)
       end
 
-      it 'destroys a category' do
+      it 'deletes a category' do
         expect do
           expect do
             delete category_path(category.slug),
