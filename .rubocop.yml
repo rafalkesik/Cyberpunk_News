@@ -1,3 +1,6 @@
+require:
+  - 'rubocop-erb'
+
 AllCops:
     SuggestExtensions: false
     NewCops: disable
@@ -5,6 +8,8 @@ AllCops:
       - 'db/schema.rb'
       - 'bin/*'
       - 'config/puma.rb'
+    Include:
+      - '**/*.html.erb'
 
 # Disabled rules
 Style/FrozenStringLiteralComment:

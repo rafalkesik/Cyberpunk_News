@@ -22,7 +22,7 @@
             <%= time_ago_in_words(comment.created_at) %> <%= t :ago %>
         </span>
         <span>|</span>
-        <span id="comment-<%= comment.id %>-points", class="text-emphasize">
+        <span id="comment-<%= comment.id %>-points" class="text-emphasize">
             <%= t :points, count: comment.points %>
         </span>
         <span>|</span>
