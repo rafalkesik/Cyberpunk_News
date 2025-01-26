@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate, only: [:index, :show, :destroy]
+  before_action :authenticate, only: [:index, :show]
   before_action :authorize, only: [:update]
   before_action :verify_admin, only: [:destroy]
 
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 
     flash[:success] = t 'flash.user_created'
     session[:user_id] = @user.id
-    redirect_to @user
+    redirect_to @user, status: :see_other
   end
 
   def update
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   def verify_admin
-    return if current_user.admin
+    return if current_user&.admin
 
     redirect_to root_url, status: :see_other
   end

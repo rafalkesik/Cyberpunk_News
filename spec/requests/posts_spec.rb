@@ -69,7 +69,7 @@ RSpec.describe "Posts", type: :request do
     end
   end
 
-  describe 'NEW /posts' do    
+  describe 'NEW /posts' do
     context 'when not logged in' do
       it 'redirects to login_path' do
         get new_post_path, as: :turbo_stream
@@ -83,7 +83,7 @@ RSpec.describe "Posts", type: :request do
     context 'when logged in' do
       fixtures :users
       let(:user) { users(:michael) }
-      
+
       before do
         login_as(user)
       end

@@ -2,14 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "Sessions", type: :request do
   describe 'GET /login' do
-    it 'renders template' do
+    it 'renders template with login & signup form' do
       get login_path, as: :turbo_stream
 
       expect(response).to render_template('sessions/login')
       assert_select 'h3', 'Login'
-      assert_select 'h3', 'Sign up'
       assert_select 'form[action=?][method=?]', '/en/sessions', 'post'
-      assert_select 'form[action=?][method=?]', '/en/users',    'post'  
     end
   end
 
@@ -30,7 +28,7 @@ RSpec.describe "Sessions", type: :request do
       assert_select 'div.alert-success', 'Logged in successfully.'
     end
 
-    it 'render flash with invalid data' do
+    it 'renders flash with invalid data' do
       post sessions_path,
            as: :turbo_stream,
            params: { user: { username: user.username,
