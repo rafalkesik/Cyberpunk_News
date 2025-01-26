@@ -18,7 +18,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
    b. [X] Subcomments
 7. [X] Categories
 8. [X] Configure RuboCop and clean up the code layout
-9. [ ] Change Minitest to Rspec
+9. [X] Change Minitest to Rspec
 10. [ ] Improve signup/login to use rails scaffold or Devise
 
 
