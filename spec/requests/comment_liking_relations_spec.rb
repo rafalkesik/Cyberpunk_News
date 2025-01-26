@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "CommentLikingRelations", type: :request do
+RSpec.describe 'CommentLikingRelations', type: :request do
   describe 'POST /comment_liking_relations' do
     context 'when not logged in' do
       it 'renders flash' do
@@ -23,8 +23,8 @@ RSpec.describe "CommentLikingRelations", type: :request do
         it "highlights upvote icon and increases comment's points" do
           # likes a comment
           post comment_liking_relations_path,
-              as: :turbo_stream,
-              params: { comment_liking_relation: { liked_comment_id: comment.id } }
+               as: :turbo_stream,
+               params: { comment_liking_relation: { liked_comment_id: comment.id } }
           # checks the like icon change
           assert_select 'turbo-stream[target=?]', "comment-#{comment.id}-upvote" do
             assert_select 'template',
@@ -34,7 +34,7 @@ RSpec.describe "CommentLikingRelations", type: :request do
           end
           # checks if the points changed
           assert_select 'turbo-stream[target=?]', "comment-#{comment.id}-points" do
-          assert_select 'template', (I18n.t :points, count: comment.points)
+            assert_select 'template', (I18n.t :points, count: comment.points)
           end
         end
       end
@@ -44,9 +44,8 @@ RSpec.describe "CommentLikingRelations", type: :request do
           post comment_liking_relations_path,
                as: :turbo_stream,
                params: { comment_liking_relation: { liked_comment_id: 999 } }
-          
           assert_select 'div.alert-danger',
-          'The comment has been deleted.'
+                        'The comment has been deleted.'
         end
       end
     end
@@ -65,7 +64,7 @@ RSpec.describe "CommentLikingRelations", type: :request do
 
     context 'when logged in' do
       fixtures :liking_relations
-      let(:relation) {  liking_relations(:one_likes_two) }
+      let(:relation) { liking_relations(:one_likes_two) }
       let(:user) { relation.liking_user }
       let(:liked_post) { relation.liked_post }
 

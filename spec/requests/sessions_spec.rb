@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Sessions", type: :request do
+RSpec.describe 'Sessions', type: :request do
   describe 'GET /login' do
     it 'renders template with login & signup form' do
       get login_path, as: :turbo_stream

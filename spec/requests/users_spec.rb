@@ -77,7 +77,6 @@ RSpec.describe 'Users', type: :request do
 
     context 'when logged in' do
       context 'as normal user' do
-
         before do
           login_as(user)
         end

@@ -51,7 +51,7 @@ RSpec.describe 'LikingRelations', type: :request do
 
     context 'when logged in' do
       fixtures :liking_relations
-      let(:relation) {  liking_relations(:one_likes_two) }
+      let(:relation) { liking_relations(:one_likes_two) }
       let(:user) { relation.liking_user }
       let(:liked_post) { relation.liked_post }
 

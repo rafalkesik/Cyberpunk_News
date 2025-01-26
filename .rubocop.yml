@@ -8,8 +8,9 @@ AllCops:
       - 'db/schema.rb'
       - 'bin/*'
       - 'config/puma.rb'
-    Include:
       - '**/*.html.erb'
+      - '**/*.turbo_stream.erb'
+      - 'Guardfile'
 
 # Disabled rules
 Style/FrozenStringLiteralComment:
@@ -26,3 +27,7 @@ Style/NegatedIf:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+
+# Modified rules  
+Metrics/BlockLength:
+  AllowedMethods: ['describe', 'context']

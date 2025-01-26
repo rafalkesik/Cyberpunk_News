@@ -47,9 +47,13 @@ RSpec.describe 'Categories', type: :request do
     fixtures :users
     let(:user) { users(:michael) }
 
+    def perform_post_request(categories_params)
+      post categories_path, as: :turbo_stream, params: { category: categories_params }
+    end
+
     context 'when not logged in' do
       it "doesn't create a post and redirects to login url" do
-        expect { post categories_path, as: :turbo_stream }.to change(Category, :count).by(0)
+        expect { perform_post_request('') }.to change(Category, :count).by(0)
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(303)
         follow_redirect!
@@ -58,17 +62,25 @@ RSpec.describe 'Categories', type: :request do
     end
 
     context 'when logged in' do
+      let(:invalid_category_params) do
+        { title: ' ',
+          slug: 'Test Slug',
+          description: '' }
+      end
+
+      let(:valid_category_params) do
+        { title: 'New Category',
+          slug: 'new_category',
+          description: 'Lorem impsum' }
+      end
+
       before do
         login_as(user)
       end
 
       it 'does not create category with invalid data' do
         expect do
-          post categories_path,
-               as: :turbo_stream,
-               params: { category: { title: ' ',
-                                     slug: 'Test Slug',
-                                     description: '' } }
+          perform_post_request(invalid_category_params)
         end.to change(Category, :count).by(0)
 
         assert_select 'div.error-explanation' do
@@ -79,11 +91,7 @@ RSpec.describe 'Categories', type: :request do
 
       it 'creates a valid category and redirects to categories path' do
         expect do
-          post categories_path,
-               as: :turbo_stream,
-               params: { category: { title: 'New Category',
-                                     slug: 'new_category',
-                                     description: 'Lorem impsum' } }
+          perform_post_request(valid_category_params)
         end.to change(Category, :count).by(1)
 
         expect(response).to redirect_to(categories_path)

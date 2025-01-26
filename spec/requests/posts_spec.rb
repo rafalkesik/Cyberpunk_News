@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request do
-  describe "GET /posts" do
-    it "renders all posts" do
+RSpec.describe 'Posts', type: :request do
+  describe 'GET /posts' do
+    it 'renders all posts' do
       get posts_path, as: :turbo_stream
       Post.all.each do |post|
         assert_select 'a[href=?]', post_path(post), post.title
@@ -10,7 +10,7 @@ RSpec.describe "Posts", type: :request do
                       "Comments: #{post.comments.count}"
         assert_select 'a[href=?]', user_path(post.user), post.user.username
         assert_select 'a[href=?]', post.link, "Read at: #{post.short_link}"
-      end  
+      end
     end
 
     context 'when logged in as admin' do
@@ -125,7 +125,7 @@ RSpec.describe "Posts", type: :request do
                                  points: 0,
                                  category_id: 2 } }
         end.to change(Post, :count).by(1)
-        
+
         expect(response).to redirect_to(posts_path)
         expect(response).to have_http_status(303)
         follow_redirect!
@@ -147,7 +147,7 @@ RSpec.describe "Posts", type: :request do
         assert_select 'div.error-explanation' do
           assert_select 'div.alert-danger',
                         'The form contains errors:'
-        end    
+        end
       end
     end
   end
@@ -205,7 +205,7 @@ RSpec.describe "Posts", type: :request do
             get post_path(deleted_post)
             delete post_path(deleted_post),
                    as: :turbo_stream,
-                   headers: { 'HTTP_REFERER' =>  post_url(deleted_post) }
+                   headers: { 'HTTP_REFERER' => post_url(deleted_post) }
             expect(response).to redirect_to(root_url)
             expect(response).to have_http_status(303)
           end
