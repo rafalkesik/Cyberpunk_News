@@ -50,8 +50,11 @@ RSpec.configure do |config|
   # Add spec/support/authentication_helpers.rb to every spec
   config.include AuthenticationHelpers, type: :request
 
+  # Adds more detailed info for deprecations
+  config.raise_errors_for_deprecations!
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = Rails.root.join('spec/fixtures')
+  config.fixture_paths = Rails.root.join('spec/fixtures')
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
