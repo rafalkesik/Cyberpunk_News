@@ -1,7 +1,6 @@
 <div id="post_<%= post.id %>">
-
     <li class="fs-4 lh-sm pb-2">
-        <span class="d-inline-flex flex-wrap" >
+        <span class="d-inline-flex flex-wrap">
 
             <span class="me-2">
                 <span id="post-<%= post.id %>-upvote">
@@ -20,8 +19,8 @@
                     <% if current_user&.admin? || 
                         (current_user&.author_of_post?(post) &&
                         current_url == user_url(current_user) ) %>
-                        <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: (t :sure?), turbo: true }) do |f| %>
-                            <%= f.submit t :delete %>
+                        <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: t(:sure?), turbo: true }) do |f| %>
+                            <%= f.submit t(:delete) %>
                         <% end %>
                     <% end %>
                 </span>

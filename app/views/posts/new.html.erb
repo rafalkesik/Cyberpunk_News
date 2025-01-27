@@ -1,20 +1,20 @@
-<div id="<%= "new_post" %>">
+<div id="<%= 'new_post' %>">
     <%= form_with model: @post do |f| %>
         <h1><%= t :create_post %></h1>
         <%= render 'shared/error_messages', object: f.object %>
 
-        <%= f.label      :title,   (t :title) %>
-        <%= f.text_area  :title, rows: 1,
-                         autofocus: true,
-                         class: "responsive-text-area" %>
-        <%= f.label      :link,    "Link" %>
-        <%= f.text_area  :link, rows: 1, class: "responsive-text-area" %>
-        <%= f.label      :content, (t :text) %>
-        <%= f.text_area  :content, rows: 5, class: "responsive-text-area" %>
+        <%= f.label     :title,   (t :title) %>
+        <%= f.text_area :title, rows: 1,
+                        autofocus: true,
+                        class: "responsive-text-area" %>
+        <%= f.label     :link,    "Link" %>
+        <%= f.text_area :link, rows: 1, class: "responsive-text-area" %>
+        <%= f.label     :content, (t :text) %>
+        <%= f.text_area :content, rows: 5, class: "responsive-text-area" %>
 
-        <%= f.label      :category_id, (t :category) %>
+        <%= f.label             :category_id, (t :category) %>
         <%= f.collection_select :category_id, Category.all, :id, :title, prompt: true %>
         <br><br>
-        <%= f.submit     (t :submit), class: "d-block" %>
+        <%= f.submit            (t :submit), class: "d-block" %>
     <% end %>
 </div>

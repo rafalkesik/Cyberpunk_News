@@ -1,3 +1,6 @@
+require:
+  - 'rubocop-erb'
+
 AllCops:
     SuggestExtensions: false
     NewCops: disable
@@ -5,6 +8,9 @@ AllCops:
       - 'db/schema.rb'
       - 'bin/*'
       - 'config/puma.rb'
+      - '**/*.html.erb'
+      - '**/*.turbo_stream.erb'
+      - 'Guardfile'
 
 # Disabled rules
 Style/FrozenStringLiteralComment:
@@ -21,3 +27,7 @@ Style/NegatedIf:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+
+# Modified rules  
+Metrics/BlockLength:
+  AllowedMethods: ['describe', 'context']
