@@ -23,6 +23,9 @@ Build a copy of HackerNews - https://news.ycombinator.com
 8. [X] Configure RuboCop and clean up the code layout
 9. [X] Change Minitest to Rspec
 10. [ ] Improve signup/login to use rails scaffold or Devise
+11. [ ] Migrate all users to new account system
+12. [ ] Clean up Gemfile
+13. [ ] Check issues on Github and handle all of them.
 
 
 <!-- # README
