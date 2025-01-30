@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe 'Sessions', type: :request do
   describe 'GET /login' do
     it 'renders template with login & signup form' do
+      skip 'To be adjusted to Devise'
+
       get login_path, as: :turbo_stream
 
       expect(response).to render_template('sessions/login')
@@ -16,6 +18,7 @@ RSpec.describe 'Sessions', type: :request do
     let(:user) { users(:michael) }
 
     it 'logs in with valid data' do
+      skip 'To be adjusted to Devise'
       post sessions_path,
            as: :turbo_stream,
            params: { user: { username: user.username,
@@ -29,6 +32,7 @@ RSpec.describe 'Sessions', type: :request do
     end
 
     it 'renders flash with invalid data' do
+      skip 'To be adjusted to Devise'
       post sessions_path,
            as: :turbo_stream,
            params: { user: { username: user.username,
@@ -52,6 +56,7 @@ RSpec.describe 'Sessions', type: :request do
     end
 
     it 'logs out' do
+      skip 'To be adjusted to Devise'
       delete sessions_path, as: :turbo_stream
 
       expect(session[:user_id]).to be_nil

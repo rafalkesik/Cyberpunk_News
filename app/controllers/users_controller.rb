@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate, only: [:index, :show]
+  # before_action :authenticate, only: [:index, :show]
   before_action :authorize, only: [:update]
   before_action :verify_admin, only: [:destroy]
 
@@ -31,11 +31,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
 
-    if @user.update(user_params)
-      flash.now[:success] = t 'flash.pass_updated'
-    else
-      flash.now[:danger] = t 'flash.pass_different'
-    end
+    flash.now[:success] = 'Username updated.' if @user.update(user_params)
   end
 
   def destroy
@@ -49,7 +45,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user)
-          .permit(:username, :password, :password_confirmation)
+          .permit(:username, :email, :password, :password_confirmation)
   end
 
   def authenticate

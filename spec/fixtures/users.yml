@@ -1,7 +1,8 @@
 michael:
   id: 1
   username: "michael"
-  password_digest: <%= User.digest("pass") %>
+  email: 'michael@scott.com'
+  encrypted_password: <%= User.new.send(:password_digest, 'pass') %>
   admin: false
   created_at: <%= 5.hours.ago %>
   updated_at: <%= 4.hours.ago %>
@@ -9,7 +10,8 @@ michael:
 dwight:
   id: 2
   username: "dwight"
-  password_digest: <%= User.digest("pass") %>
+  email: 'dwight@schrute.com'
+  encrypted_password: <%= User.new.send(:password_digest, 'pass') %>
   admin: false
   created_at: <%= 15.hours.ago %>
   updated_at: <%= 14.hours.ago %>
@@ -17,7 +19,8 @@ dwight:
 admin :
   id: 3
   username: "admin"
-  password_digest: <%= User.digest("pass") %>
+  email: 'admin@example.com'
+  encrypted_password: <%= User.new.send(:password_digest, 'pass') %>
   admin: true
   created_at: <%= 10.hours.ago %>
   updated_at: <%=  9.hours.ago %>

@@ -123,6 +123,9 @@ nav.navbar {
         --bs-btn-font-size: inherit;
         --bs-btn-line-height: inherit;
     }
+    .btn-outline-secondary {
+        --bs-btn-padding-x: 0.5em;
+    }
 }
 .clean-list {
     list-style-type: none;

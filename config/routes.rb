@@ -18,8 +18,9 @@ Rails.application.routes.draw do
     delete 'liking_relations',         to: 'liking_relations#destroy'
     delete 'comment_liking_relations', to: 'comment_liking_relations#destroy'
 
+    devise_for :users, controllers: { passwords: 'users/passwords',
+                                      registrations: 'users/registrations' }
     resources :users
-    resources :sessions
     resources :posts
     resources :liking_relations
     resources :comments

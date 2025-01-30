@@ -38,6 +38,7 @@ sample_comments = [
 
 # Seeding data for every env
 User.find_or_create_by!(username: 'Admin User') do |user|
+  user.email = 'admin@example.com'
   user.password = 'foobar123'
   user.password_confirmation = 'foobar123'
   user.admin = true

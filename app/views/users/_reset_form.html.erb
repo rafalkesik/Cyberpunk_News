@@ -1,12 +1,11 @@
 <div id="<%= dom_id(@user, :form) %>">
-    <h2><%= t :reset_password %></h2>
-    <%= form_with model: @user do |f| %>
-        <%= render 'shared/error_messages', object: f.object%>
-        <%= f.hidden_field :username %>
-        <%= f.label :password, (t :password) %>
-        <%= f.password_field :password %>
-        <%= f.label :password_confirmation, (t :password_confirmation) %>
-        <%= f.password_field :password_confirmation %>
-        <%= f.submit (t :update_password), method: :update %>
+    <h3><%= t :reset_password %></h3>
+
+    <%= form_for(@user, url: user_password_path, method: :post ) do |f| %>
+        <%= render "devise/shared/error_messages", resource: @user %>
+        <%= f.hidden_field :email %>
+        <div class="actions">
+            <%= f.submit "Send me reset password instructions" %>
+        </div>
     <% end %>
 </div>

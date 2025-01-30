@@ -16,7 +16,7 @@ class Comment < ApplicationRecord
   end
 
   def liked_by?(user)
-    !!my_liking_relation(user)
+    !!my_liking_relation(user) # Should become .present?
   end
 
   def my_liking_relation(user)

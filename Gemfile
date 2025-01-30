@@ -6,6 +6,7 @@ ruby '~>3.1.2'
 gem 'bcrypt',                  '3.1.18'
 gem 'bootsnap',                '1.12.0', require: false
 gem 'bootstrap-will_paginate', '1.0.0'
+gem 'devise',                  '~> 4.9'
 gem 'faker',                   '2.21.0'
 gem 'importmap-rails',         '1.1.0'
 gem 'jbuilder',                '2.11.5'

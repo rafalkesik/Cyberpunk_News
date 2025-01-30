@@ -33,11 +33,11 @@
           <%= language_selector %>
         </ul>
         <div class="nav-item me-lg-5 border-0">
-          <% if logged_in? %>
+          <% if user_signed_in? %>
             <%= link_to (t :profile), user_path(current_user),
                                       class: "nav-link login-link" %>
           <% else %>
-            <%= link_to (t :login), login_path,
+            <%= link_to (t :login), new_user_session_path,
                                     class: "nav-link login-link"%>
           <% end %>
         </div>

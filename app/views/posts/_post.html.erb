@@ -16,13 +16,6 @@
                                 class: "fs-4 text-dark",
                                 data: { turbo_frame: "_top" } %>
 
-                    <% if current_user&.admin? || 
-                        (current_user&.author_of_post?(post) &&
-                        current_url == user_url(current_user) ) %>
-                        <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: t(:sure?), turbo: true }) do |f| %>
-                            <%= f.submit t(:delete) %>
-                        <% end %>
-                    <% end %>
                 </span>
             </span>
 
@@ -56,7 +49,7 @@
             </span>
             <span>
                 <%= time_ago_in_words(post.created_at) %> <%= t :ago %>,
-                <%= t :by %> <%= link_to post.user.username, post.user,
+                <%= t :by %> <%= link_to post.user.email, post.user,
                             class: "text-secondary text-emphasize",
                             data: { turbo_frame: '_top' } %>
             </span>
