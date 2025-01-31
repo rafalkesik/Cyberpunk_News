@@ -166,7 +166,12 @@ body {
     .alert {
         --bs-alert-margin-bottom: 0;
     }
-
+    
+    .alert-notice, .alert-alert {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+    }
 }
 
 // Form styles

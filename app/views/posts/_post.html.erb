@@ -49,7 +49,7 @@
             </span>
             <span>
                 <%= time_ago_in_words(post.created_at) %> <%= t :ago %>,
-                <%= t :by %> <%= link_to post.user.email, post.user,
+                <%= t :by %> <%= link_to post.user.username, post.user,
                             class: "text-secondary text-emphasize",
                             data: { turbo_frame: '_top' } %>
             </span>

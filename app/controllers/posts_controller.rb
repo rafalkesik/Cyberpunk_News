@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :authenticate,     only: [:new, :create, :destroy]
-  before_action :verify_destroyer, only: [:destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :verify_destroyer,   only: [:destroy]
 
   def index
     @posts = Post.order(created_at: :desc)
