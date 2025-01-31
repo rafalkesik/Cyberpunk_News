@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe 'Posts', type: :request do
   describe 'GET /posts' do
     it 'renders all posts' do
-      skip 'To be adjusted to Devise'
       get posts_path, as: :turbo_stream
       Post.all.each do |post|
         assert_select 'a[href=?]', post_path(post), post.title
@@ -19,11 +18,11 @@ RSpec.describe 'Posts', type: :request do
       let(:admin) { users(:admin) }
 
       before do
-        login_as(admin)
+        sign_in admin
       end
 
       it 'shows delete buttons for each post' do
-        skip 'To be adjusted to Devise'
+        skip
         get posts_path, as: :turbo_stream
         assert_select 'input[type="submit"][value="delete"]',
                       count: Post.count

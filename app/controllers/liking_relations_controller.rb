@@ -7,7 +7,12 @@ class LikingRelationsController < ApplicationController
     @relation.liking_user_id = current_user&.id
     @post = @relation.liked_post
 
-    @relation.save if @relation.valid?
+    return if @relation.save
+
+    flash.now[:danger] = t 'flash.post_deleted'
+    render turbo_stream: [
+      turbo_stream.update('flash-messages', partial: 'layouts/flash')
+    ]
   end
 
   def destroy
