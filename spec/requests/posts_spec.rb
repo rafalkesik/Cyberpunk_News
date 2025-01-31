@@ -22,7 +22,6 @@ RSpec.describe 'Posts', type: :request do
       end
 
       it 'shows delete buttons for each post' do
-        skip
         get posts_path, as: :turbo_stream
         assert_select 'input[type="submit"][value="delete"]',
                       count: Post.count
@@ -47,7 +46,11 @@ RSpec.describe 'Posts', type: :request do
       get post_path(showed_post), as: :turbo_stream
 
       expect(response).to render_template('posts/show')
-      # checks rendering of post
+    end
+
+    it 'renders all elements of post' do
+      get post_path(showed_post), as: :turbo_stream
+
       assert_select 'a[href=?]', post_path(showed_post), showed_post.title
       assert_select 'a[href=?]', post_path(showed_post),
                     "Comments: #{showed_post.comments.count}"
@@ -56,10 +59,18 @@ RSpec.describe 'Posts', type: :request do
       assert_select 'a[href=?]', showed_post.link,
                     "Read at: #{showed_post.short_link}"
       assert_select 'p', showed_post.content
-      # checks if new post form is rendered
+    end
+
+    it 'renders a new comment form' do
+      get post_path(showed_post), as: :turbo_stream
+
       assert_select 'form[action=?][method=?]',
                     '/en/comments', 'post'
-      # checks if comments are rendered
+    end
+
+    it 'renders all comments' do
+      get post_path(showed_post), as: :turbo_stream
+
       assert_select 'ul' do
         comments.each do |comment|
           assert_select 'li[id=?]', "comment-#{comment.id}" do
@@ -73,12 +84,12 @@ RSpec.describe 'Posts', type: :request do
   describe 'NEW /posts' do
     context 'when not logged in' do
       it 'redirects to login_path' do
-        skip 'To be adjusted to Devise'
         get new_post_path, as: :turbo_stream
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit posts.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
@@ -90,9 +101,9 @@ RSpec.describe 'Posts', type: :request do
         login_as(user)
       end
 
-      it 'renders template' do
-        skip 'To be adjusted to Devise'
+      it 'renders template with form' do
         get new_post_path, as: :turbo_stream
+
         expect(response).to render_template('posts/new')
         assert_select 'form[action=?]', '/en/posts'
       end
@@ -102,57 +113,67 @@ RSpec.describe 'Posts', type: :request do
   describe 'POST /posts' do
     context 'when not logged in' do
       it 'redirects to login_url' do
-        skip 'To be adjusted to Devise'
         post posts_path, as: :turbo_stream
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit posts.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
     context 'when logged in' do
       fixtures :users
       let(:user) { users(:michael) }
+      let(:valid_data) do
+        { title: 'Valid title',
+          content: 'Valid content',
+          link: 'https://site.com/valid',
+          points: 0,
+          category_id: 2 }
+      end
+      let(:invalid_data) do
+        { title: '  ',
+          content: '',
+          link: '',
+          points: 0 }
+      end
+
+      def perform_post_request(data)
+        post posts_path, as: :turbo_stream, params: { post: data }
+      end
 
       before do
         login_as(user)
       end
 
-      it 'creates a valid post' do
-        skip 'To be adjusted to Devise'
-        expect do
-          post posts_path,
-               as: :turbo_stream,
-               params: { post: { title: 'Valid title',
-                                 content: 'Valid content',
-                                 link: 'https://site.com/valid',
-                                 points: 0,
-                                 category_id: 2 } }
-        end.to change(Post, :count).by(1)
+      context 'when provided with valid data' do
+        it 'creates post' do
+          expect do
+            perform_post_request(valid_data)
+          end.to change(Post, :count).by(1)
+        end
 
-        expect(response).to redirect_to(posts_path)
-        expect(response).to have_http_status(303)
-        follow_redirect!
-        assert_select 'div.alert-success', 'News Post created!'
-        # makes sure that the new post is listed at /posts
-        assert_select 'a', 'Valid title'
+        it 'redirects to root' do
+          perform_post_request(valid_data)
+
+          expect(response).to redirect_to(posts_path)
+          expect(response).to have_http_status(303)
+          follow_redirect!
+          assert_select 'div.alert-success', (I18n.t 'flash.post_created')
+        end
       end
 
-      it 'does not create invalid post' do
-        skip 'To be adjusted to Devise'
-        expect do
-          post posts_path,
-               as: :turbo_stream,
-               params: { post: { title: '  ',
-                                 content: '',
-                                 link: '',
-                                 points: 0 } }
-        end.to change(Post, :count).by(0)
+      context 'when provided with invalid data' do
+        it 'does not create post' do
+          expect do
+            perform_post_request(invalid_data)
+          end.to change(Post, :count).by(0)
 
-        assert_select 'div.error-explanation' do
-          assert_select 'div.alert-danger',
-                        'The form contains errors:'
+          assert_select 'div.error-explanation' do
+            assert_select 'div.alert-danger',
+                          'The form contains errors:'
+          end
         end
       end
     end
@@ -162,14 +183,18 @@ RSpec.describe 'Posts', type: :request do
     fixtures :posts
     let(:deleted_post) { posts(:one) }
 
+    def perform_delete_request
+      delete post_path(deleted_post), as: :turbo_stream
+    end
+
     context 'when not logged in' do
       it 'redirects to login_url' do
-        skip 'To be adjusted to Devise'
-        delete post_path(deleted_post), as: :turbo_stream
+        perform_delete_request
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit posts.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
@@ -185,8 +210,8 @@ RSpec.describe 'Posts', type: :request do
         end
 
         it 'redirects to root' do
-          skip 'To be adjusted to Devise'
-          delete post_path(deleted_post), as: :turbo_stream
+          perform_delete_request
+
           expect(response).to redirect_to(root_url)
           expect(response).to have_http_status(303)
         end
@@ -198,26 +223,32 @@ RSpec.describe 'Posts', type: :request do
         end
 
         it 'deletes post' do
-          skip 'To be adjusted to Devise'
           expect do
-            delete post_path(deleted_post), as: :turbo_stream
+            perform_delete_request
           end.to change(Post, :count).by(-1)
+
           assert_select 'turbo-stream[target=?]', 'flash-messages' do
             assert_select 'template', 'Post deleted.'
           end
-          assert_select 'turbo-stream[action="remove"][target=?]',
-                        "post_#{deleted_post.id}"
         end
 
         context 'when in show_post view' do
-          it 'deletes post & redirects to root' do
-            skip 'To be adjusted to Devise'
+          it 'redirects to root' do
             get post_path(deleted_post)
             delete post_path(deleted_post),
                    as: :turbo_stream,
                    headers: { 'HTTP_REFERER' => post_url(deleted_post) }
             expect(response).to redirect_to(root_url)
             expect(response).to have_http_status(303)
+          end
+        end
+
+        context 'when in other views than show_post' do
+          it 'removes post from rendered list' do
+            perform_delete_request
+
+            assert_select 'turbo-stream[action="remove"][target=?]',
+                          "post_#{deleted_post.id}"
           end
         end
       end

@@ -16,6 +16,12 @@
                                 class: "fs-4 text-dark",
                                 data: { turbo_frame: "_top" } %>
 
+                    <% if current_user&.admin? || 
+                        (current_user&.author_of_post?(post) && current_url == user_url(current_user) ) %>
+                            <%= form_with(model: post, method: :delete, class: "d-inline-block", data: { turbo_confirm: t(:sure?), turbo: true }) do |f| %>
+                                <%= f.submit t(:delete) %>
+                            <% end %>
+                    <% end %>
                 </span>
             </span>
 
