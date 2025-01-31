@@ -8,6 +8,7 @@ AllCops:
       - 'db/schema.rb'
       - 'bin/*'
       - 'config/puma.rb'
+      - 'config/routes.rb'
       - '**/*.html.erb'
       - '**/*.turbo_stream.erb'
       - 'Guardfile'

@@ -7,11 +7,15 @@ RSpec.describe 'Comments', type: :request do
     let(:comment_post) { posts(:one) }
 
     context 'when not logged in' do
-      it 'does not create comment and shows flash' do
-        skip 'To be adjusted to Devise'
+      it 'does not create comment' do
         expect do
           post comments_path, as: :turbo_stream
         end.to change(Comment, :count).by(0)
+      end
+
+      it 'prompts the user to log-in' do
+        post comments_path, as: :turbo_stream
+
         assert_select 'div.alert-warning', 'Log in to submit comments.'
       end
     end
@@ -21,123 +25,135 @@ RSpec.describe 'Comments', type: :request do
         login_as(user)
       end
 
-      it 'does not create comment with invalid data' do
-        skip 'To be adjusted to Devise'
-        expect do
-          post comments_path,
-               as: :turbo_stream,
-               params: { comment: { post_id: comment_post.id,
-                                    user_id: user.id,
-                                    content: '  ' } }
-        end.to change(Comment, :count).by(0)
-        assert_select 'div.alert-danger', 'Comment not valid.'
+      context 'when data is invalid' do
+        let(:invalid_data) do
+          { post_id: comment_post.id,
+            user_id: user.id,
+            content: '  ' }
+        end
+
+        it 'does not create comment' do
+          expect do
+            post comments_path, as: :turbo_stream, params: { comment: invalid_data }
+          end.to change(Comment, :count).by(0)
+
+          assert_select 'div.alert-danger', 'Comment not valid.'
+        end
       end
 
-      it 'creates a comment with valid data' do
-        skip 'To be adjusted to Devise'
-        expect do
-          post comments_path,
-               as: :turbo_stream,
-               params: { comment: { post_id: comment_post.id,
-                                    user_id: user.id,
-                                    content: 'Valid content.' } }
-        end.to change(Comment, :count).by(1)
+      context 'when data is valid' do
+        let(:valid_data) do
+          { post_id: comment_post.id,
+            user_id: user.id,
+            content: 'Valid content.' }
+        end
+
+        it 'creates a comment' do
+          expect do
+            post comments_path, as: :turbo_stream, params: { comment: valid_data }
+          end.to change(Comment, :count).by(1)
+        end
       end
     end
   end
 
   describe 'DELETE /comment/:id' do
-    RSpec.shared_examples 'destroys comment and renders flash' do
-      it 'destroys comment and renders flash' do
-        skip 'To be adjusted to Devise'
-        expect do
-          delete comment_path(comment), as: :turbo_stream
-        end.to change(Comment, :count).by(-1)
-        assert_select 'div.alert-success', 'The comment has been deleted.'
-        assert_select 'turbo-stream[action="replace"][target=?]',
-                      "comment-#{comment.id}"
-      end
-    end
-
-    context 'which has no children' do
+    context 'when not logged in' do
       fixtures :comments
       let(:comment) { comments(:parent_of_none) }
 
-      context 'when logged in as author' do
-        let(:author) { comment.user }
-
-        before do
-          login_as(author)
-        end
-
-        include_examples('destroys comment and renders flash')
-      end
-
-      context 'when logged in as admin' do
-        fixtures :users
-        let(:admin) { users(:admin) }
-
-        before do
-          login_as(admin)
-        end
-
-        include_examples('destroys comment and renders flash')
-      end
-    end
-
-    context 'which has children' do
-      fixtures :comments
-      let(:comment) { comments(:parent_of_three_and_four) }
-      let(:child_one) { comment.subcomments.first }
-      let(:child_two) { comment.subcomments.last }
-      let(:author) { comment.user }
-
-      before do
-        login_as(author)
-      end
-
-      it 'hides the comment and does not delete it until its children are deleted' do
-        skip 'To be adjusted to Devise'
+      it 'does not delete comment' do
         expect do
           delete comment_path(comment), as: :turbo_stream
         end.to change(Comment, :count).by(0)
-        comment.reload
-        expect(comment.hidden).to be true
-
-        expect do
-          delete comment_path(child_one), as: :turbo_stream
-        end.to change(Comment, :count).by(-1)
-        expect do
-          delete comment_path(child_two), as: :turbo_stream
-        end.to change(Comment, :count).by(-2)
       end
-    end
 
-    context 'when not logged in' do
-      it 'does not delete comment and renders flash' do
-        skip 'To be adjusted to Devise'
-        expect do
-          delete comment_path(1), as: :turbo_stream
-        end.to change(Comment, :count).by(0)
+      it 'prompts the user to log-in' do
+        delete comment_path(comment), as: :turbo_stream
         assert_select 'div.alert-warning', 'Log in to submit comments.'
       end
     end
 
     context 'when logged in as non-admin and non-author' do
-      fixtures :users
+      fixtures :users, :comments
       let(:user) { users(:michael) }
+      let(:comment) { comments(:parent_of_none) }
 
       before do
         login_as(user)
       end
 
-      it 'does not delete comment and redirects to root' do
-        skip 'To be adjusted to Devise'
+      it 'does not delete comment' do
         expect do
-          delete comment_path(1), as: :turbo_stream
+          delete comment_path(comment), as: :turbo_stream
         end.to change(Comment, :count).by(0)
+      end
+
+      it 'redirects to root' do
+        delete comment_path(comment), as: :turbo_stream
+
         expect(response).to redirect_to(root_url)
         expect(response).to have_http_status(303)
+      end
+    end
+
+    context 'when logged in as author or admin' do
+      fixtures :users, :comments
+      let(:parent)    { comments(:parent_of_three_and_four) }
+      let(:child_one) { comments(:child_of_one) }
+      let(:child_two) { comments(:second_child_of_one) }
+      let(:admin)     { users(:admin) }
+      let(:author)    { child_one.user }
+
+      context 'when comment has no children' do
+        it 'destroys comment' do
+          sign_in author
+          expect do
+            delete comment_path(child_one), as: :turbo_stream
+          end.to change(Comment, :count).by(-1)
+
+          sign_in admin
+          expect do
+            delete comment_path(child_two), as: :turbo_stream
+          end.to change(Comment, :count).by(-1)
+
+          assert_select 'div.alert-success', 'The comment has been deleted.'
+          assert_select 'turbo-stream[action="replace"][target=?]',
+                        "comment-#{child_two.id}"
+        end
+
+        context 'when comment has no siblings and a hidden parent' do
+          before do
+            parent.update(hidden: true)
+            sign_in admin
+            delete comment_path(child_two), as: :turbo_stream
+          end
+
+          it 'destroys comment and its hidden parent' do
+            expect do
+              delete comment_path(child_one), as: :turbo_stream
+            end.to change(Comment, :count).by(-2)
+            expect(Comment.exists?(parent.id)).to be false
+          end
+        end
+      end
+
+      context 'when comment has children' do
+        before do
+          sign_in admin
+        end
+
+        it 'does not destroy the comment' do
+          expect do
+            delete comment_path(parent), as: :turbo_stream
+          end.to change(Comment, :count).by(0)
+        end
+
+        it 'hides the comment' do
+          delete comment_path(parent), as: :turbo_stream
+          parent.reload
+          expect(parent.hidden).to be true
+        end
       end
     end
   end

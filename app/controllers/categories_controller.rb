@@ -1,13 +1,12 @@
 class CategoriesController < ApplicationController
-  before_action :authenticate,     only: [:new, :create, :destroy]
-  before_action :verify_destroyer, only: [:destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :verify_destroyer,   only: [:destroy]
 
   def new
     @category = Category.new
   end
 
   def show
-    # @category = Category.find_by(title: params[:title])
     @category = Category.find_by(slug: params[:slug])
     @posts = @category.posts.order(created_at: :desc)
   end
@@ -34,10 +33,6 @@ class CategoriesController < ApplicationController
   end
 
   private
-
-  def authenticate
-    authenticate_with_redirect('flash.authenticate_add_category')
-  end
 
   def verify_destroyer
     return if current_user.admin

@@ -13,14 +13,17 @@ Rails.application.routes.draw do
     delete 'comment_liking_relations', to: 'comment_liking_relations#destroy'
 
     devise_scope :user do
-      get   'login',      to: 'devise/sessions#new'
-      post  'login',      to: 'devise/sessions#create'
-      delete 'sessions',  to: 'devise/sessions#destroy'
+      get    'login',  to: 'users/sessions#new'
+      post   'login',  to: 'users/sessions#create'
+      delete 'logout', to: 'users/sessions#destroy'
     end
 
-    devise_for :users, controllers: { passwords: 'users/passwords',
-                                      registrations: 'users/registrations',
-                                      sessions: 'users/sessions' }
+    devise_for :users,
+               path: '',
+               path_names: { sign_in: 'login', sign_out: 'logout' },
+               controllers: { passwords: 'users/passwords',
+                              registrations: 'users/registrations',
+                              sessions: 'users/sessions' }
     resources :users
     resources :posts
     resources :liking_relations

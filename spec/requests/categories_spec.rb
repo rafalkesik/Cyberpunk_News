@@ -18,12 +18,12 @@ RSpec.describe 'Categories', type: :request do
   describe 'NEW /categories' do
     context 'when not logged in' do
       it 'redirects to login url' do
-        skip 'To be adjusted to Devise'
         get new_category_path, as: :turbo_stream
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit or edit categories.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
   end
@@ -53,60 +53,66 @@ RSpec.describe 'Categories', type: :request do
     end
 
     context 'when not logged in' do
-      it "doesn't create a post and redirects to login url" do
-        skip 'To be adjusted to Devise'
+      it "doesn't create a post" do
         expect { perform_post_request('') }.to change(Category, :count).by(0)
+      end
+
+      it 'redirects to login_url' do
+        perform_post_request('')
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit or edit categories.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
     context 'when logged in' do
-      let(:invalid_category_params) do
-        { title: ' ',
-          slug: 'Test Slug',
-          description: '' }
-      end
-
-      let(:valid_category_params) do
-        { title: 'New Category',
-          slug: 'new_category',
-          description: 'Lorem impsum' }
-      end
-
       before do
         login_as(user)
       end
 
-      it 'does not create category with invalid data' do
-        skip 'To be adjusted to Devise'
+      context 'when data is invalid' do
+        let(:invalid_category_params) do
+          { title: ' ',
+            slug: 'Test Slug',
+            description: '' }
+        end
 
-        expect do
-          perform_post_request(invalid_category_params)
-        end.to change(Category, :count).by(0)
+        it 'does not create category' do
+          expect do
+            perform_post_request(invalid_category_params)
+          end.to change(Category, :count).by(0)
 
-        assert_select 'div.error-explanation' do
-          assert_select 'div.alert-danger',
-                        'The form contains errors:'
+          assert_select 'div.error-explanation' do
+            assert_select 'div.alert-danger',
+                          'The form contains errors:'
+          end
         end
       end
 
-      it 'creates a valid category and redirects to categories path' do
-        skip 'To be adjusted to Devise'
+      context 'when data is valid' do
+        let(:valid_category_params) do
+          { title: 'New Category',
+            slug: 'new_category',
+            description: 'Lorem impsum' }
+        end
 
-        expect do
+        it 'creates a valid category' do
+          expect do
+            perform_post_request(valid_category_params)
+          end.to change(Category, :count).by(1)
+        end
+
+        it 'redirects to categories path' do
           perform_post_request(valid_category_params)
-        end.to change(Category, :count).by(1)
 
-        expect(response).to redirect_to(categories_path)
-        expect(response).to have_http_status(:see_other)
-
-        follow_redirect!
-
-        assert_select 'div.alert-success', 'Category created!'
-        assert_select 'a', 'New Category'
+          expect(response).to redirect_to(categories_path)
+          expect(response).to have_http_status(303)
+          follow_redirect!
+          assert_select 'div.alert-success', 'Category created!'
+          assert_select 'a', 'New Category'
+        end
       end
     end
   end
@@ -124,12 +130,15 @@ RSpec.describe 'Categories', type: :request do
         login_as(non_admin)
       end
 
-      it "doesn't delete category and redirects to root" do
-        skip 'To be adjusted to Devise'
-
+      it "doesn't delete category" do
         expect do
           delete category_path(category), as: :turbo_stream
         end.to change(Category, :count).by(0)
+      end
+
+      it 'redirects to root' do
+        delete category_path(category), as: :turbo_stream
+
         expect(response).to redirect_to(root_url)
         expect(response).to have_http_status(303)
       end
@@ -141,16 +150,17 @@ RSpec.describe 'Categories', type: :request do
       end
 
       it 'deletes a category' do
-        skip 'To be adjusted to Devise'
-
         expect do
-          expect do
-            delete category_path(category.slug),
-                   as: :turbo_stream
-          end.to change(Category, :count).by(-1)
-        end.to change { default_category.posts.count }.by(posts_count)
+          delete category_path(category.slug), as: :turbo_stream
+        end.to change(Category, :count).by(-1)
 
         assert_select 'div.alert-success', 'Category deleted.'
+      end
+
+      it "deletes category's posts" do
+        expect do
+          delete category_path(category.slug), as: :turbo_stream
+        end.to change { default_category.posts.count }.by(posts_count)
       end
     end
   end
