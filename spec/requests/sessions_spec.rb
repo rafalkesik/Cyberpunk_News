@@ -7,7 +7,7 @@ RSpec.describe 'Sessions', type: :request do
 
       expect(response).to render_template('devise/sessions/new')
       assert_select 'h2', 'Log in'
-      assert_select 'form[action=?][method=?]', '/en/login', 'post'
+      assert_select 'form[action=?][method=?]', login_path, 'post'
     end
   end
 

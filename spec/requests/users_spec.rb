@@ -55,16 +55,6 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  # to be moved to registration spec
-  describe 'GET /sign_up' do
-    it 'renders template with signup form' do
-      get new_user_registration_path, as: :turbo_stream
-      expect(response).to render_template('devise/registrations/new')
-      assert_select 'h2', 'Sign up'
-      assert_select 'form[action=?][method="post"]', user_registration_path
-    end
-  end
-
   describe 'SHOW /users/:id' do
     fixtures :users
     let(:user) { users(:michael) }
@@ -136,81 +126,6 @@ RSpec.describe 'Users', type: :request do
             end
           end
         end
-      end
-    end
-  end
-
-  # to be moved to registration spec
-  describe 'POST /users' do
-    context 'when data is valid' do
-      let(:data) do
-        { username: 'valid_name',
-          email: 'valid@email.com',
-          password: 'password',
-          password_confirmation: 'password' }
-      end
-
-      it 'signs up and logs in' do
-        expect do
-          post user_registration_path, as: :turbo_stream, params: { user: data }
-        end.to change(User, :count).by(1)
-
-        expect(response).to redirect_to(User.last)
-        expect(response).to have_http_status(303)
-        follow_redirect!
-        assert_select 'div.alert-notice', 'Welcome! You have signed up successfully.'
-      end
-    end
-
-    context 'when data is invalid' do
-      let(:data) do
-        { username: 'michael',
-          email: 'michael#example.com',
-          password: 'password',
-          password_confirmation: 'password1' }
-      end
-
-      it 'renders errors' do
-        expect do
-          post user_registration_path, as: :turbo_stream, params: { user: data }
-        end.to change(User, :count).by(0)
-
-        expect(response.body).to include('The form contains errors:')
-      end
-    end
-  end
-
-  # to be moved to registration spec
-  describe 'UPDATE /users/:id' do
-    fixtures :users
-    let(:user) { users(:michael) }
-    let(:other_user) { users(:dwight) }
-
-    before do
-      login_as(user)
-    end
-
-    context 'when given valid data' do
-      let(:data) { { username: 'New Username' } }
-
-      it 'updates username' do
-        patch user_registration_path, as: :turbo_stream, params: { user: data }
-        user.reload
-        expect(user.username).to eq('New Username')
-        follow_redirect!
-        expect(response.body).to include(user.username)
-        expect(response.body).to include('Your account has been updated successfully.')
-      end
-    end
-
-    context 'when given invalid data' do
-      let(:data) { { username: ' ' } }
-
-      it 'does not update username' do
-        patch user_registration_path, as: :turbo_stream, params: { user: data }
-        user.reload
-        expect(user.username).to eq('michael')
-        expect(response.body).to include('The form contains errors:')
       end
     end
   end

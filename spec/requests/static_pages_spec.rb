@@ -16,7 +16,7 @@ RSpec.describe 'StaticPages', type: :request do
       it 'renders full page layout' do
         assert_select 'a[href=?]', '/en', count: 3
         assert_select 'a[href=?]', '/pl', count: 1
-        assert_select 'a[href=?]', '/en/login'
+        assert_select 'a[href=?]', login_path
         assert_select 'header'
         assert_select 'div.content-container'
         assert_select 'footer'
