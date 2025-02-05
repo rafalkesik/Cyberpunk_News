@@ -6,8 +6,6 @@ Rails.application.routes.draw do
     get  'guidelines',  to: 'static_pages#guidelines'
     get  'faq',         to: 'static_pages#faq'
     get  'contact',     to: 'static_pages#contact'
-    get  'empty_site',  to: 'static_pages#empty_site'
-    get  'in_progress', to: 'static_pages#empty_functionality'
 
     delete 'liking_relations',         to: 'liking_relations#destroy'
     delete 'comment_liking_relations', to: 'comment_liking_relations#destroy'

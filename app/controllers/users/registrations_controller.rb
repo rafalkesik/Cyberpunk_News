@@ -2,61 +2,64 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
-
-  # GET /resource/sign_up
-  # def new
-  #   super
-  # end
-
-  # POST /resource
-  # def create
-  #   super
-  # end
-
-  # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  before_action :configure_account_update_params, only: [:update]
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  # Default Devise logic,
+  # except that now after edit, it rerenders profile page.
+  def update #  rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
-  # DELETE /resource
-  # def destroy
-  #   super
-  # end
+    resource_updated = update_resource(resource, account_update_params)
+    if resource_updated
+      set_flash_message_for_update(resource, prev_unconfirmed_email)
+      bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
 
-  # GET /resource/cancel
-  # Forces the session data which is usually expired after sign
-  # in to be expired now. This is useful if the user wants to
-  # cancel oauth signing in/up in the middle of the process,
-  # removing all OAuth session data.
-  # def cancel
-  #   super
-  # end
+      # Reloads profile page
+      respond_with resource, location: user_path(current_user)
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
 
-  # protected
+      # Reloads profile page with errors
+      render turbo_stream: [
+        turbo_stream.update('edit_username_form',
+                            partial: 'users/edit_username_form'),
+        turbo_stream.update('flash-messages', partial: 'layouts/flash')
+      ]
+    end
+  end
 
-  # If you have extra params to permit, append them to the sanitizer.
+  protected
+
+  # Permit :username.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
   end
 
-  # If you have extra params to permit, append them to the sanitizer.
-  # def configure_account_update_params
-  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-  # end
+  def configure_account_update_params
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username])
+  end
 
-  # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  # Allow to update user without password.
+  def update_resource(resource, params)
+    resource.update_without_password(params)
+  end
 
-  # The path used after sign up for inactive accounts.
-  # def after_inactive_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  private
+
+  # change flash type to :success
+  def set_flash_message_for_update(resource, prev_unconfirmed_email)
+    return unless is_flashing_format?
+
+    flash_key = if update_needs_confirmation?(resource, prev_unconfirmed_email)
+                  :update_needs_confirmation
+                elsif sign_in_after_change_password?
+                  :updated
+                else
+                  :updated_but_not_signed_in
+                end
+    set_flash_message :success, flash_key
+  end
 end

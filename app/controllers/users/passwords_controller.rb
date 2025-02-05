@@ -9,7 +9,7 @@ class Users::PasswordsController < Devise::PasswordsController
     if user_signed_in?
       user_path(current_user)
     else
-      super # Default behavior (redirects to new session/login page)
+      super # Default behavior (redirects to login page)
     end
   end
 end

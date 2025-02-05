@@ -40,10 +40,6 @@ class PostsController < ApplicationController
 
   private
 
-  def authenticate
-    authenticate_with_redirect('flash.authenticate_add_post')
-  end
-
   def verify_destroyer
     @post = Post.find(params[:id])
 

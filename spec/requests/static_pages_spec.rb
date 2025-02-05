@@ -14,7 +14,6 @@ RSpec.describe 'StaticPages', type: :request do
       include_examples 'check h1', 'All Cyber News'
 
       it 'renders full page layout' do
-        skip 'To be adjusted to Devise'
         assert_select 'a[href=?]', '/en', count: 3
         assert_select 'a[href=?]', '/pl', count: 1
         assert_select 'a[href=?]', '/en/login'

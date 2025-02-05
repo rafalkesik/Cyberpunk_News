@@ -1,21 +1,4 @@
-<%= render 'user_data' %>
-
-<% if @showing_current_user %>
-    <%= form_with url: destroy_user_session_path, method: :delete do |f|%>
-        <%= f.submit t :logout %>
-    <% end %>
-<% end %>
-
-<% if @showing_current_user %>
-    <div class="pt-3 pb-4">
-        <%= render 'reset_form' %>
-    </div> 
-
-    <div class="pt-3 pb-4">
-        <%= render 'edit_username_form' %>
-    </div> 
-<% end %>
-
+<h1 id='username'><%= @user.username %></h1>
 
 <div>
     <h3><%= t :posts_by %></h3>

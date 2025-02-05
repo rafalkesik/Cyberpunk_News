@@ -1,24 +1,7 @@
 class StaticPagesController < ApplicationController
-  include ApplicationHelper
+  def faq; end
 
-  def home
-    @user = current_user
-  end
+  def contact; end
 
-  def guidelines
-    @user = current_user
-  end
-
-  def faq
-    @user = current_user
-  end
-
-  def contact
-    @user = current_user
-  end
-
-  def empty_site
-    flash[:warning] = t 'flash.page_in_progress'
-    redirect_to root_url
-  end
+  def empty_site; end
 end

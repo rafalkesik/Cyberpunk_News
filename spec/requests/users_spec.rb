@@ -4,12 +4,11 @@ RSpec.describe 'Users', type: :request do
   describe 'GET /users' do
     context 'when not logged in' do
       it 'redirects to login_url' do
-        skip 'To be adjusted to Devise'
         get users_path, as: :turbo_stream
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert', 'Please log in to view that page.'
+        assert_select 'div.alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
@@ -17,10 +16,10 @@ RSpec.describe 'Users', type: :request do
       fixtures :users
 
       context 'as normal user' do
-        let(:user) { users(:michael) }
+        let!(:user) { users(:michael) }
 
         before do
-          login_as(user)
+          sign_in user
         end
 
         it 'renders template with all users' do
@@ -28,16 +27,16 @@ RSpec.describe 'Users', type: :request do
           expect(response).to render_template('users/index')
           User.all.each do |user|
             assert_select 'a[href=?]', user_path(user), user.username
-            assert_select 'form[action=?]', user_path(user), count: 0
+            assert_select 'form[action=?][method="delete"]', user_path(user), count: 0
           end
         end
       end
 
       context 'as admin' do
-        let(:admin) { users(:admin) }
+        let!(:admin) { users(:admin) }
 
         before do
-          login_as(admin)
+          sign_in admin
         end
 
         it 'renders tempalate with all users & delete buttons' do
@@ -45,19 +44,24 @@ RSpec.describe 'Users', type: :request do
           expect(response).to render_template('users/index')
           User.all.each do |user|
             assert_select 'a[href=?]', user_path(user), user.username
-            assert_select 'form[action=?]', user_path(user) if !user.admin
+            next if user.admin
+
+            assert_select 'form[action=?]', user_path(user) do
+              assert_select 'input[value="delete"]'
+            end
           end
         end
       end
     end
   end
 
-  describe 'GET /login' do
-    it 'renders template with login & signup form' do
-      skip 'To be adjusted to Devise'
-      get login_path, as: :turbo_stream
-      assert_select 'h3', 'Sign up'
-      assert_select 'form[action=?][method="post"]', users_path
+  # to be moved to registration spec
+  describe 'GET /sign_up' do
+    it 'renders template with signup form' do
+      get new_user_registration_path, as: :turbo_stream
+      expect(response).to render_template('devise/registrations/new')
+      assert_select 'h2', 'Sign up'
+      assert_select 'form[action=?][method="post"]', user_registration_path
     end
   end
 
@@ -69,39 +73,32 @@ RSpec.describe 'Users', type: :request do
 
     context 'when not logged in' do
       it 'redirects to login_url' do
-        skip 'To be adjusted to Devise'
         get user_path(other_user)
+        expect(response).to have_http_status(302)
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
         follow_redirect!
-        assert_select 'div.alert', (I18n.t 'flash.authenticate')
+        assert_select 'div.alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
     context 'when logged in' do
-      context 'as normal user' do
-        before do
-          login_as(user)
-        end
+      before do
+        login_as(user)
+      end
 
-        it 'shows a different user template' do
-          get user_path(other_user), as: :turbo_stream
-          expect(response).to render_template('users/show')
-          assert_select 'h1', other_user.username
-          assert_select 'form[action=?]', '/sessions', count: 0
-          assert_select 'form[action=?]', "/users/#{other_user.id}", count: 0
-          other_user.posts.each do |post|
-            assert_select 'a', post.title
-          end
-        end
-
-        it 'shows self-user template' do
-          skip 'To be adjusted to Devise'
+      context "when :id is user's own id" do
+        it 'renders profile template' do
           get user_path(user), as: :turbo_stream
-          expect(response).to render_template('users/show')
+          expect(response).to have_http_status(200)
+          expect(response).to render_template('users/profile')
+          expect(response.body).to include("e-mail: #{user.email}")
           assert_select 'h1', user.username
-          assert_select 'form[action=?]', '/en/sessions', count: 1
-          assert_select 'form[action=?]', "/en/users/#{user.id}", count: 1
+          assert_select 'form[action=?]', logout_path, count: 1
+          assert_select 'form[action=?]', user_password_path, count: 1
+          assert_select 'form[action=?]', user_registration_path, count: 1 do
+            assert_select 'input[value=patch]'
+          end
+
           user.posts.each do |post|
             assert_select 'a', post.title
           end
@@ -110,17 +107,32 @@ RSpec.describe 'Users', type: :request do
         end
       end
 
-      context 'as admin' do
-        before do
-          login_as(admin)
+      context 'when :id is of another user' do
+        it 'renders a show-user template' do
+          get user_path(other_user), as: :turbo_stream
+          expect(response).to have_http_status(200)
+          expect(response).to render_template('users/show')
+          expect(response.body).not_to include("e-mail: #{other_user.email}")
+          assert_select 'h1', other_user.username
+          assert_select 'form[action=?]', '/sessions', count: 0
+          assert_select 'form[action=?]', "/users/#{other_user.id}", count: 0
+          other_user.posts.each do |post|
+            assert_select 'a', post.title
+          end
         end
 
-        it 'shows other user with posts delete buttons' do
-          skip 'To be adjusted to Devise'
-          get user_path(other_user)
-          other_user.posts.each do |post|
-            assert_select 'form[action=?]', post_path(post) do
-              assert_select 'input[type="submit"][value=?]', 'delete'
+        context 'when logged in as admin' do
+          before do
+            login_as(admin)
+          end
+
+          it "renders delete buttons by the user's posts" do
+            get user_path(other_user)
+            expect(response).to render_template('users/show')
+            other_user.posts.each do |post|
+              assert_select 'form[action=?]', post_path(post) do
+                assert_select 'input[type="submit"][value=?]', 'delete'
+              end
             end
           end
         end
@@ -128,90 +140,77 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
+  # to be moved to registration spec
   describe 'POST /users' do
-    it 'signs up and logs in with valid data' do
-      skip 'To be adjusted to Devise'
-      expect do
-        post users_path,
-             as: :turbo_stream,
-             params: { user: { username: 'valid_name',
-                               password: 'password',
-                               password_confirmation: 'password' } }
-      end.to change(User, :count).by(1)
+    context 'when data is valid' do
+      let(:data) do
+        { username: 'valid_name',
+          email: 'valid@email.com',
+          password: 'password',
+          password_confirmation: 'password' }
+      end
 
-      expect(response).to redirect_to(User.last)
-      expect(response).to have_http_status(303)
-      follow_redirect!
-      assert_select 'div.alert-success', 'New user created & logged in.'
+      it 'signs up and logs in' do
+        expect do
+          post user_registration_path, as: :turbo_stream, params: { user: data }
+        end.to change(User, :count).by(1)
+
+        expect(response).to redirect_to(User.last)
+        expect(response).to have_http_status(303)
+        follow_redirect!
+        assert_select 'div.alert-notice', 'Welcome! You have signed up successfully.'
+      end
     end
 
-    it 'renders errors with invalid data' do
-      skip 'To be adjusted to Devise'
-      expect do
-        post users_path,
-             as: :turbo_stream,
-             params: { user: { username: 'michael',
-                               password: 'password',
-                               password_confirmation: 'password1' } }
-      end.to change(User, :count).by(0)
+    context 'when data is invalid' do
+      let(:data) do
+        { username: 'michael',
+          email: 'michael#example.com',
+          password: 'password',
+          password_confirmation: 'password1' }
+      end
 
-      assert_select 'turbo-stream[action="update"][target=?]', 'new_user' do
-        assert_select 'template' do
-          assert_select '.alert.alert-danger', 'The form contains errors:'
-        end
+      it 'renders errors' do
+        expect do
+          post user_registration_path, as: :turbo_stream, params: { user: data }
+        end.to change(User, :count).by(0)
+
+        expect(response.body).to include('The form contains errors:')
       end
     end
   end
 
+  # to be moved to registration spec
   describe 'UPDATE /users/:id' do
     fixtures :users
     let(:user) { users(:michael) }
     let(:other_user) { users(:dwight) }
 
-    context 'when logged in as a different user (security case)' do
-      before do
-        login_as(other_user)
-      end
+    before do
+      login_as(user)
+    end
 
-      it 'redirects to root_url' do
-        patch user_path(user), as: :turbo_stream
-        expect(response).to redirect_to(root_url)
-        expect(response).to have_http_status(303)
+    context 'when given valid data' do
+      let(:data) { { username: 'New Username' } }
+
+      it 'updates username' do
+        patch user_registration_path, as: :turbo_stream, params: { user: data }
+        user.reload
+        expect(user.username).to eq('New Username')
+        follow_redirect!
+        expect(response.body).to include(user.username)
+        expect(response.body).to include('Your account has been updated successfully.')
       end
     end
 
-    context 'when logged in as the updated user' do
-      before do
-        login_as(user)
-      end
+    context 'when given invalid data' do
+      let(:data) { { username: ' ' } }
 
-      it 'updates user with valid data' do
-        skip 'To be adjusted to Devise'
-        patch user_path(user),
-              as: :turbo_stream,
-              params: { user: { username: user.username,
-                                password: 'NewPass',
-                                password_confirmation: 'NewPass' } }
+      it 'does not update username' do
+        patch user_registration_path, as: :turbo_stream, params: { user: data }
         user.reload
-        expect(user.authenticate('NewPass')).to be_truthy
-        assert_select 'turbo-stream[target=?]', 'flash-messages' do
-          assert_select 'template', 'Password updated.'
-        end
-      end
-
-      it 'renders errors with invalid data' do
-        skip 'To be adjusted to Devise'
-        get user_path(user)
-        patch user_path(user),
-              as: :turbo_stream,
-              params: { user: { username: user.username,
-                                password: 'NewPass',
-                                password_confirmation: 'Invalid' } }
-        user.reload
-        expect(user.authenticate('NewPass')).to be false
-        assert_select 'turbo-stream[target=?]', 'flash-messages' do
-          assert_select 'template', "Passwords don't match."
-        end
+        expect(user.username).to eq('michael')
+        expect(response.body).to include('The form contains errors:')
       end
     end
   end
@@ -220,10 +219,12 @@ RSpec.describe 'Users', type: :request do
     fixtures :users
     let(:user) { users(:michael) }
     let(:admin) { users(:admin) }
+    let(:other_user) { users(:dwight) }
 
     context 'when not logged in' do
-      it 'redirects to login_url' do
-        delete user_path(user)
+      it 'redirects to root_url' do
+        delete user_path(user), as: :turbo_stream
+        expect(response).to have_http_status(303)
         expect(response).to redirect_to(root_url)
       end
     end
@@ -234,7 +235,8 @@ RSpec.describe 'Users', type: :request do
       end
 
       it 'redirects to root_url' do
-        delete user_path(user)
+        delete user_path(other_user), as: :turbo_stream
+        expect(response).to have_http_status(303)
         expect(response).to redirect_to(root_url)
       end
     end
@@ -244,11 +246,9 @@ RSpec.describe 'Users', type: :request do
         login_as(admin)
       end
 
-      it 'deletes the user and its posts' do
+      it 'deletes the user' do
         expect do
-          expect do
-            delete user_path(user), as: :turbo_stream
-          end.to change(Post, :count).by(-user.posts.count)
+          delete user_path(user), as: :turbo_stream
         end.to change(User, :count).by(-1)
 
         assert_select 'turbo-stream[action=replace][target=?]', 'flash-messages' do
@@ -257,6 +257,12 @@ RSpec.describe 'Users', type: :request do
         end
         assert_select 'turbo-stream[action=remove][target=?]',
                       "user-#{user.id}"
+      end
+
+      it "deletes the user's posts" do
+        expect do
+          delete user_path(user), as: :turbo_stream
+        end.to change(Post, :count).by(-user.posts.count)
       end
     end
   end

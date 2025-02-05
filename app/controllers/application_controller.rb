@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :user_signed_in? # Ensure Devise helpers are available in views
+  include CustomDeviseHelper
   around_action :switch_locale
 
   # Changes language for every action based on :locale param

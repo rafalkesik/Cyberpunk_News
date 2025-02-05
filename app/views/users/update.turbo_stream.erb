@@ -2,8 +2,8 @@
     <%= render 'edit_username_form' %>
 <% end %>
 
-<%= turbo_stream.replace 'user_data' do %>
-    <%= render 'user_data' %>
+<%= turbo_stream.update 'username' do %>
+    <%= @user.username %>
 <% end %>
 
 <%= turbo_stream.replace "flash-messages" do %>
