@@ -16,7 +16,7 @@ class Comment < ApplicationRecord
   end
 
   def liked_by?(user)
-    comment_liking_relations.find_by(liking_user: user).present?
+    self.comment_liking_relations.find_by(liking_user: user).present?
   end
 
   def destroy_and_its_parents_if_they_are_redundant
