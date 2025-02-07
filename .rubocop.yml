@@ -13,6 +13,7 @@ AllCops:
       - '**/*.html.erb'
       - '**/*.turbo_stream.erb'
       - 'Guardfile'
+      - 'app/mailers/application_mailer.rb'
 
 
 # Disabled rules

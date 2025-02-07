@@ -319,6 +319,7 @@ GEM
       better_html
       rubocop (~> 1.45)
     ruby-progressbar (1.13.0)
+    ruby_http_client (3.5.5)
     rubyzip (2.4.1)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -334,6 +335,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sendgrid-ruby (6.7.0)
+      ruby_http_client (~> 3.4)
     shellany (0.0.1)
     smart_properties (1.17.0)
     sprockets (4.2.1)
@@ -411,6 +414,7 @@ DEPENDENCIES
   rubocop-erb (~> 0.3.0)
   sassc-rails (= 2.1.2)
   selenium-webdriver (= 4.2.0)
+  sendgrid-ruby
   sprockets-rails (= 3.4.2)
   sqlite3 (~> 1.5)
   stimulus-rails (= 1.0.4)

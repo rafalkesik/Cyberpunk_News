@@ -23,4 +23,17 @@ class User < ApplicationRecord
   def author_of_comment?(comment)
     comment.user == self
   end
+
+  # Changes default devise mailer to SendGrid API method
+  def send_devise_notification(notification, *args)
+    # Generate the Devise mailer message
+    message = devise_mailer.send(notification, self, *args)
+
+    # Extract email subject and content
+    subject = message.subject
+    content = message.body.raw_source # Extract raw email content (text/html)
+
+    # Send email using SendGrid API
+    ApplicationMailer.new.send_email(email, subject, content)
+  end
 end
