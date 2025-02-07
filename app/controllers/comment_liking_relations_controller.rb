@@ -9,9 +9,6 @@ class CommentLikingRelationsController < ApplicationController
     return if @relation.save
 
     flash.now[:danger] = t 'flash.comment_deleted'
-    render turbo_stream: [
-      turbo_stream.update('flash-messages', partial: 'layouts/flash')
-    ]
   end
 
   def destroy

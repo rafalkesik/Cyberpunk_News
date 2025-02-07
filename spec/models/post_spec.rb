@@ -5,16 +5,16 @@ RSpec.describe Post, type: :model do
   let(:user) { users(:michael) }
   let(:post) { posts(:one) }
 
-  it 'is valid with valid arguments' do
+  it 'is valid when arguments are valid' do
     expect(post).to be_valid
   end
 
-  it 'is invalid with empty title' do
+  it 'is invalid when title is empty' do
     post.title = '  '
     expect(post).not_to be_valid
   end
 
-  it 'is invalid with both link and content being empty' do
+  it 'is invalid when both link and content are empty' do
     post.link = post.content = '  '
     expect(post).not_to be_valid
   end

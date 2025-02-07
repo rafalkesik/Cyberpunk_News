@@ -22,7 +22,7 @@ RSpec.describe 'Comments', type: :request do
 
     context 'when logged in' do
       before do
-        login_as(user)
+        sign_in user
       end
 
       context 'when data is invalid' do
@@ -80,7 +80,7 @@ RSpec.describe 'Comments', type: :request do
       let(:comment) { comments(:parent_of_none) }
 
       before do
-        login_as(user)
+        sign_in user
       end
 
       it 'does not delete comment' do
@@ -105,6 +105,24 @@ RSpec.describe 'Comments', type: :request do
       let(:admin)     { users(:admin) }
       let(:author)    { child_one.user }
 
+      context 'when comment has children' do
+        before do
+          sign_in admin
+        end
+
+        it 'does not destroy the comment' do
+          expect do
+            delete comment_path(parent), as: :turbo_stream
+          end.to change(Comment, :count).by(0)
+        end
+
+        it 'hides the comment' do
+          delete comment_path(parent), as: :turbo_stream
+          parent.reload
+          expect(parent.hidden).to be true
+        end
+      end
+
       context 'when comment has no children' do
         it 'destroys comment' do
           sign_in author
@@ -122,37 +140,19 @@ RSpec.describe 'Comments', type: :request do
                         "comment-#{child_two.id}"
         end
 
-        context 'when comment has no siblings and a hidden parent' do
+        context 'when comment is also the last child of a hidden parent' do
           before do
             parent.update(hidden: true)
             sign_in admin
             delete comment_path(child_two), as: :turbo_stream
           end
 
-          it 'destroys comment and its hidden parent' do
+          it "destroys comment's hidden parent" do
             expect do
               delete comment_path(child_one), as: :turbo_stream
             end.to change(Comment, :count).by(-2)
             expect(Comment.exists?(parent.id)).to be false
           end
-        end
-      end
-
-      context 'when comment has children' do
-        before do
-          sign_in admin
-        end
-
-        it 'does not destroy the comment' do
-          expect do
-            delete comment_path(parent), as: :turbo_stream
-          end.to change(Comment, :count).by(0)
-        end
-
-        it 'hides the comment' do
-          delete comment_path(parent), as: :turbo_stream
-          parent.reload
-          expect(parent.hidden).to be true
         end
       end
     end

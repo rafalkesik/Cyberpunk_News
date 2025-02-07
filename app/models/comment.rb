@@ -12,15 +12,11 @@ class Comment < ApplicationRecord
   validates_presence_of :content
 
   def points
-    self.comment_liking_relations.count
+    comment_liking_relations.count
   end
 
   def liked_by?(user)
-    !!my_liking_relation(user) # Should become .present?
-  end
-
-  def my_liking_relation(user)
-    comment_liking_relations.find_by(liking_user: user) if user
+    comment_liking_relations.find_by(liking_user: user).present?
   end
 
   def destroy_and_its_parents_if_they_are_redundant

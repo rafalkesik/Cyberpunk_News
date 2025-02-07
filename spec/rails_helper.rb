@@ -47,8 +47,6 @@ RSpec.configure do |config|
     I18n.locale = :en
   end
 
-  # Add spec/support/authentication_helpers.rb to every spec
-  config.include AuthenticationHelpers, type: :request
   # Add devise method (sign_in :user, scope: :admin; sign_out)
   config.include Devise::Test::IntegrationHelpers, type: :request
 

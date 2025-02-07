@@ -26,20 +26,34 @@ RSpec.describe 'Categories', type: :request do
         assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
+
+    context 'when logged in' do
+      fixtures :users
+      let(:user) { users(:michael) }
+
+      before do
+        sign_in user
+      end
+
+      it 'renders new category form' do
+        get new_category_path, as: :turbo_stream
+
+        expect(response).to have_http_status(200)
+        expect(response).to render_template('categories/new')
+      end
+    end
   end
 
   describe 'SHOW /categories/:slug' do
     fixtures :categories
     let(:category) { categories(:two) }
 
-    it 'renders layout' do
+    it 'renders all posts under this category' do
       get category_path(category.slug), as: :turbo_stream
 
       expect(response).to render_template('categories/show')
-      assert_select 'h3', "-#{category.title}-"
-      assert_select 'p', category.description
-      assert_select 'form[action=?]', new_post_path do
-        assert_select 'input[name="category_id"][value=?]', category.id
+      category.posts.each do |post|
+        assert_select 'a', post.title
       end
     end
   end
@@ -53,7 +67,7 @@ RSpec.describe 'Categories', type: :request do
     end
 
     context 'when not logged in' do
-      it "doesn't create a post" do
+      it "doesn't create a category" do
         expect { perform_post_request('') }.to change(Category, :count).by(0)
       end
 
@@ -69,7 +83,7 @@ RSpec.describe 'Categories', type: :request do
 
     context 'when logged in' do
       before do
-        login_as(user)
+        sign_in user
       end
 
       context 'when data is invalid' do
@@ -98,7 +112,7 @@ RSpec.describe 'Categories', type: :request do
             description: 'Lorem impsum' }
         end
 
-        it 'creates a valid category' do
+        it 'creates the category' do
           expect do
             perform_post_request(valid_category_params)
           end.to change(Category, :count).by(1)
@@ -127,7 +141,7 @@ RSpec.describe 'Categories', type: :request do
 
     context 'when not an admin' do
       before do
-        login_as(non_admin)
+        sign_in non_admin
       end
 
       it "doesn't delete category" do
@@ -146,10 +160,10 @@ RSpec.describe 'Categories', type: :request do
 
     context 'when an admin' do
       before do
-        login_as(admin)
+        sign_in admin
       end
 
-      it 'deletes a category' do
+      it 'deletes the category' do
         expect do
           delete category_path(category.slug), as: :turbo_stream
         end.to change(Category, :count).by(-1)

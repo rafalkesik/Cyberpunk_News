@@ -29,7 +29,7 @@ RSpec.describe 'CommentLikingRelations', type: :request do
       end
 
       before do
-        login_as(user)
+        sign_in user
       end
 
       context 'when comment exists' do
@@ -48,7 +48,7 @@ RSpec.describe 'CommentLikingRelations', type: :request do
           end
         end
 
-        it "increases comment's points" do
+        it "updates comment's points" do
           perform_post_request(comment.id)
 
           assert_select 'turbo-stream[target=?]', "comment-#{comment.id}-points" do
@@ -95,10 +95,10 @@ RSpec.describe 'CommentLikingRelations', type: :request do
       end
 
       before do
-        login_as(user)
+        sign_in user
       end
 
-      it 'unlikes the comment' do
+      it 'removes like' do
         expect { perform_delete_request }.to change(CommentLikingRelation, :count).by(-1)
       end
 
@@ -110,7 +110,7 @@ RSpec.describe 'CommentLikingRelations', type: :request do
         end
       end
 
-      it "decreases post's points" do
+      it "updates comment's points" do
         perform_delete_request
 
         assert_select 'turbo-stream[target=?]', "comment-#{liked_comment.id}-points" do

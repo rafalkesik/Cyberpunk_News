@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'UserRegistrations', type: :request do
   describe 'GET /sign_up' do
-    it 'renders template with signup form' do
+    it 'renders signup form' do
       get new_user_registration_path, as: :turbo_stream
       expect(response).to render_template('devise/registrations/new')
       assert_select 'h2', 'Sign up'
@@ -39,7 +39,7 @@ RSpec.describe 'UserRegistrations', type: :request do
           password_confirmation: 'password1' }
       end
 
-      it 'renders errors' do
+      it 'does not sign up & renders errors' do
         expect do
           post user_registration_path, as: :turbo_stream, params: { user: data }
         end.to change(User, :count).by(0)
@@ -55,7 +55,7 @@ RSpec.describe 'UserRegistrations', type: :request do
     let(:other_user) { users(:dwight) }
 
     before do
-      login_as(user)
+      sign_in user
     end
 
     context 'when given valid data' do

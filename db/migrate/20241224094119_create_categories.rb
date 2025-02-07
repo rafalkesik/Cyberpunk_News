@@ -8,8 +8,9 @@ class CreateCategories < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    # This should not have happened in migration, but in seeds.
-    # But migrations should not be edited, so it will remain here.
+    # ⚠️ Note: This should have been added in seeds.rb instead of a migration.
+    # This was a mistake, but it's kept here for historical consistency.
+    # Best practice: Always insert static data in db/seeds.rb, not migrations.
     Category.create(slug: 'inne',
                     title: 'Inne',
                     description: 'Posty niepasujące do żadnej kategorii.')

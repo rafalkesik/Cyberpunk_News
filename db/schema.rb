@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_30_151156) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_06_103315) do
   create_table "categories", force: :cascade do |t|
     t.string "slug"
     t.string "title"
@@ -35,7 +35,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_30_151156) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "points", default: 0
     t.integer "parent_id"
     t.boolean "hidden", default: false
     t.index ["parent_id"], name: "index_comments_on_parent_id"
@@ -57,7 +56,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_30_151156) do
     t.string "title"
     t.string "content"
     t.string "link"
-    t.integer "points", default: 0
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

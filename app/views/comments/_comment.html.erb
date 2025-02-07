@@ -1,22 +1,10 @@
 <li class="lh-sm" id="comment-<%= comment.id %>">
     <div class="comment-header fs-6">
         <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
-            <% if comment.liked_by?(current_user) %>
-                <%= render 'comments/comment_downvote_form',
-                            comment: comment %>
-            <% else %>
-                <%= render 'comments/comment_upvote_form',
-                            comment: comment %>
-            <% end %>
+            <%= render comment_vote_partial(comment, current_user), comment: comment %>
         </div>
         <span>
-            <% if comment.hidden %>
-                <%= t :someone %>
-            <% else %>
-                <%= link_to comment.user.username,
-                            user_path(comment.user),
-                            data: { turbo_frame: '_top' } %>
-            <% end %>
+            <%= render_author(comment) %>
         </span>
         <span>
             <%= time_ago_in_words(comment.created_at) %> <%= t :ago %>
@@ -27,12 +15,10 @@
         </span>
         <span>|</span>
         <span>
-            <%= link_to (t :reply),
-                new_comment_path(comment: { comment_id: comment.id, }),
-                data: { turbo_frame: "reply-form-to-#{comment.id}" } %>
+            <%= render 'comments/reply_button', comment: comment %>
         </span>
         <span>
-            <% if (current_user&.admin? || current_user&.author_of_comment?(comment)) && !comment.hidden %>
+            <% if can_delete_comment(comment) %>
                 <%= form_with(model: comment, method: :delete) do |f| %>
                     <%= f.submit (t :delete) %>
                 <% end %>

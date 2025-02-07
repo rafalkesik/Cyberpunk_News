@@ -10,42 +10,42 @@ RSpec.describe User, type: :model do
   end
   let(:other_user) { users(:michael) }
 
-  it 'is valid with valid arguments' do
+  it 'is valid when arguments are valid' do
     expect(user).to be_valid
   end
 
-  it 'is invalid with an empty username' do
+  it 'is invalid when username is empty' do
     user.username = '  '
     expect(user).not_to be_valid
   end
 
-  it 'is invalid with not unique username' do
+  it 'is invalid when username is not unique' do
     user.username = other_user.username
     expect(user).not_to be_valid
   end
 
-  it 'is invalid with empty email' do
+  it 'is invalid when email is empty' do
     user.email = ' '
     expect(user).not_to be_valid
   end
 
-  it 'is invalid with email with non-email format' do
-    user.email = 'bad#email.com'
-    expect(user).not_to be_valid
-  end
-
-  it 'is invalid with not unique email' do
+  it 'is invalid when email is not unique' do
     user.email = other_user.email
     expect(user).not_to be_valid
   end
 
-  it 'is invalid with password < 6 characters' do
+  it 'is invalid when email has not URL-friendly format' do
+    user.email = 'bad#email.com'
+    expect(user).not_to be_valid
+  end
+
+  it 'is invalid when password is < 6 characters' do
     user.password = 'bad'
     user.password_confirmation = 'bad'
     expect(user).not_to be_valid
   end
 
-  it 'is invalid with password not matching password_confirmation' do
+  it 'is invalid when password does not match password_confirmation' do
     user.password_confirmation = 'DifferentPassword'
     expect(user).not_to be_valid
   end

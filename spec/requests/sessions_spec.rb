@@ -2,12 +2,29 @@ require 'rails_helper'
 
 RSpec.describe 'Sessions', type: :request do
   describe 'GET /login' do
-    it 'renders template with login form' do
-      get login_path, as: :turbo_stream
+    context 'when not logged in' do
+      it 'renders login form' do
+        get login_path, as: :turbo_stream
 
-      expect(response).to render_template('devise/sessions/new')
-      assert_select 'h2', 'Log in'
-      assert_select 'form[action=?][method=?]', login_path, 'post'
+        expect(response).to render_template('devise/sessions/new')
+        assert_select 'h2', 'Log in'
+        assert_select 'form[action=?][method=?]', login_path, 'post'
+      end
+    end
+
+    context 'when logged in' do
+      fixtures :users
+      let(:user) { users(:michael) }
+
+      before { sign_in user }
+
+      it 'redirects to user profile' do
+        get login_path, as: :turbo_stream
+
+        expect(response).to redirect_to(user_path(user))
+        follow_redirect!
+        assert_select 'div.alert-alert', 'You are already signed in.'
+      end
     end
   end
 

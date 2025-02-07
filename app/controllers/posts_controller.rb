@@ -43,7 +43,7 @@ class PostsController < ApplicationController
   def verify_destroyer
     @post = Post.find(params[:id])
 
-    return if current_user&.admin? || current_user&.author_of_post?(@post)
+    return if current_user&.admin || current_user&.author_of_post?(@post)
 
     redirect_to root_url, status: :see_other
   end

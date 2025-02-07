@@ -22,7 +22,7 @@ RSpec.describe 'Users', type: :request do
           sign_in user
         end
 
-        it 'renders template with all users' do
+        it 'renders all users' do
           get users_path, as: :turbo_stream
           expect(response).to render_template('users/index')
           User.all.each do |user|
@@ -39,7 +39,7 @@ RSpec.describe 'Users', type: :request do
           sign_in admin
         end
 
-        it 'renders tempalate with all users & delete buttons' do
+        it 'renders all users & delete buttons' do
           get users_path, as: :turbo_stream
           expect(response).to render_template('users/index')
           User.all.each do |user|
@@ -73,11 +73,11 @@ RSpec.describe 'Users', type: :request do
 
     context 'when logged in' do
       before do
-        login_as(user)
+        sign_in user
       end
 
       context "when :id is user's own id" do
-        it 'renders profile template' do
+        it 'renders all user data and forms updating password, username and posts' do
           get user_path(user), as: :turbo_stream
           expect(response).to have_http_status(200)
           expect(response).to render_template('users/profile')
@@ -98,7 +98,7 @@ RSpec.describe 'Users', type: :request do
       end
 
       context 'when :id is of another user' do
-        it 'renders a show-user template' do
+        it "renders user's username and posts" do
           get user_path(other_user), as: :turbo_stream
           expect(response).to have_http_status(200)
           expect(response).to render_template('users/show')
@@ -113,7 +113,7 @@ RSpec.describe 'Users', type: :request do
 
         context 'when logged in as admin' do
           before do
-            login_as(admin)
+            sign_in admin
           end
 
           it "renders delete buttons by the user's posts" do
@@ -146,7 +146,7 @@ RSpec.describe 'Users', type: :request do
 
     context 'when logged in as non-admin' do
       before do
-        login_as(user)
+        sign_in user
       end
 
       it 'redirects to root_url' do
@@ -158,7 +158,7 @@ RSpec.describe 'Users', type: :request do
 
     context 'when logged in as admin' do
       before do
-        login_as(admin)
+        sign_in admin
       end
 
       it 'deletes the user' do

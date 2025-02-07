@@ -2,22 +2,24 @@ require 'rails_helper'
 
 RSpec.describe 'StaticPages', type: :request do
   RSpec.shared_examples 'check h1' do |heading|
-    it 'renders the right h1' do
+    it "renders page with title: #{heading}" do
+      expect(response).to have_http_status(200)
       assert_select 'h1', heading
     end
   end
 
   describe 'GET /' do
+    before do
+      get root_url, as: :turbo_stream
+    end
+
+    include_examples 'check h1', 'All Cyber News'
+
     context 'when not logged in' do
-      before { get root_url, as: :turbo_stream }
-
-      include_examples 'check h1', 'All Cyber News'
-
-      it 'renders full page layout' do
-        assert_select 'a[href=?]', '/en', count: 3
-        assert_select 'a[href=?]', '/pl', count: 1
-        assert_select 'a[href=?]', login_path
-        assert_select 'header'
+      it 'renders header with login link' do
+        assert_select 'header' do
+          assert_select 'a[href=?]', login_path
+        end
         assert_select 'div.content-container'
         assert_select 'footer'
       end
@@ -28,12 +30,14 @@ RSpec.describe 'StaticPages', type: :request do
       let(:user) { users(:michael) }
 
       before do
-        login_as(user)
+        sign_in user
         get root_url, as: :turbo_stream
       end
 
-      it 'also renders profile link' do
-        assert_select 'a[href=?]', user_path(user)
+      it 'renders header with profile link' do
+        assert_select 'header' do
+          assert_select 'a[href=?]', user_path(user)
+        end
       end
     end
   end

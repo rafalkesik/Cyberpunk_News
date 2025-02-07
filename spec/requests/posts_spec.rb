@@ -28,7 +28,7 @@ RSpec.describe 'Posts', type: :request do
       end
     end
 
-    context 'when NOT logged in as admin' do
+    context 'when not logged in as admin' do
       it 'does not show delete buttons' do
         get posts_path, as: :turbo_stream
         assert_select 'input[type="submit"][value="delete"]',
@@ -42,15 +42,10 @@ RSpec.describe 'Posts', type: :request do
     let(:showed_post) { posts(:one) }
     let(:comments) { showed_post.comments }
 
-    it 'renders layout' do
+    it 'renders all elements of the post' do
       get post_path(showed_post), as: :turbo_stream
 
       expect(response).to render_template('posts/show')
-    end
-
-    it 'renders all elements of post' do
-      get post_path(showed_post), as: :turbo_stream
-
       assert_select 'a[href=?]', post_path(showed_post), showed_post.title
       assert_select 'a[href=?]', post_path(showed_post),
                     "Comments: #{showed_post.comments.count}"
@@ -68,7 +63,7 @@ RSpec.describe 'Posts', type: :request do
                     '/en/comments', 'post'
     end
 
-    it 'renders all comments' do
+    it 'renders all comments under this post' do
       get post_path(showed_post), as: :turbo_stream
 
       assert_select 'ul' do
@@ -98,10 +93,10 @@ RSpec.describe 'Posts', type: :request do
       let(:user) { users(:michael) }
 
       before do
-        login_as(user)
+        sign_in user
       end
 
-      it 'renders template with form' do
+      it 'renders new post form' do
         get new_post_path, as: :turbo_stream
 
         expect(response).to render_template('posts/new')
@@ -144,7 +139,7 @@ RSpec.describe 'Posts', type: :request do
       end
 
       before do
-        login_as(user)
+        sign_in user
       end
 
       context 'when provided with valid data' do
@@ -206,7 +201,7 @@ RSpec.describe 'Posts', type: :request do
 
       context 'as non-admin & non-author' do
         before do
-          login_as(other_user)
+          sign_in other_user
         end
 
         it 'redirects to root' do
@@ -218,14 +213,18 @@ RSpec.describe 'Posts', type: :request do
       end
 
       context 'as admin or author' do
+        let(:comments_count) { deleted_post.comments.count }
+
         before do
-          login_as(admin)
+          sign_in admin
         end
 
-        it 'deletes post' do
+        it 'deletes post and its comments' do
           expect do
-            perform_delete_request
-          end.to change(Post, :count).by(-1)
+            expect do
+              perform_delete_request
+            end.to change(Post, :count).by(-1)
+          end.to change(Comment, :count).by(-comments_count)
 
           assert_select 'turbo-stream[target=?]', 'flash-messages' do
             assert_select 'template', 'Post deleted.'

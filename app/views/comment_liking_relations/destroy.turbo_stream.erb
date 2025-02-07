@@ -1,7 +1,6 @@
-<%= turbo_stream.update "comment-#{@comment.id}-upvote" do %>
-  <%= render 'comments/comment_upvote_form', comment: @comment %>
-<% end %>
+<%= turbo_stream.update "comment-#{@comment&.id}-upvote",
+                        partial: 'comments/upvote_form',
+                        locals: { comment: @comment } %>
 
-<%= turbo_stream.update "comment-#{@comment.id}-points" do %>
-  <%= t :points, count: @comment.points %>
-<% end %>
+<%= turbo_stream.update "comment-#{@comment&.id}-points",
+                        (t :points, count: @comment.points) %>

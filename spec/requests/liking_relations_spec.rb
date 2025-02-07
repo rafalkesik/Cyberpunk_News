@@ -27,7 +27,7 @@ RSpec.describe 'LikingRelations', type: :request do
       end
 
       before do
-        login_as(user)
+        sign_in user
       end
 
       context 'when post does not exist (has been deleted just before liking)' do
@@ -56,7 +56,7 @@ RSpec.describe 'LikingRelations', type: :request do
           end
         end
 
-        it "increases post's points" do
+        it "updates post's points" do
           perform_post_request(liked_post.id)
 
           assert_select 'turbo-stream[target=?]', "post-#{liked_post.id}-points" do
@@ -110,7 +110,7 @@ RSpec.describe 'LikingRelations', type: :request do
         end
       end
 
-      it "decreases post's points" do
+      it "updates post's points" do
         perform_delete_request
 
         assert_select 'turbo-stream[target=?]', "post-#{liked_post.id}-points" do
