@@ -6,7 +6,8 @@ class ApplicationMailer < ActionMailer::Base
   layout 'mailer'
 
   def send_email(to, subject, content)
-    from = Email.new(email: 'rafal.kesik.g@gmail.com') # Verified "From" email
+    from = Email.new(email: 'rafal.kesik.g@gmail.com',
+                     name: 'Cyberpunk News Team') # Verified "From" email
     to = Email.new(email: to)
     content = Content.new(type: 'text/html', value: content) # Or 'text/plain' for plain text
     mail = Mail.new(from, subject, to, content)
