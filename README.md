@@ -22,13 +22,12 @@ Build a copy of HackerNews - https://news.ycombinator.com
 7. [X] Categories
 8. [X] Configure RuboCop and clean up the code layout
 9. [X] Change Minitest to Rspec
-10. [ ] Improve signup/login to use Devise
+10. [ ] Improve signup/login with Devise
    a. [X] Devise setup
-   b. [ ] Sendgrid setup for mailer
-   c. [ ] Deploy
-   d. [ ] Add emails for old users and change usernames to use [old] tag
+   b. [X] Sendgrid setup for mailer
+   c. [X] Deploy
    e. [ ] Ask qnsi and Rafał Kęsik to create accounts
-   f. [ ] Assign posts to new users and delete [old] ones
+   f. [ ] Assign posts to new users and delete old ones
    d. [ ] Add unique & present validations for email
 11. [ ] Refactoring all code
    x. [ ] Rename LikingRelations to PostLike & CommentLike (foreign_key: like)
