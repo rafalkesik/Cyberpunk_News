@@ -32,6 +32,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
 11. [ ] Refactoring all code
    x. [ ] Rename LikingRelations to PostLike & CommentLike (foreign_key: like)
    xx.[ ] Rename upvote to Like AND downvote to Unlike for consistency
+   xy.[ ] Clean up Gemfile
    a. [ ] use only one flash methods (Devise or custom)
    b. [ ] !!my_liking_relation(user) # Should become .present?
    c. [ ] check all .erb files - they are not checked by Rubocop for now.
@@ -53,6 +54,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
    u. [ ] Make HTML ids consistent across all views
    t. [ ] Check for other DRY, clean improvement possibilities
 12. [ ] Add Devise Admin Model
+13. [ ] Check issues on Github and handle all of them.
 
 
 <!-- # README
