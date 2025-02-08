@@ -53,29 +53,3 @@ Build a copy of HackerNews - https://news.ycombinator.com
    u. [ ] Make HTML ids consistent across all views
    t. [ ] Check for other DRY, clean improvement possibilities
 12. [ ] Add Devise Admin Model
-
-
-<!-- # README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ... -->
