@@ -18,11 +18,7 @@ class Post < ApplicationRecord
   end
 
   def liked_by?(user)
-    !!my_liking_relation(user)
-  end
-
-  def my_liking_relation(user)
-    liking_relations.find_by(liking_user: user) if user
+    self.liking_relations.find_by(liking_user: user).present?
   end
 
   def short_link

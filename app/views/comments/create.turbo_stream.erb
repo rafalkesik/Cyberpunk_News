@@ -1,4 +1,5 @@
-<%= turbo_stream.update 'flash-messages', partial: 'layouts/flash' %>
+<%= turbo_stream.update 'flash-messages',
+                        partial: 'layouts/flash' %>
 
 <% if @comment.valid? %>
   <%= turbo_stream.append "comments-list-#{@parent&.id}",
@@ -8,5 +9,6 @@
   <%= turbo_stream.update 'submit-comment-form',
                           partial: 'comments/submit_comment_form',
                           locals: {post: @post} %>
-  <%= turbo_stream.update "reply-form-to-#{@comment.parent_id}", '' %>
+  <%= turbo_stream.update "reply-form-to-#{@comment.parent_id}",
+                          '' %>
 <% end %>

@@ -41,7 +41,7 @@ class CommentsController < ApplicationController
 
   def authorize_destroyer
     comment = Comment.find(params[:id])
-    return if current_user&.admin? ||
+    return if current_user&.admin ||
               current_user&.author_of_comment?(comment)
 
     redirect_to root_url, status: :see_other

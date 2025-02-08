@@ -19,10 +19,27 @@ RSpec.describe 'Categories', type: :request do
     context 'when not logged in' do
       it 'redirects to login url' do
         get new_category_path, as: :turbo_stream
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit or edit categories.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
+      end
+    end
+
+    context 'when logged in' do
+      fixtures :users
+      let(:user) { users(:michael) }
+
+      before do
+        sign_in user
+      end
+
+      it 'renders new category form' do
+        get new_category_path, as: :turbo_stream
+
+        expect(response).to have_http_status(200)
+        expect(response).to render_template('categories/new')
       end
     end
   end
@@ -31,14 +48,12 @@ RSpec.describe 'Categories', type: :request do
     fixtures :categories
     let(:category) { categories(:two) }
 
-    it 'renders layout' do
+    it 'renders all posts under this category' do
       get category_path(category.slug), as: :turbo_stream
 
       expect(response).to render_template('categories/show')
-      assert_select 'h3', "-#{category.title}-"
-      assert_select 'p', category.description
-      assert_select 'form[action=?]', new_post_path do
-        assert_select 'input[name="category_id"][value=?]', category.id
+      category.posts.each do |post|
+        assert_select 'a', post.title
       end
     end
   end
@@ -52,55 +67,66 @@ RSpec.describe 'Categories', type: :request do
     end
 
     context 'when not logged in' do
-      it "doesn't create a post and redirects to login url" do
+      it "doesn't create a category" do
         expect { perform_post_request('') }.to change(Category, :count).by(0)
+      end
+
+      it 'redirects to login_url' do
+        perform_post_request('')
+
         expect(response).to redirect_to(login_url)
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-warning', 'Log in to submit or edit categories.'
+        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
       end
     end
 
     context 'when logged in' do
-      let(:invalid_category_params) do
-        { title: ' ',
-          slug: 'Test Slug',
-          description: '' }
-      end
-
-      let(:valid_category_params) do
-        { title: 'New Category',
-          slug: 'new_category',
-          description: 'Lorem impsum' }
-      end
-
       before do
-        login_as(user)
+        sign_in user
       end
 
-      it 'does not create category with invalid data' do
-        expect do
-          perform_post_request(invalid_category_params)
-        end.to change(Category, :count).by(0)
+      context 'when data is invalid' do
+        let(:invalid_category_params) do
+          { title: ' ',
+            slug: 'Test Slug',
+            description: '' }
+        end
 
-        assert_select 'div.error-explanation' do
-          assert_select 'div.alert-danger',
-                        'The form contains errors:'
+        it 'does not create category' do
+          expect do
+            perform_post_request(invalid_category_params)
+          end.to change(Category, :count).by(0)
+
+          assert_select 'div.error-explanation' do
+            assert_select 'div.alert-danger',
+                          'The form contains errors:'
+          end
         end
       end
 
-      it 'creates a valid category and redirects to categories path' do
-        expect do
+      context 'when data is valid' do
+        let(:valid_category_params) do
+          { title: 'New Category',
+            slug: 'new_category',
+            description: 'Lorem impsum' }
+        end
+
+        it 'creates the category' do
+          expect do
+            perform_post_request(valid_category_params)
+          end.to change(Category, :count).by(1)
+        end
+
+        it 'redirects to categories path' do
           perform_post_request(valid_category_params)
-        end.to change(Category, :count).by(1)
 
-        expect(response).to redirect_to(categories_path)
-        expect(response).to have_http_status(:see_other)
-
-        follow_redirect!
-
-        assert_select 'div.alert-success', 'Category created!'
-        assert_select 'a', 'New Category'
+          expect(response).to redirect_to(categories_path)
+          expect(response).to have_http_status(303)
+          follow_redirect!
+          assert_select 'div.alert-success', 'Category created!'
+          assert_select 'a', 'New Category'
+        end
       end
     end
   end
@@ -115,13 +141,18 @@ RSpec.describe 'Categories', type: :request do
 
     context 'when not an admin' do
       before do
-        login_as(non_admin)
+        sign_in non_admin
       end
 
-      it "doesn't delete category and redirects to root" do
+      it "doesn't delete category" do
         expect do
           delete category_path(category), as: :turbo_stream
         end.to change(Category, :count).by(0)
+      end
+
+      it 'redirects to root' do
+        delete category_path(category), as: :turbo_stream
+
         expect(response).to redirect_to(root_url)
         expect(response).to have_http_status(303)
       end
@@ -129,18 +160,21 @@ RSpec.describe 'Categories', type: :request do
 
     context 'when an admin' do
       before do
-        login_as(admin)
+        sign_in admin
       end
 
-      it 'deletes a category' do
+      it 'deletes the category' do
         expect do
-          expect do
-            delete category_path(category.slug),
-                   as: :turbo_stream
-          end.to change(Category, :count).by(-1)
-        end.to change { default_category.posts.count }.by(posts_count)
+          delete category_path(category.slug), as: :turbo_stream
+        end.to change(Category, :count).by(-1)
 
         assert_select 'div.alert-success', 'Category deleted.'
+      end
+
+      it "deletes category's posts" do
+        expect do
+          delete category_path(category.slug), as: :turbo_stream
+        end.to change { default_category.posts.count }.by(posts_count)
       end
     end
   end

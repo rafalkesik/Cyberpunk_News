@@ -1,0 +1,24 @@
+<h1 id='username'><%= @user.username %></h1>
+
+<h4 class='pb-2'>
+    <span class='text-secondary'>e-mail: <%= @user.email %></span>
+</h4>
+
+<%= form_with url: destroy_user_session_path, method: :delete do |f|%>
+    <%= f.submit t :logout %>
+<% end %>
+
+<div class="pt-3 pb-4">
+    <%= render 'reset_form' %>
+</div> 
+
+<div class="pt-3 pb-4">
+    <%= render 'edit_username_form' %>
+</div> 
+
+<div>
+    <h3><%= t :posts_by %></h3>
+    <ol class="text-secondary">
+        <%= render @user.posts.order(created_at: :desc) %>
+    </ol>
+</div>

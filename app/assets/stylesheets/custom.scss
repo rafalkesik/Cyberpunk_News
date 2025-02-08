@@ -123,6 +123,9 @@ nav.navbar {
         --bs-btn-font-size: inherit;
         --bs-btn-line-height: inherit;
     }
+    .btn-outline-secondary {
+        --bs-btn-padding-x: 0.5em;
+    }
 }
 .clean-list {
     list-style-type: none;
@@ -163,7 +166,12 @@ body {
     .alert {
         --bs-alert-margin-bottom: 0;
     }
-
+    
+    .alert-notice, .alert-alert {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+    }
 }
 
 // Form styles

@@ -1,0 +1,10 @@
+<div id='edit_username_form'>
+    <h3>Change username</h3>
+
+    <%= form_for(@user, url: user_registration_path, method: :patch ) do |f| %>
+        <%= render "shared/error_messages", object: @user %>
+        <%= f.label :username %>
+        <%= f.text_field :username %>
+        <div><%= f.submit "Change" %></div>
+    <% end %>
+</div>

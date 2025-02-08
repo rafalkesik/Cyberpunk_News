@@ -1,4 +1,3 @@
 <%= turbo_stream.remove @post %>
-<%= turbo_stream.replace "flash-messages" do %>
-    <%= render 'layouts/flash' %>
-<% end %>
+<%= turbo_stream.replace "flash-messages",
+                         partial: 'layouts/flash' %>

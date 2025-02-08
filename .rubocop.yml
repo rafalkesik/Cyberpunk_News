@@ -8,9 +8,13 @@ AllCops:
       - 'db/schema.rb'
       - 'bin/*'
       - 'config/puma.rb'
+      - 'config/routes.rb'
+      - 'config/environments/production.rb'
       - '**/*.html.erb'
       - '**/*.turbo_stream.erb'
       - 'Guardfile'
+      - 'app/mailers/application_mailer.rb'
+
 
 # Disabled rules
 Style/FrozenStringLiteralComment:

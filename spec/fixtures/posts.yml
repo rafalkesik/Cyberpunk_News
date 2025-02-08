@@ -3,7 +3,6 @@ one:
   title: "Trump trumps Trump's son"
   content: "Trump's son just got smashed by his dad. Photos will make you cry for the little boy."
   link: "https://cnn.com/breaking-news/trump-x3-son"
-  points: 0
   user_id: 1
   created_at: <%= 10.hours.ago %>
   updated_at: <%= 5.hours.ago %>
@@ -14,7 +13,6 @@ two:
   title: "Trump sued by his son Trump Jr."
   content: "Who would have thought that his son would sue Trump for 10 mln $?"
   link: "https://cnn.com/breaking-news/Trump_sued"
-  points: 0
   user_id: 2
   created_at: <%= 7.hours.ago %>
   updated_at: <%= 2.hours.ago %>

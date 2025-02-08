@@ -1,0 +1,3 @@
+<%= link_to (t :reply),
+            new_comment_path(comment: { comment_id: comment.id, }),
+            data: { turbo_frame: "reply-form-to-#{comment.id}" } %>

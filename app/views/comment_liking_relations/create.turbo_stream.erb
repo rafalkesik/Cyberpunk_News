@@ -1,7 +1,11 @@
-<%= turbo_stream.update "comment-#{@comment.id}-upvote" do %>
-  <%= render 'comments/comment_downvote_form', comment: @comment %>
-<% end %>
+<%= turbo_stream.update('flash-messages',
+                        partial: 'layouts/flash') %>
 
-<%= turbo_stream.update "comment-#{@comment.id}-points" do %>
-  <%= t :points, count: @comment.points %>
+<% if @comment.present? %>
+  <%= turbo_stream.update "comment-#{@comment.id}-upvote",
+                          partial: 'comments/downvote_form',
+                          locals: { comment: @comment } %>
+
+  <%= turbo_stream.update "comment-#{@comment.id}-points",
+                          (t :points, count: @comment.points) %>
 <% end %>

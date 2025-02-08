@@ -2,43 +2,68 @@ require 'rails_helper'
 
 RSpec.describe 'Sessions', type: :request do
   describe 'GET /login' do
-    it 'renders template with login & signup form' do
-      get login_path, as: :turbo_stream
+    context 'when not logged in' do
+      it 'renders login form' do
+        get login_path, as: :turbo_stream
 
-      expect(response).to render_template('sessions/login')
-      assert_select 'h3', 'Login'
-      assert_select 'form[action=?][method=?]', '/en/sessions', 'post'
+        expect(response).to render_template('devise/sessions/new')
+        assert_select 'h2', 'Log in'
+        assert_select 'form[action=?][method=?]', login_path, 'post'
+      end
+    end
+
+    context 'when logged in' do
+      fixtures :users
+      let(:user) { users(:michael) }
+
+      before { sign_in user }
+
+      it 'redirects to user profile' do
+        get login_path, as: :turbo_stream
+
+        expect(response).to redirect_to(user_path(user))
+        follow_redirect!
+        assert_select 'div.alert-alert', 'You are already signed in.'
+      end
     end
   end
 
-  describe 'POST /sessions' do
+  describe 'POST /login' do
     fixtures :users
     let(:user) { users(:michael) }
-
-    it 'logs in with valid data' do
-      post sessions_path,
-           as: :turbo_stream,
-           params: { user: { username: user.username,
-                             password: 'pass',
-                             password_confirmation: 'pass' } }
-
-      expect(session[:user_id]).to equal(user.id)
-      expect(response).to redirect_to user
-      follow_redirect!
-      assert_select 'div.alert-success', 'Logged in successfully.'
+    let(:valid_data) do
+      { email: user.email,
+        password: 'pass' }
+    end
+    let(:invalid_data) do
+      { email: user.email,
+        password: 'invalid' }
     end
 
-    it 'renders flash with invalid data' do
-      post sessions_path,
-           as: :turbo_stream,
-           params: { user: { username: user.username,
-                             password: 'invalid',
-                             password_confirmation: 'invalid' } }
+    context 'when given valid data' do
+      before do
+        post login_path, as: :turbo_stream, params: { user: valid_data }
+      end
 
-      expect(session[:user_id]).to be_nil
-      assert_select 'turbo-stream[action="update"][target=?]',
-                    'flash-messages' do
-        assert_select 'template', 'Username or password are incorrect. Try again.'
+      it 'logs in the right user' do
+        expect(request.env['warden'].user(:user)).to eq(user)
+      end
+
+      it 'redirects to user profile' do
+        expect(response).to redirect_to user
+        follow_redirect!
+        assert_select 'div.alert-success', 'Signed in successfully.'
+      end
+    end
+
+    context 'when given invalid data' do
+      before do
+        post login_path, as: :turbo_stream, params: { user: invalid_data }
+      end
+
+      it 'does not log in any user' do
+        expect(session['warden.user.user.key']).to be_nil
+        expect(response.body).to include('Invalid Email or password')
       end
     end
   end
@@ -47,18 +72,32 @@ RSpec.describe 'Sessions', type: :request do
     fixtures :users
     let(:user) { users(:michael) }
 
-    before do
-      login_as(user)
+    context 'when not logged in' do
+      before do
+        delete logout_path, as: :turbo_stream
+      end
+
+      it 'redirects to root' do
+        expect(response).to redirect_to(root_url)
+        expect(response).to have_http_status(303)
+        follow_redirect!
+        expect(response.body).to include((I18n.t 'devise.sessions.already_signed_out'))
+      end
     end
 
-    it 'logs out' do
-      delete sessions_path, as: :turbo_stream
+    context 'when loged in' do
+      before do
+        sign_in user
+        delete logout_path, as: :turbo_stream
+      end
 
-      expect(session[:user_id]).to be_nil
-      expect(response).to redirect_to(root_url)
-      expect(response).to have_http_status(303)
-      follow_redirect!
-      assert_select 'div.alert-success', 'Logged out successfully.'
+      it 'logs out' do
+        expect(session['warden.user.user.key']).to be_nil
+        expect(response).to redirect_to(root_url)
+        expect(response).to have_http_status(303)
+        follow_redirect!
+        assert_select 'div.alert-notice', 'Signed out successfully.'
+      end
     end
   end
 end

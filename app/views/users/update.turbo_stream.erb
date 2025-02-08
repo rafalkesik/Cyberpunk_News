@@ -1,7 +1,6 @@
-<%= turbo_stream.replace dom_id(@user, :form) do %>
-    <%= render 'reset_form', user: @user %>
-<% end %>
-
-<%= turbo_stream.replace "flash-messages" do %>
-    <%= render 'layouts/flash' %>
-<% end %>
+<%= turbo_stream.replace 'edit_username_form',
+                         partial: 'edit_username_form' %>
+<%= turbo_stream.update 'username',
+                        @user.username %>
+<%= turbo_stream.replace 'flash-messages',
+                         partial: 'layouts/flash' %>

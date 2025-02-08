@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :authenticate,     only: [:new, :create, :destroy]
-  before_action :verify_destroyer, only: [:destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :verify_destroyer,   only: [:destroy]
 
   def index
     @posts = Post.order(created_at: :desc)
@@ -40,14 +40,10 @@ class PostsController < ApplicationController
 
   private
 
-  def authenticate
-    authenticate_with_redirect('flash.authenticate_add_post')
-  end
-
   def verify_destroyer
     @post = Post.find(params[:id])
 
-    return if current_user&.admin? || current_user&.author_of_post?(@post)
+    return if current_user&.admin || current_user&.author_of_post?(@post)
 
     redirect_to root_url, status: :see_other
   end
