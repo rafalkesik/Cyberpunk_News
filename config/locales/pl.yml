@@ -38,13 +38,14 @@ pl:
     category_created: "Kategoria stworzona!"
   error:
     count: "Formularz zawiera błędy:"
+
   # active record objects
   activerecord:
     attributes:
       user:
-        username: "'Nazwa użytkownika'"
-        password: "'Hasło'"
-        password_confirmation: "'Potwierdzenie hasła'"
+        username: "Nazwa użytkownika"
+        password: "Hasło"
+        password_confirmation: "Potwierdzenie hasła"
       post:
         title: "Pole 'Tytuł'"
         link: "Pole 'Link'"
@@ -60,11 +61,19 @@ pl:
     errors:
       messages:
         required: "jest wymagana"        
+
   # Forms
   create_post: "Stwórz własny post!"
   title: "Tytuł"
   text: "Twój tekst"
   submit: "Wyślij"
+  remember_me: 'Zapamiętaj mnie'
+  forgot_password: 'Przypomnij hasło'
+  forgot_password_long: 'Zapomniałaś/eś swojego hasła?'
+  reset_password: 'Zresetuj hasło'
+  reset: 'Zresetuj'
+  change_username: 'Zmień nazwę użytkownika'
+  change: 'Zmień'
 
   # Posts
   admin: "Administrator"
@@ -74,6 +83,7 @@ pl:
   points: "Punkty: %{count}"
   by: "przez:"
   ago: "temu"
+
   #Comments
   comments: "Komentarze: "
   someone: "Ktoś"
@@ -82,12 +92,12 @@ pl:
   comment_deleted: "Komentarz został usunięty"
   obby_guidelines_html: "Pisząc komentarz, upewnij się, że przestrzegasz <a href=%{guidelines_path} class='text-emphasize'>Kodeksu Cyberpunka</a>."
   submit_comment: "Skomentuj"
+
   # Profile
   users:
     upper: "Użytkownicy"
     lower: "użytkownicy"
   logout: "wyloguj"
-  reset_password: "Zmień hasło:"
   password: "Hasło"
   password_confirmation: "Potwierdź hasło"
   update_password: "Zmień hasło"
@@ -96,6 +106,7 @@ pl:
   username: "Nazwa użytkownika"
   sure?: "Na pewno chcesz usunąć?"
   posts_by: "Posty użytkownika:"
+  
   # Categories
   all_categories: "Kategorie:"
   create_category: "Stwórz kategorię"

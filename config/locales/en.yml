@@ -4,7 +4,7 @@ en:
   new: "new"
   create: "create"
   profile: "Profile"
-  login: "Login"
+  login: 'Log in'
   contact: "Contact"
   guidelines:
     default: "Guidelines"
@@ -50,6 +50,13 @@ en:
   title: "Title"
   text: "Your text"
   submit: "Submit"
+  remember_me: 'Remember me'
+  forgot_password: 'Forgot password?'
+  forgot_password_long: 'Forgot your password?'
+  reset_password: 'Reset password'
+  reset: 'Reset'
+  change_username: 'Change username'
+  change: 'Change'
 
   # Posts
   admin: "Admin"
@@ -74,11 +81,9 @@ en:
     upper: "Users"
     lower: "users"
   logout: "logout"
-  reset_password: "Reset password:"
   password: "Password"
   password_confirmation: "Password confirmation"
   update_password: "Update password"
-  log_in: "Log in"
   sign_up: "Sign up"
   username: "Username"
   sure?: "Are you sure?"

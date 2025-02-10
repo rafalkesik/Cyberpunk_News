@@ -26,6 +26,12 @@ class User < ApplicationRecord
 
   # Changes default devise mailer to SendGrid API method
   def send_devise_notification(notification, *args)
+    # Default behaviour for dev env
+    if Rails.env.development?
+      send_devise_notification_dev_env(notification, *args)
+      return
+    end
+
     # Generate the Devise mailer message
     message = devise_mailer.send(notification, self, *args)
 
@@ -35,5 +41,14 @@ class User < ApplicationRecord
 
     # Send email using SendGrid API
     ApplicationMailer.new.send_email(email, subject, content)
+  end
+
+  def send_devise_notification_dev_env(notification, *args)
+    message = devise_mailer.send(notification, self, *args)
+    if message.respond_to?(:deliver_now)
+      message.deliver_now
+    else
+      message.deliver
+    end
   end
 end

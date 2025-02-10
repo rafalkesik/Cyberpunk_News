@@ -27,10 +27,11 @@ module PostsHelper
   # returns author or 'someone' if hidden
   def render_author(comment)
     if comment.hidden
-      t :someone
+      content_tag(:span, (t :someone), class: 'text-emphasize')
     else
       link_to comment.user.username,
               user_path(comment.user),
+              class: 'text-emphasize',
               data: { turbo_frame: '_top' }
     end
   end

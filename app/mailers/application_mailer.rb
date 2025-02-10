@@ -1,11 +1,11 @@
 class ApplicationMailer < ActionMailer::Base
-  require 'sendgrid-ruby'
-  include SendGrid
-
   default from: 'rafal.kesik.g@gmail.com'
   layout 'mailer'
 
   def send_email(to, subject, content)
+    require 'sendgrid-ruby'
+    include SendGrid
+
     from = Email.new(email: 'rafal.kesik.g@gmail.com',
                      name: 'Cyberpunk News Team') # Verified "From" email
     to = Email.new(email: to)
