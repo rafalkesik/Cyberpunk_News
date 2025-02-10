@@ -13,7 +13,7 @@ RSpec.describe 'StaticPages', type: :request do
       get root_url, as: :turbo_stream
     end
 
-    include_examples 'check h1', 'All Cyber News'
+    include_examples 'check h1', (I18n.t 'all_posts', locale: :en)
 
     context 'when not logged in' do
       it 'renders header with login link' do

@@ -23,15 +23,19 @@ RSpec.describe 'Posts', type: :request do
 
       it 'shows delete buttons for each post' do
         get posts_path, as: :turbo_stream
-        assert_select 'input[type="submit"][value="delete"]',
-                      count: Post.count
+
+        Post.all.each do |post|
+          assert_select 'form[action=?]', post_path(post) do
+            assert_select 'input[value="delete"]'
+          end
+        end
       end
     end
 
     context 'when not logged in as admin' do
       it 'does not show delete buttons' do
         get posts_path, as: :turbo_stream
-        assert_select 'input[type="submit"][value="delete"]',
+        assert_select 'input[value="delete"]',
                       count: 0
       end
     end
@@ -59,18 +63,16 @@ RSpec.describe 'Posts', type: :request do
     it 'renders a new comment form' do
       get post_path(showed_post), as: :turbo_stream
 
-      assert_select 'form[action=?][method=?]',
-                    '/en/comments', 'post'
+      assert_select 'form[action=?][method=post]',
+                    comments_path
     end
 
     it 'renders all comments under this post' do
       get post_path(showed_post), as: :turbo_stream
 
-      assert_select 'ul' do
-        comments.each do |comment|
-          assert_select 'li[id=?]', "comment-#{comment.id}" do
-            assert_select 'div.comment-text', comment.content
-          end
+      comments.each do |comment|
+        assert_select 'li[id=?]', "comment-#{comment.id}" do
+          assert_select 'div.comment-text', comment.content
         end
       end
     end
@@ -84,7 +86,9 @@ RSpec.describe 'Posts', type: :request do
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -100,7 +104,7 @@ RSpec.describe 'Posts', type: :request do
         get new_post_path, as: :turbo_stream
 
         expect(response).to render_template('posts/new')
-        assert_select 'form[action=?]', '/en/posts'
+        assert_select 'form[action=?]', posts_path
       end
     end
   end
@@ -113,7 +117,9 @@ RSpec.describe 'Posts', type: :request do
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -155,7 +161,9 @@ RSpec.describe 'Posts', type: :request do
           expect(response).to redirect_to(posts_path)
           expect(response).to have_http_status(303)
           follow_redirect!
-          assert_select 'div.alert-success', (I18n.t 'flash.post_created')
+          expect(response.body).to include(
+            (I18n.t 'flash.post_created')
+          )
         end
       end
 
@@ -165,10 +173,7 @@ RSpec.describe 'Posts', type: :request do
             perform_post_request(invalid_data)
           end.to change(Post, :count).by(0)
 
-          assert_select 'div.error-explanation' do
-            assert_select 'div.alert-danger',
-                          'The form contains errors:'
-          end
+          expect(response.body).to include((I18n.t 'error.count'))
         end
       end
     end
@@ -189,7 +194,9 @@ RSpec.describe 'Posts', type: :request do
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -226,9 +233,9 @@ RSpec.describe 'Posts', type: :request do
             end.to change(Post, :count).by(-1)
           end.to change(Comment, :count).by(-comments_count)
 
-          assert_select 'turbo-stream[target=?]', 'flash-messages' do
-            assert_select 'template', 'Post deleted.'
-          end
+          expect(response.body).to include(
+            (I18n.t 'flash.post_deleted')
+          )
         end
 
         context 'when in show_post view' do

@@ -36,6 +36,7 @@ en:
     user_created: "New user created & logged in."
     user_deleted: "Successfully deleted user: %{username}."
     category_created: "Category created!"
+    category_deleted: "Category deleted."
   error:
     count: "The form contains errors:"
   # active record objects
@@ -91,7 +92,6 @@ en:
   # Categories
   all_categories: "All categories:"
   create_category: "Create category"
-  category_deleted: "Category deleted."
   category: "Category"
   categories:
     upper: 'Categories'

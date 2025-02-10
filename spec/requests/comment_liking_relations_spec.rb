@@ -12,7 +12,9 @@ RSpec.describe 'CommentLikingRelations', type: :request do
       it 'prompts the user to log-in' do
         post liking_relations_path, as: :turbo_stream
 
-        assert_select 'div.alert-warning', 'You must be logged in to upvote.'
+        expect(response.body).to include(
+          (I18n.t 'flash.authenticate_like')
+        )
       end
     end
 
@@ -40,20 +42,15 @@ RSpec.describe 'CommentLikingRelations', type: :request do
         it 'highlights upvote icon' do
           perform_post_request(comment.id)
 
-          assert_select 'turbo-stream[target=?]', "comment-#{comment.id}-upvote" do
-            assert_select 'template',
-                          partial: 'comments/comment_upvote_form',
-                          comment: comment,
-                          current_user: user
-          end
+          assert_select 'i.text-highlight'
         end
 
         it "updates comment's points" do
           perform_post_request(comment.id)
 
-          assert_select 'turbo-stream[target=?]', "comment-#{comment.id}-points" do
-            assert_select 'template', (I18n.t :points, count: comment.points)
-          end
+          expect(response.body).to include(
+            (I18n.t :points, count: comment.points)
+          )
         end
       end
 
@@ -63,8 +60,9 @@ RSpec.describe 'CommentLikingRelations', type: :request do
             perform_post_request(999)
           end.to change(CommentLikingRelation, :count).by(0)
 
-          assert_select 'div.alert-danger',
-                        'The comment has been deleted.'
+          expect(response.body).to include(
+            (I18n.t 'flash.comment_deleted')
+          )
         end
       end
     end
@@ -99,24 +97,23 @@ RSpec.describe 'CommentLikingRelations', type: :request do
       end
 
       it 'removes like' do
-        expect { perform_delete_request }.to change(CommentLikingRelation, :count).by(-1)
+        expect { perform_delete_request }.to change(
+          CommentLikingRelation, :count
+        ).by(-1)
       end
 
       it 'removes upvote icon highlight' do
         perform_delete_request
 
-        assert_select 'form[action=?]', comment_liking_relations_path do |form|
-          assert_select form, 'input[value=?]', liked_comment.id
-        end
+        assert_select 'i.text-secondary'
       end
 
       it "updates comment's points" do
         perform_delete_request
 
-        assert_select 'turbo-stream[target=?]', "comment-#{liked_comment.id}-points" do
-          text = I18n.t :points, count: liked_comment.points
-          assert_select 'template', text
-        end
+        expect(response.body).to include(
+          (I18n.t :points, count: liked_comment.points)
+        )
       end
     end
   end

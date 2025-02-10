@@ -7,8 +7,8 @@ RSpec.describe 'Sessions', type: :request do
         get login_path, as: :turbo_stream
 
         expect(response).to render_template('devise/sessions/new')
-        assert_select 'h2', 'Log in'
-        assert_select 'form[action=?][method=?]', login_path, 'post'
+        assert_select 'h2', (I18n.t 'login')
+        assert_select 'form[action=?][method=post]', login_path
       end
     end
 
@@ -23,7 +23,9 @@ RSpec.describe 'Sessions', type: :request do
 
         expect(response).to redirect_to(user_path(user))
         follow_redirect!
-        assert_select 'div.alert-alert', 'You are already signed in.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.already_authenticated')
+        )
       end
     end
   end
@@ -52,7 +54,9 @@ RSpec.describe 'Sessions', type: :request do
       it 'redirects to user profile' do
         expect(response).to redirect_to user
         follow_redirect!
-        assert_select 'div.alert-success', 'Signed in successfully.'
+        expect(response.body).to include(
+          (I18n.t 'devise.sessions.signed_in')
+        )
       end
     end
 
@@ -96,7 +100,9 @@ RSpec.describe 'Sessions', type: :request do
         expect(response).to redirect_to(root_url)
         expect(response).to have_http_status(303)
         follow_redirect!
-        assert_select 'div.alert-notice', 'Signed out successfully.'
+        expect(response.body).to include(
+          (I18n.t 'devise.sessions.signed_out')
+        )
       end
     end
   end

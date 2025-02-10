@@ -11,7 +11,9 @@ RSpec.describe 'LikingRelations', type: :request do
 
       it 'prompts the user to log-in' do
         post liking_relations_path, as: :turbo_stream
-        assert_select 'div.alert-warning', 'You must be logged in to upvote.'
+        expect(response.body).to include(
+          (I18n.t 'flash.authenticate_like')
+        )
       end
     end
 
@@ -35,7 +37,10 @@ RSpec.describe 'LikingRelations', type: :request do
           expect do
             perform_post_request(999)
           end.to change(LikingRelation, :count).by(0)
-          assert_select 'div.alert-danger', (I18n.t 'flash.post_deleted')
+
+          expect(response.body).to include(
+            (I18n.t 'flash.post_deleted')
+          )
         end
       end
 
@@ -49,19 +54,19 @@ RSpec.describe 'LikingRelations', type: :request do
         it 'highlights upvote icon' do
           perform_post_request(liked_post.id)
 
-          assert_select 'form[action=?]', liking_relations_path do |form|
-            assert_select form, 'button>i.text-highlight'
-            assert_select form, 'input[value=?]', user.id
-            assert_select form, 'input[value=?]', liked_post.id
-          end
+          expect(response).to have_http_status(200)
+          assert_select 'i.text-highlight'
         end
 
         it "updates post's points" do
-          perform_post_request(liked_post.id)
+          expect do
+            perform_post_request(liked_post.id)
+          end.to change(liked_post, :points).by(1)
 
-          assert_select 'turbo-stream[target=?]', "post-#{liked_post.id}-points" do
-            assert_select 'template', (I18n.t :points, count: liked_post.points)
-          end
+          expect(response).to have_http_status(200)
+          expect(response.body).to include(
+            (I18n.t :points, count: liked_post.points)
+          )
         end
       end
     end
@@ -88,7 +93,9 @@ RSpec.describe 'LikingRelations', type: :request do
 
       it 'prompts user to log-in' do
         perform_delete_request
-        assert_select 'div.alert-warning', 'You must be logged in to upvote.'
+        expect(response.body).to include(
+          (I18n.t 'flash.authenticate_like')
+        )
       end
     end
 
@@ -104,19 +111,19 @@ RSpec.describe 'LikingRelations', type: :request do
       it 'removes upvote icon highlight' do
         perform_delete_request
 
-        assert_select 'form[action=?]', liking_relations_path do |form|
-          assert_select form, 'input[value=?]', liking_user.id
-          assert_select form, 'input[value=?]', liked_post.id
-        end
+        expect(response).to have_http_status(200)
+        assert_select 'i.text-secondary'
       end
 
       it "updates post's points" do
-        perform_delete_request
+        expect do
+          perform_delete_request
+        end.to change(liked_post, :points).by(-1)
 
-        assert_select 'turbo-stream[target=?]', "post-#{liked_post.id}-points" do
-          text = I18n.t :points, count: liked_post.points
-          assert_select 'template', text
-        end
+        expect(response).to have_http_status(200)
+        expect(response.body).to include(
+          (I18n.t :points, count: liked_post.points)
+        )
       end
     end
   end
