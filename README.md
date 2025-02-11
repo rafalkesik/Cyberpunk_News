@@ -22,7 +22,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
 7. [X] Categories
 8. [X] Configure RuboCop and clean up the code layout
 9. [X] Change Minitest to Rspec
-10. [ ] Improve signup/login with Devise
+10. [X] Improve signup/login with Devise
       1) [X] Devise setup
       2) [X] Sendgrid setup for mailer
       3) [X] Deploy
@@ -34,7 +34,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
       2) [X] Add localisation requirement for every test
       3) [X] Rename LikingRelations to PostLike & CommentLike
       4) [ ] Rename upvote to Like AND downvote to Unlike for consistency
-      5) [ ] Clean up Gemfile
+      5) [X] Clean up Gemfile
       6) [ ] use only one flash methods (Devise or custom)
       7) [X] !!my_liking_relation(user) # Should become .present?
       8) [ ] check all .erb files - they are not checked by Rubocop for now.
@@ -50,7 +50,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
       19) [ ] Remove reduntant methods in models.
       21) [ ] improve custom.scss styles
       22) [ ] Make HTML ids consistent across all views
-      23) [ ] Remove '' from 'password' in forms
+      23) [X] Remove '' from 'password' in forms
       24) [ ] Check for other DRY, clean improvement possibilities
 12. [ ] Add Devise Admin Model
 13. [ ] Check issues on Github and handle all of them.
