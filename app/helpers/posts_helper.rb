@@ -1,11 +1,11 @@
 module PostsHelper
-  # Returns downvote or upvote icon partial
+  # Returns unlike or like icon partial
   # based on user's liking the post or not.
-  def post_vote_partial(post, user)
+  def post_like_partial(post, user)
     if post.liked_by?(user)
-      'posts/downvote_form'
+      'posts/unlike_form'
     else
-      'posts/upvote_form'
+      'posts/like_form'
     end
   end
 

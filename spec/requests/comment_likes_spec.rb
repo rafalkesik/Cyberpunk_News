@@ -39,7 +39,7 @@ RSpec.describe 'CommentLikes', type: :request do
           expect { perform_post_request(comment.id) }.to change(CommentLike, :count).by(1)
         end
 
-        it 'highlights upvote icon' do
+        it 'highlights like icon' do
           perform_post_request(comment.id)
 
           assert_select 'i.text-highlight'
@@ -102,7 +102,7 @@ RSpec.describe 'CommentLikes', type: :request do
         ).by(-1)
       end
 
-      it 'removes upvote icon highlight' do
+      it 'removes like icon highlight' do
         perform_delete_request
 
         assert_select 'i.text-secondary'

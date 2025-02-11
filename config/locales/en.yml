@@ -21,7 +21,7 @@ en:
     comment_deleted: "The comment has been deleted."
     comment_not_valid: "Comment not valid."
     authenticate: "Please log in to view that page."
-    authenticate_like: "You must be logged in to upvote."
+    authenticate_like: "You must be logged in to like."
     authenticate_add_com: "Log in to submit comments."
     authenticate_add_post: "Log in to submit posts."
     authenticate_add_category: "Log in to submit or edit categories."

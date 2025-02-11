@@ -3,8 +3,8 @@
         <span class="d-inline-flex flex-wrap">
 
             <span class="me-2">
-                <span id="post-<%= post.id %>-upvote">
-                    <%= render post_vote_partial(post, current_user), post: post %>
+                <span id="post-<%= post.id %>-like">
+                    <%= render post_like_partial(post, current_user), post: post %>
                 </span>
 
                 <span class="lh-1 mt-2">

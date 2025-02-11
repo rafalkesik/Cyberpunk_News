@@ -51,7 +51,7 @@ RSpec.describe 'PostLikes', type: :request do
           end.to change(PostLike, :count).by(1)
         end
 
-        it 'highlights upvote icon' do
+        it 'highlights like icon' do
           perform_post_request(liked_post.id)
 
           expect(response).to have_http_status(200)
@@ -108,7 +108,7 @@ RSpec.describe 'PostLikes', type: :request do
         expect { perform_delete_request }.to change(PostLike, :count).by(-1)
       end
 
-      it 'removes upvote icon highlight' do
+      it 'removes like icon highlight' do
         perform_delete_request
 
         expect(response).to have_http_status(200)

@@ -1,7 +1,7 @@
 <li class="lh-sm" id="comment-<%= comment.id %>">
     <div class="comment-header fs-6">
-        <div class="comment-tab" id="comment-<%= comment.id %>-upvote">
-            <%= render comment_vote_partial(comment, current_user), comment: comment %>
+        <div class="comment-tab" id="comment-<%= comment.id %>-like">
+            <%= render comment_like_partial(comment, current_user), comment: comment %>
         </div>
         <span>
             <%= render_author(comment) %>

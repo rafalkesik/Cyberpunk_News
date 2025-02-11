@@ -1,5 +1,5 @@
-<%= turbo_stream.update "comment-#{@comment&.id}-upvote",
-                        partial: 'comments/upvote_form',
+<%= turbo_stream.update "comment-#{@comment&.id}-like",
+                        partial: 'comments/like_form',
                         locals: { comment: @comment } %>
 
 <%= turbo_stream.update "comment-#{@comment&.id}-points",

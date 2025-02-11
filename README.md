@@ -33,24 +33,23 @@ Build a copy of HackerNews - https://news.ycombinator.com
       1) [X] Add remaining Localisation text for PL.
       2) [X] Add localisation requirement for every test
       3) [X] Rename LikingRelations to PostLike & CommentLike
-      4) [ ] Rename upvote to Like AND downvote to Unlike for consistency
+      4) [X] Rename upvote to Like AND downvote to Unlike for consistency
       5) [X] Clean up Gemfile
-      6) [ ] use only one flash methods (Devise or custom)
-      7) [X] !!my_liking_relation(user) # Should become .present?
-      8) [ ] check all .erb files - they are not checked by Rubocop for now.
-      9) [ ] Use Devise resource_params instead of my custom params methods?
-      10) [ ] Check all specs for consistency and clarity
-      11) [ ] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.
-      12) [ ] Check for other devise paths inconcistencies
-      13) [ ] Change all assert_select into expect(). Unless we need specific test.
-      14) [ ] Add password_reset & remember_me spec if needed?
-      15) [ ] Check if admin authorizations can be done with Devise methods
-      16) [ ] Unify have_http_status(303) to use code.
-      18) [ ] Change “render ‘user/profile” into “render :profile”. In every controller.
-      19) [ ] Remove reduntant methods in models.
-      21) [ ] improve custom.scss styles
-      22) [ ] Make HTML ids consistent across all views
-      23) [X] Remove '' from 'password' in forms
-      24) [ ] Check for other DRY, clean improvement possibilities
+      6) [X] !!my_liking_relation(user) # Should become .present?
+      7) [ ] check all .erb files - they are not checked by Rubocop for now.
+      8) [ ] Use Devise resource_params instead of my custom params methods?
+      9) [ ] Check all specs for consistency and clarity
+      10) [ ] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.
+      11) [ ] Check for other devise paths inconcistencies
+      12) [ ] Change all assert_select into expect(). Unless we need specific test.
+      13) [ ] Add password_reset & remember_me spec if needed?
+      14) [ ] Check if admin authorizations can be done with Devise methods
+      15) [ ] Unify have_http_status(303) to use code.
+      16) [ ] Change “render ‘user/profile” into “render :profile”. In every controller.
+      17) [ ] Remove reduntant methods in models.
+      18) [ ] improve custom.scss styles
+      19) [ ] Make HTML ids consistent across all views
+      20) [X] Remove '' from 'password' in forms
+      21) [ ] Check for other DRY, clean improvement possibilities
 12. [ ] Add Devise Admin Model
 13. [ ] Check issues on Github and handle all of them.
