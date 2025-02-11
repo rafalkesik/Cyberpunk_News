@@ -3,15 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  has_many :posts,            dependent: :destroy
-  has_many :comments,         dependent: :destroy
-  has_many :liking_relations, foreign_key: :liking_user_id,
-                              dependent: :destroy
-  has_many :liked_posts,      through: :liking_relations,
-                              source: :liked_post
-  has_many :comment_liking_relations, foreign_key: :liking_user_id,
-                                      dependent: :destroy
-  has_many :liked_comments, through: :comment_liking_relations,
+  has_many :posts,    dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :post_likes,  foreign_key: :liking_user_id,
+                         dependent: :destroy
+  has_many :liked_posts, through: :post_likes,
+                         source: :liked_post
+  has_many :comment_likes,  foreign_key: :liking_user_id,
+                            dependent: :destroy
+  has_many :liked_comments, through: :comment_likes,
                             source: :liked_comment
 
   validates :username, presence: true, uniqueness: true

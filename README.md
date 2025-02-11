@@ -30,29 +30,27 @@ Build a copy of HackerNews - https://news.ycombinator.com
       5) [ ] Assign posts to new users and delete old ones in db
       6) [ ] Add unique & present validations for email
 11. [ ] Refactoring all code
-      0) [X] Add remaining Localisation text for PL.
-      01) [ ] Add localisation requirement for every test
-      1) [ ] Rename LikingRelations to PostLike & CommentLike (foreign_key: like)
-      2) [ ] Rename upvote to Like AND downvote to Unlike for consistency
-      3) [ ] Clean up Gemfile
-      4) [ ] use only one flash methods (Devise or custom)
-      5) [ ] !!my_liking_relation(user) # Should become .present?
-      6) [ ] check all .erb files - they are not checked by Rubocop for now.
-      7) [ ] Use Devise resource_params instead of my custom params methods?
-      8) [ ] Check all specs for consistency and clarity
-      9) [ ] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.
-      10) [ ] Check for other devise paths inconcistencies
-      11) [ ] Change all assert_select into expect(). Unless we need specific test.
-      13) [ ] Add password_reset & remember_me spec if needed?
-      14) [ ] Check if admin authorizations can be done with Devise methods
-      15) [ ] Unify have_http_status(303) to use code.
-      16) [ ] Remove liking_relation and comment_liking_relation. (has_many relation is enough for them.)
-      17) [ ] Change “render ‘user/profile” into “render :profile”. In every controller.
-      18) [ ] Remove reduntant methods in models.
-      19) [ ] Rename LikingRelation into PostLikingRelation (Or remove middle-model)
-      20) [ ] improve custom.scss styles
-      21) [ ] Make HTML ids consistent across all views
-      22) [ ] Remove '' from 'password' in forms
-      23) [ ] Check for other DRY, clean improvement possibilities
+      1) [X] Add remaining Localisation text for PL.
+      2) [X] Add localisation requirement for every test
+      3) [X] Rename LikingRelations to PostLike & CommentLike
+      4) [ ] Rename upvote to Like AND downvote to Unlike for consistency
+      5) [ ] Clean up Gemfile
+      6) [ ] use only one flash methods (Devise or custom)
+      7) [X] !!my_liking_relation(user) # Should become .present?
+      8) [ ] check all .erb files - they are not checked by Rubocop for now.
+      9) [ ] Use Devise resource_params instead of my custom params methods?
+      10) [ ] Check all specs for consistency and clarity
+      11) [ ] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.
+      12) [ ] Check for other devise paths inconcistencies
+      13) [ ] Change all assert_select into expect(). Unless we need specific test.
+      14) [ ] Add password_reset & remember_me spec if needed?
+      15) [ ] Check if admin authorizations can be done with Devise methods
+      16) [ ] Unify have_http_status(303) to use code.
+      18) [ ] Change “render ‘user/profile” into “render :profile”. In every controller.
+      19) [ ] Remove reduntant methods in models.
+      21) [ ] improve custom.scss styles
+      22) [ ] Make HTML ids consistent across all views
+      23) [ ] Remove '' from 'password' in forms
+      24) [ ] Check for other DRY, clean improvement possibilities
 12. [ ] Add Devise Admin Model
 13. [ ] Check issues on Github and handle all of them.

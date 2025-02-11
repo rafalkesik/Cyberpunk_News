@@ -1,4 +1,4 @@
-<%= form_with(url: liking_relations_path, scope: 'liking_relation', 
+<%= form_with(url: post_likes_path, scope: 'post_like', 
               method: 'delete', class: 'd-inline-block')  do |f|%>
     <%= f.hidden_field :liked_post_id,  value: post.id %>
     <%= f.hidden_field :liking_user_id, value: current_user&.id %>

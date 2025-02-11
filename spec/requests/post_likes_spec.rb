@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe 'LikingRelations', type: :request do
-  describe 'POST /liking_relations' do
+RSpec.describe 'PostLikes', type: :request do
+  describe 'POST /post_likes' do
     context 'when not logged in' do
       it 'does not like the post' do
         expect do
-          post liking_relations_path, as: :turbo_stream
-        end.to change(LikingRelation, :count).by(0)
+          post post_likes_path, as: :turbo_stream
+        end.to change(PostLike, :count).by(0)
       end
 
       it 'prompts the user to log-in' do
-        post liking_relations_path, as: :turbo_stream
+        post post_likes_path, as: :turbo_stream
         expect(response.body).to include(
           (I18n.t 'flash.authenticate_like')
         )
@@ -23,9 +23,9 @@ RSpec.describe 'LikingRelations', type: :request do
       let(:liked_post) { posts(:one) }
 
       def perform_post_request(post_id)
-        post liking_relations_path,
+        post post_likes_path,
              as: :turbo_stream,
-             params: { liking_relation: { liked_post_id: post_id } }
+             params: { post_like: { liked_post_id: post_id } }
       end
 
       before do
@@ -36,7 +36,7 @@ RSpec.describe 'LikingRelations', type: :request do
         it 'does not like a post' do
           expect do
             perform_post_request(999)
-          end.to change(LikingRelation, :count).by(0)
+          end.to change(PostLike, :count).by(0)
 
           expect(response.body).to include(
             (I18n.t 'flash.post_deleted')
@@ -48,7 +48,7 @@ RSpec.describe 'LikingRelations', type: :request do
         it 'likes the post' do
           expect do
             perform_post_request(liked_post.id)
-          end.to change(LikingRelation, :count).by(1)
+          end.to change(PostLike, :count).by(1)
         end
 
         it 'highlights upvote icon' do
@@ -72,23 +72,23 @@ RSpec.describe 'LikingRelations', type: :request do
     end
   end
 
-  describe 'DELETE /liking_relations/:id' do
-    fixtures :liking_relations
-    let(:relation) { liking_relations(:one_likes_two) }
+  describe 'DELETE /post_likes/:id' do
+    fixtures :post_likes
+    let(:relation) { post_likes(:one_likes_two) }
     let(:liking_user) { relation.liking_user }
     let(:liked_post) { relation.liked_post }
 
     def perform_delete_request
-      delete liking_relations_path,
+      delete post_likes_path,
              as: :turbo_stream,
-             params: { liking_relation: { liked_post_id: liked_post.id } }
+             params: { post_like: { liked_post_id: liked_post.id } }
     end
 
     context 'when not logged in' do
       it 'does not unlike post' do
         expect do
           perform_delete_request
-        end.to change(LikingRelation, :count).by(0)
+        end.to change(PostLike, :count).by(0)
       end
 
       it 'prompts user to log-in' do
@@ -105,7 +105,7 @@ RSpec.describe 'LikingRelations', type: :request do
       end
 
       it 'unlikes the post' do
-        expect { perform_delete_request }.to change(LikingRelation, :count).by(-1)
+        expect { perform_delete_request }.to change(PostLike, :count).by(-1)
       end
 
       it 'removes upvote icon highlight' do

@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe 'CommentLikingRelations', type: :request do
-  describe 'POST /comment_liking_relations' do
+RSpec.describe 'CommentLikes', type: :request do
+  describe 'POST /comment_likes' do
     context 'when not logged in' do
       it 'does not like the comment' do
         expect do
-          post liking_relations_path, as: :turbo_stream
-        end.to change(CommentLikingRelation, :count).by(0)
+          post comment_likes_path, as: :turbo_stream
+        end.to change(CommentLike, :count).by(0)
       end
 
       it 'prompts the user to log-in' do
-        post liking_relations_path, as: :turbo_stream
+        post comment_likes_path, as: :turbo_stream
 
         expect(response.body).to include(
           (I18n.t 'flash.authenticate_like')
@@ -25,9 +25,9 @@ RSpec.describe 'CommentLikingRelations', type: :request do
       let(:comment) { comments(:parent_of_three_and_four) }
 
       def perform_post_request(comment_id)
-        post comment_liking_relations_path,
+        post comment_likes_path,
              as: :turbo_stream,
-             params: { comment_liking_relation: { liked_comment_id: comment_id } }
+             params: { comment_like: { liked_comment_id: comment_id } }
       end
 
       before do
@@ -36,7 +36,7 @@ RSpec.describe 'CommentLikingRelations', type: :request do
 
       context 'when comment exists' do
         it 'likes the comment' do
-          expect { perform_post_request(comment.id) }.to change(CommentLikingRelation, :count).by(1)
+          expect { perform_post_request(comment.id) }.to change(CommentLike, :count).by(1)
         end
 
         it 'highlights upvote icon' do
@@ -58,7 +58,7 @@ RSpec.describe 'CommentLikingRelations', type: :request do
         it 'does not like the comment' do
           expect do
             perform_post_request(999)
-          end.to change(CommentLikingRelation, :count).by(0)
+          end.to change(CommentLike, :count).by(0)
 
           expect(response.body).to include(
             (I18n.t 'flash.comment_deleted')
@@ -68,28 +68,28 @@ RSpec.describe 'CommentLikingRelations', type: :request do
     end
   end
 
-  describe 'DELETE /comment_liking_relations/:id' do
+  describe 'DELETE /comment_likes/:id' do
     context 'when not logged in' do
-      fixtures :comment_liking_relations
-      let(:relation) { comment_liking_relations(:one_likes_two) }
+      fixtures :comment_likes
+      let(:relation) { comment_likes(:one_likes_two) }
 
       it 'does not remove like' do
         expect do
-          delete comment_liking_relation_path(relation), as: :turbo_stream
-        end.to change(CommentLikingRelation, :count).by(0)
+          delete comment_like_path(relation), as: :turbo_stream
+        end.to change(CommentLike, :count).by(0)
       end
     end
 
     context 'when logged in' do
-      fixtures :comment_liking_relations
-      let(:relation) { comment_liking_relations(:one_likes_two) }
+      fixtures :comment_likes
+      let(:relation) { comment_likes(:one_likes_two) }
       let(:user) { relation.liking_user }
       let(:liked_comment) { relation.liked_comment }
 
       def perform_delete_request
-        delete comment_liking_relations_path,
+        delete comment_likes_path,
                as: :turbo_stream,
-               params: { comment_liking_relation: { liked_comment_id: liked_comment.id } }
+               params: { comment_like: { liked_comment_id: liked_comment.id } }
       end
 
       before do
@@ -98,7 +98,7 @@ RSpec.describe 'CommentLikingRelations', type: :request do
 
       it 'removes like' do
         expect { perform_delete_request }.to change(
-          CommentLikingRelation, :count
+          CommentLike, :count
         ).by(-1)
       end
 

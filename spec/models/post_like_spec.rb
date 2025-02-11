@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe LikingRelation, type: :model do
-  let(:relation) { LikingRelation.new(liking_user_id: 1, liked_post_id: 2) }
+RSpec.describe PostLike, type: :model do
+  let(:relation) { PostLike.new(liking_user_id: 1, liked_post_id: 2) }
 
   it 'is valid when arguments are valid' do
     expect(relation).to be_valid
