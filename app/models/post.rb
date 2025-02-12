@@ -18,13 +18,12 @@ class Post < ApplicationRecord
   end
 
   def liked_by?(user)
-    # liking_users.include(user)
-    self.post_likes.find_by(liking_user: user).present?
+    liking_users.exists?(user.id)
   end
 
   def short_link
-    @link = link.sub(%r{https://|http://}, '')
-    @link = @link.sub(/www./, '')
-    @link.sub(%r{/.*}, '')
+    link.sub(%r{https://|http://}, '')
+        .sub(/www./, '')
+        .sub(%r{/.*}, '')
   end
 end

@@ -24,31 +24,8 @@ class User < ApplicationRecord
     comment.user == self
   end
 
-  # Changes default devise mailer to SendGrid API method
+  # Changes default devise mailer into SendGrid API on production ENV
   def send_devise_notification(notification, *args)
-    # Default behaviour for dev env
-    if Rails.env.development?
-      send_devise_notification_dev_env(notification, *args)
-      return
-    end
-
-    # Generate the Devise mailer message
-    message = devise_mailer.send(notification, self, *args)
-
-    # Extract email subject and content
-    subject = message.subject
-    content = message.body.raw_source # Extract raw email content (text/html)
-
-    # Send email using SendGrid API
-    ApplicationMailer.new.send_email(email, subject, content)
-  end
-
-  def send_devise_notification_dev_env(notification, *args)
-    message = devise_mailer.send(notification, self, *args)
-    if message.respond_to?(:deliver_now)
-      message.deliver_now
-    else
-      message.deliver
-    end
+    MailerService.send_email(self, notification, *args)
   end
 end

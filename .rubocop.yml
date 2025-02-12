@@ -28,6 +28,10 @@ Style/NegatedIf:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
 
 # Disabled Layout rules for .erb files
 Layout/SpaceBeforeFirstArg:

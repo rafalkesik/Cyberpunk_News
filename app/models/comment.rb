@@ -16,18 +16,6 @@ class Comment < ApplicationRecord
   end
 
   def liked_by?(user)
-    # liking_users.include(user)
-    self.comment_likes.find_by(liking_user: user).present?
-  end
-
-  def destroy_and_its_parents_if_they_are_redundant
-    destroy
-    return unless had_no_siblings && parent&.hidden
-
-    parent.destroy_and_its_parents_if_they_are_redundant
-  end
-
-  def had_no_siblings
-    parent&.subcomments&.count&.zero?
+    liking_users.exists?(user.id)
   end
 end

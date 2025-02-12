@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :show]
-  before_action :verify_admin, only: [:destroy]
+  before_action :authorize_admin, only: [:destroy]
 
   def new
     @user = User.new
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
           .permit(:username, :email, :password, :password_confirmation)
   end
 
-  def verify_admin
+  def authorize_admin
     return if current_user&.admin
 
     redirect_to root_url, status: :see_other
