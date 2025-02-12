@@ -10,11 +10,8 @@ AllCops:
       - 'config/puma.rb'
       - 'config/routes.rb'
       - 'config/environments/production.rb'
-      - '**/*.html.erb'
-      - '**/*.turbo_stream.erb'
       - 'Guardfile'
       - 'app/mailers/application_mailer.rb'
-
 
 # Disabled rules
 Style/FrozenStringLiteralComment:
@@ -31,6 +28,20 @@ Style/NegatedIf:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+
+# Disabled Layout rules for .erb files
+Layout/SpaceBeforeFirstArg:
+  Enabled: true
+  Exclude:
+    - 'app/views/**/*.erb'
+Layout/ExtraSpacing:
+  Enabled: true
+  Exclude:
+    - 'app/views/**/*.erb'
 
 # Modified rules  
 Metrics/BlockLength:

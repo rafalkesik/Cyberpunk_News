@@ -23,13 +23,12 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
-    if children?(@comment)
-      @comment.update_attribute(:hidden, true)
-      @partial = 'comments/comment'
-    else
-      @comment&.destroy_and_its_parents_if_they_are_redundant
-      @partial = 'shared/empty_partial'
-    end
+    return if @comment.nil?
+
+    destruction_service = CommentDestructionService.new(@comment)
+    destruction_service.call
+    @partial = destruction_service.partial
+
     flash.now[:success] = t 'flash.comment_deleted'
   end
 

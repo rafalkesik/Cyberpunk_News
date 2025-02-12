@@ -1,24 +1,24 @@
 <h1><%= t :all_categories %></h1>
 
-<div id="new-category-button" class="mb-2">
-   <%= button_to (t :create_category), new_category_path, method: :get %>
+<div id='new-category-button' class='mb-2'>
+  <%= button_to (t :create_category),
+                new_category_path,
+                method: :get %>
 </div>
 
-<ol class="clean-list text-primary">
-   <div id="categories">
-      <% @categories.each do |category| %>
-         <div id="category_<%= category.id %>">
-            <li>
-               <div class="user-containter containter pb-2 ps-2">
-                  <div class="row">
-                     <div class="col align-self-center">
-                        <%= link_to category.title,
-                                    category_path(category.slug) %>
-                     </div>
-                  </div>
-               </div>
-            </li>
-         </div>
-      <% end %>
-   </div>
+<ol class='clean-list text-primary'>
+  <div id='categories'>
+    <% @categories.each do |category| %>
+      <li id='category_<%= category.id %>'>
+        <div class='containter pb-2 ps-2'>
+          <div class='row'>
+            <div class='col align-self-center'>
+              <%= link_to category.title,
+                          category_path(category.slug) %>
+            </div>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </div>
 </ol>

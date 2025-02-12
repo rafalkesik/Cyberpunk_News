@@ -3,15 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  has_many :posts,            dependent: :destroy
-  has_many :comments,         dependent: :destroy
-  has_many :liking_relations, foreign_key: :liking_user_id,
-                              dependent: :destroy
-  has_many :liked_posts,      through: :liking_relations,
-                              source: :liked_post
-  has_many :comment_liking_relations, foreign_key: :liking_user_id,
-                                      dependent: :destroy
-  has_many :liked_comments, through: :comment_liking_relations,
+  has_many :posts,    dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :post_likes,  foreign_key: :liking_user_id,
+                         dependent: :destroy
+  has_many :liked_posts, through: :post_likes,
+                         source: :liked_post
+  has_many :comment_likes,  foreign_key: :liking_user_id,
+                            dependent: :destroy
+  has_many :liked_comments, through: :comment_likes,
                             source: :liked_comment
 
   validates :username, presence: true, uniqueness: true
@@ -24,16 +24,8 @@ class User < ApplicationRecord
     comment.user == self
   end
 
-  # Changes default devise mailer to SendGrid API method
+  # Changes default devise mailer into SendGrid API on production ENV
   def send_devise_notification(notification, *args)
-    # Generate the Devise mailer message
-    message = devise_mailer.send(notification, self, *args)
-
-    # Extract email subject and content
-    subject = message.subject
-    content = message.body.raw_source # Extract raw email content (text/html)
-
-    # Send email using SendGrid API
-    ApplicationMailer.new.send_email(email, subject, content)
+    MailerService.send_email(self, notification, *args)
   end
 end

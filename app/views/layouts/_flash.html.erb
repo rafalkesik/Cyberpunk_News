@@ -1,7 +1,7 @@
-<div id="flash-messages" class="position-sticky top-0 z-3">
-    <% flash.each do |type, msg| %>
-        <%= content_tag(:div, msg, role: 'alert',
-                        class: "alert alert-#{type}
-                                alert-dismissible fade show") %>
+<div id='flash-messages' class='position-sticky top-0 z-3'>
+  <% flash.each do |type, msg| %>
+    <%= content_tag(:div, msg, role: 'alert',
+                    class: "alert alert-#{type}
+                            alert-dismissible fade show") %>
     <% end %>
 </div>

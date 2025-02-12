@@ -2,8 +2,8 @@
                         partial: 'layouts/flash') %>
 
 <% if @comment.present? %>
-  <%= turbo_stream.update "comment-#{@comment.id}-upvote",
-                          partial: 'comments/downvote_form',
+  <%= turbo_stream.update "comment-#{@comment.id}-like",
+                          partial: 'comments/unlike_form',
                           locals: { comment: @comment } %>
 
   <%= turbo_stream.update "comment-#{@comment.id}-points",

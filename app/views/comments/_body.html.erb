@@ -1,0 +1,26 @@
+<div class='comment-body fs-5 pt-1 text-dark'>
+  <div class='comment-indentation'></div>
+  
+  <div class='flex-grow-1'>
+    <% if comment.hidden %>
+      <div class='comment-text text-secondary'>
+        <%= t :comment_deleted %>
+      </div>
+    <% else %>
+      <div class='comment-text'>
+        <%= format_text(comment.content) %>
+      </div>
+    <% end %>
+
+    <%= turbo_frame_tag "reply-form-to-#{comment.id}" do %>
+    <% end %>
+
+    <ul class='text-secondary clean-list'
+        id='comments-list-<%= comment.id %>'>
+      <% comment.subcomments.each do |subcomment| %>
+        <%= render partial: 'comments/comment',
+                  locals: { comment: subcomment } %>
+      <% end %>
+    </ul>
+  </div>
+</div>

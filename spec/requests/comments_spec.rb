@@ -16,7 +16,9 @@ RSpec.describe 'Comments', type: :request do
       it 'prompts the user to log-in' do
         post comments_path, as: :turbo_stream
 
-        assert_select 'div.alert-warning', 'Log in to submit comments.'
+        expect(response.body).to include(
+          (I18n.t 'flash.authenticate_add_com')
+        )
       end
     end
 
@@ -37,7 +39,9 @@ RSpec.describe 'Comments', type: :request do
             post comments_path, as: :turbo_stream, params: { comment: invalid_data }
           end.to change(Comment, :count).by(0)
 
-          assert_select 'div.alert-danger', 'Comment not valid.'
+          expect(response.body).to include(
+            (I18n.t 'flash.comment_not_valid')
+          )
         end
       end
 
@@ -70,7 +74,9 @@ RSpec.describe 'Comments', type: :request do
 
       it 'prompts the user to log-in' do
         delete comment_path(comment), as: :turbo_stream
-        assert_select 'div.alert-warning', 'Log in to submit comments.'
+        expect(response.body).to include(
+          (I18n.t 'flash.authenticate_add_com')
+        )
       end
     end
 
@@ -135,7 +141,9 @@ RSpec.describe 'Comments', type: :request do
             delete comment_path(child_two), as: :turbo_stream
           end.to change(Comment, :count).by(-1)
 
-          assert_select 'div.alert-success', 'The comment has been deleted.'
+          expect(response.body).to include(
+            (I18n.t 'flash.comment_deleted')
+          )
           assert_select 'turbo-stream[action="replace"][target=?]',
                         "comment-#{child_two.id}"
         end

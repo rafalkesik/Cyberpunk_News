@@ -1,0 +1,30 @@
+<div class='comment-header fs-6'>
+  <div class='comment-tab' id='comment-<%= comment.id %>-like'>
+    <%= render comment_like_partial(comment, current_user),
+               comment: comment %>
+  </div>
+
+  <span><%= render_author(comment) %></span>
+
+  <span>
+    <%= time_ago_in_words(comment.created_at) %> <%= t :ago %>
+  </span>
+
+  <span>|</span>
+  <span id='comment-<%= comment.id %>-points' class='text-emphasize'>
+    <%= t :points, count: comment.points %>
+  </span>
+  <span>|</span>
+
+  <span>
+    <%= render 'comments/reply_button', comment: comment %>
+  </span>
+
+  <span>
+    <% if can_delete_comment(comment) %>
+      <%= form_with(model: comment, method: :delete) do |f| %>
+        <%= f.submit t :delete %>
+      <% end %>
+    <% end %>
+  </span>
+</div>

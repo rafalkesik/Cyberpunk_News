@@ -78,8 +78,6 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
     base64 (0.2.0)
     bcrypt (3.1.18)
@@ -95,19 +93,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.12.0)
       msgpack (~> 1.2)
-    bootstrap-will_paginate (1.0.0)
-      will_paginate
     builder (3.3.0)
-    capybara (3.37.1)
-      addressable
-      matrix
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.8)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      regexp_parser (>= 1.5, < 3.0)
-      xpath (~> 3.2)
-    childprocess (4.1.0)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
@@ -125,8 +111,6 @@ GEM
     diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.13.1)
-    faker (2.21.0)
-      i18n (>= 1.8.11, < 2)
     ffi (1.17.1)
     ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-darwin)
@@ -176,7 +160,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    matrix (0.4.2)
     method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
@@ -223,7 +206,6 @@ GEM
     psych (5.2.3)
       date
       stringio
-    public_suffix (6.0.1)
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
@@ -281,7 +263,6 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.4.0)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -320,7 +301,6 @@ GEM
       rubocop (~> 1.45)
     ruby-progressbar (1.13.0)
     ruby_http_client (3.5.5)
-    rubyzip (2.4.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -330,11 +310,6 @@ GEM
       sprockets-rails
       tilt
     securerandom (0.4.1)
-    selenium-webdriver (4.2.0)
-      childprocess (>= 0.5, < 5.0)
-      rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
-      websocket (~> 1.0)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
     shellany (0.0.1)
@@ -371,18 +346,10 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webdrivers (5.0.0)
-      nokogiri (~> 1.6)
-      rubyzip (>= 1.3.0)
-      selenium-webdriver (~> 4.0)
-    websocket (1.2.11)
     websocket-driver (0.7.7)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    will_paginate (3.3.1)
-    xpath (3.2.0)
-      nokogiri (~> 1.8)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -393,11 +360,8 @@ PLATFORMS
 DEPENDENCIES
   bcrypt (= 3.1.18)
   bootsnap (= 1.12.0)
-  bootstrap-will_paginate (= 1.0.0)
-  capybara (= 3.37.1)
   debug (= 1.9.2)
   devise (~> 4.9)
-  faker (= 2.21.0)
   guard (= 2.18.0)
   guard-rspec
   importmap-rails (= 1.1.0)
@@ -413,15 +377,12 @@ DEPENDENCIES
   rubocop (~> 1.71)
   rubocop-erb (~> 0.3.0)
   sassc-rails (= 2.1.2)
-  selenium-webdriver (= 4.2.0)
   sendgrid-ruby
   sprockets-rails (= 3.4.2)
   sqlite3 (~> 1.5)
   stimulus-rails (= 1.0.4)
   turbo-rails (= 1.1.1)
   web-console (= 4.2.0)
-  webdrivers (= 5.0.0)
-  will_paginate (= 3.3.1)
 
 RUBY VERSION
    ruby 3.1.2p20
