@@ -7,7 +7,7 @@ class MailerService
     end
 
     # Generate the Devise mailer message
-    message = devise_mailer.send(notification, user, *args)
+    message = Devise.mailer.send(notification, user, *args)
     # Extract email subject and content
     subject = message.subject
     content = message.body.raw_source # Extract raw email content (text/html)
