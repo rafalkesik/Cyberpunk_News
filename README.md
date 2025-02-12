@@ -36,7 +36,7 @@ Build a copy of HackerNews - https://news.ycombinator.com
       4) [X] Rename upvote to Like AND downvote to Unlike for consistency
       5) [X] Clean up Gemfile
       6) [X] !!my_liking_relation(user) # Should become .present?
-      7) [ ] check all .erb files - they are not checked by Rubocop for now.
+      7) [X] check all .erb files - they are not checked by Rubocop for now.
       8) [ ] Use Devise resource_params instead of my custom params methods?
       9) [ ] Check all specs for consistency and clarity
       10) [ ] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.

@@ -1,44 +1,53 @@
 <header>
-  <nav class="navbar navbar-expand-lg bg-body-main-color ms-lg-auto">
-    <a class="navbar-brand ms-5" href='<%= root_path %>'>Cyberpunk News</a>
-    <button class="navbar-toggler me-4" type="button" data-bs-toggle="collapse" 
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+  <nav class='navbar navbar-expand-lg bg-body-main-color ms-lg-auto'>
+    <a class='navbar-brand ms-5' href='<%= root_path %>'>Cyberpunk News</a>
+    <button class='navbar-toggler me-4'
+            type='button'
+            data-bs-toggle='collapse' 
+            data-bs-target='#navbarSupportedContent'
+            aria-controls='navbarSupportedContent'
+            aria-expanded='false'
+            aria-label='Toggle navigation'>
+      <span class='navbar-toggler-icon'></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-lg-auto mt-2 my-lg-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href='<%= root_path %>' aria-current="page">
+    <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+      <ul class='navbar-nav me-lg-auto mt-2 my-lg-auto'>
+        <li class='nav-item active'>
+          <a class='nav-link' href='<%= root_path %>' aria-current='page'>
             <%= t :home %>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href='<%= categories_path %>'>
+        <li class='nav-item'>
+          <a class='nav-link' href='<%= categories_path %>'>
             <%= t 'categories.lower' %>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href='<%= users_path %>'><%= t 'users.lower' %></a>
+        <li class='nav-item'>
+          <a class='nav-link' href='<%= users_path %>'>
+            <%= t 'users.lower' %>
+          </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href='<%= new_post_path %>'><%= t :create %></a>
+        <li class='nav-item'>
+          <a class='nav-link' href='<%= new_post_path %>'>
+            <%= t :create %>
+          </a>
         </li>
       </ul>
 
-      <div class="navbar-nav mt-3 mt-lg-0">
-        <ul class="languages nav-item me-lg-2 ps-0 border-0 mb-1">
+      <div class='navbar-nav mt-3 mt-lg-0'>
+        <ul class='languages nav-item me-lg-2 ps-0 border-0 mb-1'>
           <%= language_selector %>
         </ul>
-        <div class="nav-item me-lg-5 border-0">
+        <div class='nav-item me-lg-5 border-0'>
           <% if user_signed_in? %>
-            <%= link_to (t :profile), user_path(current_user),
-                                      class: "nav-link login-link" %>
+            <%= link_to (t :profile), 
+                user_path(current_user),
+                class: 'nav-link login-link' %>
           <% else %>
-            <%= link_to (t :login), new_user_session_path,
-                                    class: "nav-link login-link text-nowrap"%>
+            <%= link_to (t :login), 
+                new_user_session_path,
+                class: 'nav-link login-link text-nowrap'%>
           <% end %>
         </div>
       </div>

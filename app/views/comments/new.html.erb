@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "reply-form-to-#{@parent.id}" do %>
-  <div id="submit-subcomment-form">
+  <div id='submit-subcomment-form'>
       <%= render 'comments/submit_comment_form',
-                post: @parent.post,
-                parent_id: @parent.id %>
+                 post: @parent.post,
+                 parent_id: @parent.id %>
   </div>
 <% end %>

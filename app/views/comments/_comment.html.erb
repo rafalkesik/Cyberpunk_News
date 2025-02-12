@@ -1,54 +1,5 @@
-<li class="lh-sm" id="comment-<%= comment.id %>">
-    <div class="comment-header fs-6">
-        <div class="comment-tab" id="comment-<%= comment.id %>-like">
-            <%= render comment_like_partial(comment, current_user), comment: comment %>
-        </div>
-        <span>
-            <%= render_author(comment) %>
-        </span>
-        <span>
-            <%= time_ago_in_words(comment.created_at) %> <%= t :ago %>
-        </span>
-        <span>|</span>
-        <span id="comment-<%= comment.id %>-points" class="text-emphasize">
-            <%= t :points, count: comment.points %>
-        </span>
-        <span>|</span>
-        <span>
-            <%= render 'comments/reply_button', comment: comment %>
-        </span>
-        <span>
-            <% if can_delete_comment(comment) %>
-                <%= form_with(model: comment, method: :delete) do |f| %>
-                    <%= f.submit (t :delete) %>
-                <% end %>
-            <% end %>
-        </span>
-    </div>
+<li class='lh-sm' id='comment-<%= comment.id %>'>
+    <%= render 'comments/header', comment: comment %>
 
-    <div class="comment-body fs-5 pt-1 text-dark">
-        <div class="comment-tab"></div>
-        <div class="flex-grow-1">
-            <% if comment.hidden %>
-                <div class="comment-text text-secondary">
-                    <%= t :comment_deleted %>
-                </div>
-            <% else %>
-                <div class="comment-text">
-                    <%= format_text(comment.content) %>
-                </div>
-            <% end %>
-
-            <%= turbo_frame_tag "reply-form-to-#{comment.id}" do %>
-            <% end %>
-
-            <ul class="text-secondary clean-list"
-                id="comments-list-<%= comment.id %>">
-            <% comment.subcomments.each do |subcomment| %>
-                <%= render partial: 'comments/comment',
-                           locals: { comment: subcomment } %>
-            <% end %>
-            </ul>
-        </div>
-    </div>
+    <%= render 'comments/body', comment: comment %>
 </li>

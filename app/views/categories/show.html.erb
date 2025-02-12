@@ -1,15 +1,18 @@
 <h1><%= t :all_posts %></h1>
 <h3>-<%= @category.title %>-</h3>
-<p class="text-primary mb-2"><%= format_text(@category.description) %></p>
+<p class='text-primary mb-2'>
+   <%= format_text(@category.description) %>
+</p>
 
-<div id="new-post-button" class="mb-2">
-   <%= button_to (t :create_post), new_post_path,
-                                   params: {category_id: @category.id},
-                                   method: :get %>
+<div id='new-post-button' class='mb-2'>
+   <%= button_to (t :create_post),
+                 new_post_path,
+                 params: { category_id: @category.id },
+                 method: :get %>
 </div>
 
-<ol class="text-secondary">
-   <div id="posts">
+<ol class='text-secondary'>
+   <div id='posts'>
       <%= render @posts %> 
    </div>
 </ol>
