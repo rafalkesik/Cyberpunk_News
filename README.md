@@ -39,14 +39,13 @@ Build a copy of HackerNews - https://news.ycombinator.com
       7) [X] check all .erb files - they are not checked by Rubocop for now.
       8) [ ] Use Devise resource_params instead of my custom params methods?
       9) [ ] Check all specs for consistency and clarity
-      10) [ ] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.
-      11) [ ] Check for other devise paths inconcistencies
-      12) [ ] Change all assert_select into expect(). Unless we need specific test.
+      10) [X] Change 'login_as' into 'sign_in' (Devise). Same for logout, signup.
+      12) [X] Change all assert_select into expect(). Unless we need specific test.
       13) [ ] Add password_reset & remember_me spec if needed?
-      14) [ ] Check if admin authorizations can be done with Devise methods
-      15) [ ] Unify have_http_status(303) to use code.
-      16) [ ] Change “render ‘user/profile” into “render :profile”. In every controller.
-      17) [ ] Remove reduntant methods in models.
+      14) [X] Check if admin authorizations can be done with Devise methods
+      15) [X] Unify have_http_status(303) to use code.
+      16) [X] Change “render ‘user/profile” into “render :profile”. In every controller.
+      17) [X] Remove reduntant methods in models.
       18) [ ] improve custom.scss styles
       19) [ ] Make HTML ids consistent across all views
       20) [X] Remove '' from 'password' in forms
