@@ -36,6 +36,8 @@ pl:
     user_created: "Zarejestrowano i zalogowano."
     user_deleted: "Usunięto użytkownika: %{username}."
     category_created: "Kategoria stworzona!"
+    captcha_error: 'Nie powiodła się weryfikacja Captcha. Spróbuj ponownie.'
+
   error:
     count: "Formularz zawiera błędy:"
 

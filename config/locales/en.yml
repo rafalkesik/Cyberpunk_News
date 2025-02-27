@@ -37,8 +37,11 @@ en:
     user_deleted: "Successfully deleted user: %{username}."
     category_created: "Category created!"
     category_deleted: "Category deleted."
+    captcha_error: 'Captcha verification failed. Please try again.'
+
   error:
     count: "The form contains errors:"
+
   # active record objects
   activerecord:
     attributes:

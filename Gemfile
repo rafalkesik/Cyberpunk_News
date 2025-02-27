@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '~>3.1'
 
+# This gem needs to be placed before recaptcha gem to load env vars for dev
+gem 'dotenv', groups: [:development, :test]
+
 gem 'bcrypt',          '3.1.18'
 gem 'bootsnap',        '1.12.0', require: false
 gem 'devise',          '~> 4.9'
@@ -11,6 +14,7 @@ gem 'jbuilder',        '2.11.5'
 gem 'polish',          '~> 0.1.0'
 gem 'puma',            '~> 6.4'
 gem 'rails',           '~> 7.1.0'
+gem 'recaptcha'
 gem 'rubocop',         '~> 1.71'
 gem 'rubocop-erb',     '~> 0.3.0'
 gem 'sassc-rails',     '2.1.2'
