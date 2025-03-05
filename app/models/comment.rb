@@ -9,6 +9,8 @@ class Comment < ApplicationRecord
                            dependent: :destroy
   has_many :liking_users,  through: :comment_likes,
                            source: :liking_user
+
+  before_validation :sanitize_content
   validates_presence_of :content
 
   def points
@@ -17,5 +19,15 @@ class Comment < ApplicationRecord
 
   def liked_by?(user)
     liking_users.exists?(user.id)
+  end
+
+  private
+
+  def sanitize_content
+    self.content = ActionController::Base
+                   .helpers
+                   .sanitize(content,
+                             tags: %w[b i u p br strong em a],
+                             attributes: %w[href])
   end
 end

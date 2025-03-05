@@ -41,6 +41,7 @@ en:
 
   error:
     count: "The form contains errors:"
+    invalid_url: 'must be a valid URL'
 
   # active record objects
   activerecord:

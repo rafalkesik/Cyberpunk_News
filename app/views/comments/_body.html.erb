@@ -8,7 +8,7 @@
       </div>
     <% else %>
       <div class='comment-text'>
-        <%= format_text(comment.content) %>
+        <%= format_text(html_escape(comment.content)) %>
       </div>
     <% end %>
 

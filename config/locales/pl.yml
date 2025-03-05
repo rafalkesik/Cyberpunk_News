@@ -40,6 +40,8 @@ pl:
 
   error:
     count: "Formularz zawiera błędy:"
+    invalid_url: 'musi zawierać prawidłowy URL'
+
 
   # active record objects
   activerecord:
