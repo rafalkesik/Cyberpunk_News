@@ -5,8 +5,9 @@ RSpec.describe 'UserRegistrations', type: :request do
     it 'renders signup form' do
       get new_user_registration_path, as: :turbo_stream
       expect(response).to render_template('devise/registrations/new')
-      assert_select 'h2', 'Sign up'
-      assert_select 'form[action=?][method="post"]', user_registration_path
+      assert_select 'h2', (I18n.t 'sign_up')
+      assert_select 'form[action=?][method="post"]',
+                    user_registration_path
     end
   end
 
@@ -27,7 +28,9 @@ RSpec.describe 'UserRegistrations', type: :request do
         expect(response).to redirect_to(User.last)
         expect(response).to have_http_status(303)
         follow_redirect!
-        assert_select 'div.alert-notice', 'Welcome! You have signed up successfully.'
+        expect(response.body).to include(
+          (I18n.t 'devise.registrations.signed_up')
+        )
       end
     end
 

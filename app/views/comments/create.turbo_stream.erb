@@ -4,11 +4,11 @@
 <% if @comment.valid? %>
   <%= turbo_stream.append "comments-list-#{@parent&.id}",
                           partial: 'comments/comment',
-                          locals: {comment: @comment,
-                                  current_user: @comment.user} %>
+                          locals: { comment: @comment,
+                                    current_user: @comment.user } %>
   <%= turbo_stream.update 'submit-comment-form',
                           partial: 'comments/submit_comment_form',
-                          locals: {post: @post} %>
+                          locals: { post: @post } %>
   <%= turbo_stream.update "reply-form-to-#{@comment.parent_id}",
                           '' %>
 <% end %>

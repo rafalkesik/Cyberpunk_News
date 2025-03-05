@@ -1,11 +1,23 @@
 module PostsHelper
-  # Returns downvote or upvote icon partial
+  # Returns unlike or like icon partial
   # based on user's liking the post or not.
-  def post_vote_partial(post, user)
-    if post.liked_by?(user)
-      'posts/downvote_form'
+  def post_like_partial(post, user)
+    if user && post.liked_by?(user)
+      'posts/unlike_form'
     else
-      'posts/upvote_form'
+      'posts/like_form'
+    end
+  end
+
+  # returns author or 'someone' if hidden
+  def render_author(comment)
+    if comment.hidden
+      content_tag(:span, (t :someone), class: 'text-emphasize')
+    else
+      link_to comment.user.username,
+              user_path(comment.user),
+              class: 'text-emphasize',
+              data: { turbo_frame: '_top' }
     end
   end
 
@@ -22,16 +34,5 @@ module PostsHelper
     return false unless current_user
 
     current_user.author_of_comment?(comment) || current_user.admin
-  end
-
-  # returns author or 'someone' if hidden
-  def render_author(comment)
-    if comment.hidden
-      t :someone
-    else
-      link_to comment.user.username,
-              user_path(comment.user),
-              data: { turbo_frame: '_top' }
-    end
   end
 end

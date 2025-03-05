@@ -1,13 +1,14 @@
-<div id="new_user">
+<div id='new_user'>
     <h3><%= t :sign_up %></h3>
     <%= form_with model: @user do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
-        <%= f.label :username, (t :username) %>
-        <%= f.text_field :username %>
-        <%= f.label :password, (t :password) %>
+        <%= f.label          :username, (t :username) %>
+        <%= f.text_field     :username %>
+        <%= f.label          :password, (t :password) %>
         <%= f.password_field :password %>
-        <%= f.label :password_confirmation, (t :password_confirmation) %>
+        <%= f.label          :password_confirmation,
+                             (t :password_confirmation) %>
         <%= f.password_field :password_confirmation %>
-        <%= f.submit (t :sign_up) %>
+        <%= f.submit t       :sign_up %>
     <% end %>
 </div>

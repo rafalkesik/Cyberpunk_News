@@ -8,7 +8,9 @@ RSpec.describe 'Users', type: :request do
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -67,7 +69,9 @@ RSpec.describe 'Users', type: :request do
         expect(response).to have_http_status(302)
         expect(response).to redirect_to(login_url)
         follow_redirect!
-        assert_select 'div.alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -91,9 +95,11 @@ RSpec.describe 'Users', type: :request do
 
           user.posts.each do |post|
             assert_select 'a', post.title
+            expect(CGI.unescapeHTML(response.body)).to include(post.title)
+            assert_select 'form[action=?]', post_path(post) do
+              assert_select 'input[value="delete"]'
+            end
           end
-          assert_select 'input[type="submit"][value=?]',
-                        'delete'
         end
       end
 
@@ -121,7 +127,7 @@ RSpec.describe 'Users', type: :request do
             expect(response).to render_template('users/show')
             other_user.posts.each do |post|
               assert_select 'form[action=?]', post_path(post) do
-                assert_select 'input[type="submit"][value=?]', 'delete'
+                assert_select 'input[value=?]', 'delete'
               end
             end
           end
@@ -166,10 +172,10 @@ RSpec.describe 'Users', type: :request do
           delete user_path(user), as: :turbo_stream
         end.to change(User, :count).by(-1)
 
-        assert_select 'turbo-stream[action=replace][target=?]', 'flash-messages' do
-          assert_select 'template',
-                        "Successfully deleted user: #{user.username}."
-        end
+        expect(response.body).to include(
+          (I18n.t 'flash.user_deleted', username: user.username)
+        )
+
         assert_select 'turbo-stream[action=remove][target=?]',
                       "user-#{user.id}"
       end

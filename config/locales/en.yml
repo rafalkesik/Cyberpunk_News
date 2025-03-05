@@ -4,7 +4,7 @@ en:
   new: "new"
   create: "create"
   profile: "Profile"
-  login: "Login"
+  login: 'Log in'
   contact: "Contact"
   guidelines:
     default: "Guidelines"
@@ -21,7 +21,7 @@ en:
     comment_deleted: "The comment has been deleted."
     comment_not_valid: "Comment not valid."
     authenticate: "Please log in to view that page."
-    authenticate_like: "You must be logged in to upvote."
+    authenticate_like: "You must be logged in to like."
     authenticate_add_com: "Log in to submit comments."
     authenticate_add_post: "Log in to submit posts."
     authenticate_add_category: "Log in to submit or edit categories."
@@ -36,6 +36,7 @@ en:
     user_created: "New user created & logged in."
     user_deleted: "Successfully deleted user: %{username}."
     category_created: "Category created!"
+    category_deleted: "Category deleted."
   error:
     count: "The form contains errors:"
   # active record objects
@@ -50,6 +51,13 @@ en:
   title: "Title"
   text: "Your text"
   submit: "Submit"
+  remember_me: 'Remember me'
+  forgot_password: 'Forgot password?'
+  forgot_password_long: 'Forgot your password?'
+  reset_password: 'Reset password'
+  reset: 'Reset'
+  change_username: 'Change username'
+  change: 'Change'
 
   # Posts
   admin: "Admin"
@@ -74,11 +82,9 @@ en:
     upper: "Users"
     lower: "users"
   logout: "logout"
-  reset_password: "Reset password:"
   password: "Password"
   password_confirmation: "Password confirmation"
   update_password: "Update password"
-  log_in: "Log in"
   sign_up: "Sign up"
   username: "Username"
   sure?: "Are you sure?"
@@ -86,7 +92,6 @@ en:
   # Categories
   all_categories: "All categories:"
   create_category: "Create category"
-  category_deleted: "Category deleted."
   category: "Category"
   categories:
     upper: 'Categories'

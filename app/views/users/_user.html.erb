@@ -1,14 +1,15 @@
 <%= turbo_frame_tag "user-#{user.id}" do %>
-    <div class="user-container container pb-2">
+    <div class='container pb-2'>
         <div class="row">
             <% if can_delete_user(user) %>
                 <div class="col-md-auto">
-                    <%= render 'shared/delete_button_form', resource: user %>
+                    <%= render 'shared/delete_button_form',
+                               resource: user %>
                 </div>
             <% end %>
             <div class="col align-self-center">
                 <%= link_to user.username, user_path(user),
-                            data: { turbo_frame: "_top" } %>
+                            data: { turbo_frame: '_top' } %>
             </div>
         </div>
     </div>

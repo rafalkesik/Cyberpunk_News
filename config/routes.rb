@@ -7,8 +7,8 @@ Rails.application.routes.draw do
     get  'faq',         to: 'static_pages#faq'
     get  'contact',     to: 'static_pages#contact'
 
-    delete 'liking_relations',         to: 'liking_relations#destroy'
-    delete 'comment_liking_relations', to: 'comment_liking_relations#destroy'
+    delete 'post_likes',    to: 'post_likes#destroy'
+    delete 'comment_likes', to: 'comment_likes#destroy'
 
     devise_scope :user do
       get    'users/sign_in',  to: 'users/sessions#new', as: :login
@@ -21,9 +21,9 @@ Rails.application.routes.draw do
                               sessions: 'users/sessions' }
     resources :users
     resources :posts
-    resources :liking_relations
     resources :comments
-    resources :comment_liking_relations
+    resources :post_likes
+    resources :comment_likes
     resources :categories, param: :slug
   end
 end

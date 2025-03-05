@@ -1,0 +1,18 @@
+<div class='fs-5 mt-1 d-flex flex-wrap' id='post-footer'>
+  <span class='me-5'>
+    <%= turbo_frame_tag "post-#{post.id}-points" do %>
+      <%= t :points, count: post.points %>,
+    <% end %>
+    
+    <%= link_to "#{t :comments} #{post.comments.count}",
+                post_path(post),
+                data: { turbo_frame: '_top' } %>
+  </span>
+
+  <span>
+    <%= time_ago_in_words(post.created_at) %> <%= t :ago %>,
+    <%= t :by %> <%= link_to post.user.username, post.user,
+                class: 'text-secondary text-emphasize',
+                data: { turbo_frame: '_top' } %>
+  </span>
+</div>

@@ -23,7 +23,9 @@ RSpec.describe 'Categories', type: :request do
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -77,7 +79,9 @@ RSpec.describe 'Categories', type: :request do
         expect(response).to redirect_to(login_url)
         expect(response).to have_http_status(302)
         follow_redirect!
-        assert_select 'div.alert-alert', 'You need to sign in or sign up before continuing.'
+        expect(response.body).to include(
+          (I18n.t 'devise.failure.unauthenticated')
+        )
       end
     end
 
@@ -98,10 +102,9 @@ RSpec.describe 'Categories', type: :request do
             perform_post_request(invalid_category_params)
           end.to change(Category, :count).by(0)
 
-          assert_select 'div.error-explanation' do
-            assert_select 'div.alert-danger',
-                          'The form contains errors:'
-          end
+          expect(response.body).to include(
+            (I18n.t 'error.count')
+          )
         end
       end
 
@@ -124,8 +127,10 @@ RSpec.describe 'Categories', type: :request do
           expect(response).to redirect_to(categories_path)
           expect(response).to have_http_status(303)
           follow_redirect!
-          assert_select 'div.alert-success', 'Category created!'
-          assert_select 'a', 'New Category'
+          expect(response.body).to include(
+            (I18n.t 'flash.category_created')
+          )
+          assert_select 'a', valid_category_params[:title]
         end
       end
     end
@@ -168,7 +173,9 @@ RSpec.describe 'Categories', type: :request do
           delete category_path(category.slug), as: :turbo_stream
         end.to change(Category, :count).by(-1)
 
-        assert_select 'div.alert-success', 'Category deleted.'
+        expect(response.body).to include(
+          (I18n.t 'flash.category_deleted')
+        )
       end
 
       it "deletes category's posts" do

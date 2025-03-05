@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe CommentLikingRelation, type: :model do
-  fixtures :comment_liking_relations
-  let(:relation) { comment_liking_relations(:one_likes_two) }
+RSpec.describe CommentLike, type: :model do
+  fixtures :comment_likes
+  let(:relation) { comment_likes(:one_likes_two) }
 
   it 'is valid when arguments are valid' do
     expect(relation).to be_valid

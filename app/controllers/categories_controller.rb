@@ -29,7 +29,7 @@ class CategoriesController < ApplicationController
 
     @category.posts.update_all(category_id: 1)
     @category.delete
-    flash.now[:success] = (t :category_deleted)
+    flash.now[:success] = (t 'flash.category_deleted')
   end
 
   private
