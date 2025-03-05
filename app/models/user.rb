@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :liked_comments, through: :comment_likes,
                             source: :liked_comment
 
+  before_validation :sanitize_username
   validates :username, presence: true, uniqueness: true
 
   def author_of_post?(post)
@@ -27,5 +28,13 @@ class User < ApplicationRecord
   # Changes default devise mailer into SendGrid API on production ENV
   def send_devise_notification(notification, *args)
     MailerService.send_email(self, notification, *args)
+  end
+
+  private
+
+  def sanitize_username
+    self.username = ActionController::Base
+                    .helpers
+                    .sanitize(username)
   end
 end
