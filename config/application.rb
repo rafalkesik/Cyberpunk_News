@@ -22,5 +22,8 @@ module CyberpunkNews
 
     # Allows to edit error_messages through locales
     config.active_model.i18n_customize_full_message
+
+    # Filter emails inside log files
+    config.filter_parameters << :email
   end
 end

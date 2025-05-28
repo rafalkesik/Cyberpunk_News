@@ -32,4 +32,7 @@ Devise.setup do |config|
   # ==> Hotwire/Turbo configuration
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
+
+  # ==> Security configuration
+  config.paranoid = true
 end

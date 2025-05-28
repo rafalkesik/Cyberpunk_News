@@ -3,6 +3,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
+  if %w[development production].include?(Rails.env)
+    before_action :check_captcha, only: [:create]
+  end
 
   # PUT /resource
   # Default Devise logic,
@@ -61,5 +64,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
                   :updated_but_not_signed_in
                 end
     set_flash_message :success, flash_key
+  end
+
+  def check_captcha # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    self.resource = resource_class.new(sign_up_params) if resource.nil?
+    recaptcha_response = params.dig('g-recaptcha-response-data', 'signup')
+
+    if recaptcha_response.blank?
+      puts 'DEBUG: Captcha response is missing or empty!'
+      resource.errors.add(:base, 'captcha response is missing')
+      render :new, status: :unprocessable_entity
+    end
+
+    user_is_not_a_robot = verify_recaptcha(response: recaptcha_response,
+                                           action: 'signup',
+                                           minimum_score: 0.7)
+    return if user_is_not_a_robot
+
+    # If the score is too low, handle the failure
+    puts "DEBUG: The reason for failure: #{recaptcha_failure_reason}"
+    resource.errors.add(:base, (t 'flash.captcha_error'))
+    render :new, status: :unprocessable_entity
   end
 end

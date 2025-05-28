@@ -26,6 +26,8 @@
     <%= f.password_field :password_confirmation, autocomplete: 'new-password' %>
   </div>
 
+  <%= recaptcha_v3(action: 'signup', turbo: true) %>
+
   <div class='mb-3'>
     <%= f.submit 'Sign up' %>
   </div>
